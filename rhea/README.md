@@ -1,4 +1,6 @@
-This directory contains training material for querying the [Rhea](https://www.rhea-db.org/) resource with SPARQL.
+This directory contains training material for querying the [Rhea](https://www.rhea-db.org/) resource with SPARQL.  
+See [SWAT4HCLS_2019](./SWAT4HCLS_2019) directory for our first public Rhea SPARQLtraining.
+
 
 # What is Rhea?
 [Rhea](https://www.rhea-db.org/) is an expert curated knowledgebase of chemical and transport reactions of biological interest 
