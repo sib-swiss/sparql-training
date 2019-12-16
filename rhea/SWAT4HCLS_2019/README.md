@@ -2,7 +2,7 @@ This directory contains a Jupyter notebook ([rhea_tutorial_SWAT4HCLS_2019.ipynb]
 It is part of the [Tutorial: Querying SIB Swiss Institute of Bioinformatics resources with SPARQL](http://www.swat4ls.org/workshops/edinburgh2019/programme/tutorials/) presented at  
 
 You can run the *rhea_tutorial_SWAT4HCLS_2019.ipynb* notebook in your own Jupyter installation.  
-Without Jupyter, you can also simply use it as a list of SPARQL queries that you can execute in the specified SPARQL endpoints.   
+**Without Jupyter, you can also simply use *rhea_tutorial_SWAT4HCLS_2019.ipynb* as a list of SPARQL queries that you can execute in the specified SPARQL endpoints.** 
 
 ## Installation
 
