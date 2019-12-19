@@ -1,5 +1,5 @@
 This directory contains training material for querying the [Rhea](https://www.rhea-db.org/) resource with SPARQL.  
-See [SWAT4HCLS_2019](./SWAT4HCLS_2019) directory for our first public Rhea SPARQLtraining.
+See [SWAT4HCLS_2019](./SWAT4HCLS_2019) directory for our first public Rhea SPARQL training.
 
 
 # What is Rhea?
