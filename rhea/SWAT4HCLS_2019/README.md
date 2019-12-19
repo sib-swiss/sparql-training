@@ -1,6 +1,6 @@
 This directory contains a Jupyter notebook ([rhea_tutorial_SWAT4HCLS_2019.ipynb](./rhea_tutorial_SWAT4HCLS_2019.ipynb)) which is the practical part of the **SPARQLing Rhea tutorial** presented at the 12th International [**SWAT4HCLS**](http://www.swat4ls.org/) (**S**emantic **W**eb **A**pplications and **T**ools for **H**ealth**c**are and **L**ife **S**ciences)  Conference (December 9, 2019 - Edinburgh, Scotland).  
 It is part of the [Tutorial: Querying SIB Swiss Institute of Bioinformatics resources with SPARQL](http://www.swat4ls.org/workshops/edinburgh2019/programme/tutorials/).
-The slides of the **SPARQLing Rhea tutorial** are available at [edu.isb-sib.ch](https://edu.isb-sib.ch/course/view.php?id=424).
+The slides of the **SPARQLing Rhea tutorial** are available at [edu.isb-sib.ch](https://edu.isb-sib.ch/course/view.php?id=440).
 
 You can run the *rhea_tutorial_SWAT4HCLS_2019.ipynb* notebook in your own Jupyter installation.  
 **Without Jupyter, you can also simply use *rhea_tutorial_SWAT4HCLS_2019.ipynb* as a list of SPARQL queries that you can execute in the specified SPARQL endpoints.** 
