@@ -15,4 +15,11 @@ Users can query UniProt RDF data using SPARQL at the [UniProt SPARQL endpoint](h
 
 # Tutorial
 
-There is a follow allong jupter notebook available [here](uniprot_rdf.ipynb) that introduces the most important concepts in UniProt.
+There is a follow jupter notebooks available that introduce the mayor concepts.
+
+ 1. [introduction](00_introduction.ipynb)
+ 2. [basic information](01_basic_information.ipynb)
+ 3. [protein names](02_protein_name.ipynb)
+ 4. [genes](03_replicon_gene.ipynb)
+ 5. [taxonomy](04_taxonomy.ipynb)
+
