@@ -15,7 +15,7 @@ Users can query UniProt RDF data using SPARQL at the [UniProt SPARQL endpoint](h
 
 # Tutorial
 
-There is a follow jupter notebooks available that introduce the mayor concepts.
+The following Jupyter notebooks will introduce you to the major concepts.
 
  1. [introduction](00_introduction.ipynb)
  2. [basic information](01_basic_information.ipynb)
