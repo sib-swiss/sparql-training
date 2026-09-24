@@ -34,6 +34,7 @@ export const PAGES = [
   { src: 'UniProt/05_sequence.md', title: 'Sequence & isoforms', group: 'UniProt' },
   { src: 'UniProt/08_disease.md', title: 'Disease', group: 'UniProt' },
   { src: 'UniProt/09_cross_references.md', title: 'Cross-references', group: 'UniProt' },
+  { src: 'UniProt/10_evidence_citation.md', out: 'UniProt/10_evidence_citation.html', title: 'Evidence & citations', group: 'UniProt' },
   { src: 'UniProt/13_classification.md', out: 'UniProt/13_classification.html', title: 'GO terms & keywords', group: 'UniProt' },
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
   { src: 'Rhea/rhea.md', title: 'Metabolism', group: 'Rhea' },
