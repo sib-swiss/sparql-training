@@ -1,0 +1,18 @@
+{
+  "name": "sparql-training",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SIB SPARQL training material, published as a static site with in-browser SPARQL examples powered by Comunica.",
+  "type": "module",
+  "scripts": {
+    "build": "node site/build.mjs",
+    "verify": "node site/verify-examples.mjs",
+    "serve": "npx --yes serve _site"
+  },
+  "devDependencies": {
+    "@comunica/query-sparql-rdfjs-lite": "^5.4.1",
+    "esbuild": "^0.24.0",
+    "markdown-it": "^14.1.0",
+    "n3": "^1.17.4"
+  }
+}

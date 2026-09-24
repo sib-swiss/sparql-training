@@ -1,49 +1,155 @@
-<h1>Table of Contents<span class=\"tocSkip\"></span></h1>
-<div class=\"toc\"><ul class=\"toc-item\"><li><span><a href=\"#Taxonomy\" data-toc-modified-id=\"Taxonomy-1\">Taxonomy</a></span></li><li><span><a href=\"#Import-Python-package\" data-toc-modified-id=\"Import-Python-package-2\">Import Python package</a></span><ul class=\"toc-item\"><li><span><a href=\"#Organism-identifier\" data-toc-modified-id=\"Organism-identifier-2.1\">Organism identifier</a></span></li><li><span><a href=\"#Retrieve-the-taxon-(organism-id)-of-a-protein\" data-toc-modified-id=\"Retrieve-the-taxon-(organism-id)-of-a-protein-2.2\">Retrieve the taxon (organism id) of a protein</a></span></li><li><span><a href=\"#Taxonomy-data\" data-toc-modified-id=\"Taxonomy-data-2.3\">Taxonomy data</a></span><ul class=\"toc-item\"><li><span><a href=\"#Retrieve-the-rank-and-the-scientific-name-of-the-organism\" data-toc-modified-id=\"Retrieve-the-rank-and-the-scientific-name-of-the-organism-2.3.1\">Retrieve the rank and the scientific name of the organism</a></span></li></ul></li><li><span><a href=\"#Taxonomy-hierarchy\" data-toc-modified-id=\"Taxonomy-hierarchy-2.4\">Taxonomy hierarchy</a></span></li><li><span><a href=\"#Host-organisms\" data-toc-modified-id=\"Host-organisms-2.5\">Host organisms</a></span></li></ul></li><li><span><a href=\"#How-to-retrieve-all-UniProt-entries-for-a-given-organism-?\" data-toc-modified-id=\"How-to-retrieve-all-UniProt-entries-for-a-given-organism-?-3\"><span style=\"color: red\">How to retrieve all UniProt entries for a given organism ?</span></a></span></li><li><span><a href=\"#How-to-retrieve-the-lineage-of-an-organism-?\" data-toc-modified-id=\"How-to-retrieve-the-lineage-of-an-organism-?-4\"><span style=\"color: red\">How to retrieve the lineage of an organism ?</span></a></span></li><li><span><a href=\"#How-to-retrieve-all-organisms-with-at-least-one-entry-in-UniProtKB/Swiss-Prot-?\" data-toc-modified-id=\"How-to-retrieve-all-organisms-with-at-least-one-entry-in-UniProtKB/Swiss-Prot-?-5\"><span style=\"color: red\">How to retrieve all organisms with at least one entry in UniProtKB/Swiss-Prot ?</span></a></span></li></ul></div>"
 # Taxonomy
 
-This notebook aims to show you how taxonomy data are represented in UniProt.  
+This page shows you how taxonomy data is represented in UniProt.
 
-UniProtKB taxonomy data is manually curated (see details [here](https://www.uniprot.org/taxonomy/)).
+UniProtKB taxonomy data is manually curated (see details [here](https://www.uniprot.org/taxonomy/)). The organism that is the source of a protein sequence is identified by a unique identifier (often called *taxon* or *taxid*) from the [NCBI taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) database. This is the only taxonomy information stored directly on a UniProtKB entry &mdash; the full NCBI taxonomy is modeled and available separately.
 
-
-The organism which is the source of a protein sequence is identified by a unique identifier (often called _taxon_ or _taxid_) from the [NCBI taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) database.   
-This is the only taxonomy information that is stored in the RDF format of a UniProtKB entry. However, the full NCBI taxonomy is modelled and available as well.   "
-# Import Python package
-
-First we import rdflib which is a well known python library that gives RDF and its query language support to Python 3 (and Python 2).  
 ## Organism identifier
 
-The organism identifier (taxon) is stored in the `organism` property of a uniprot entry.  "
-## Retrieve the taxon (organism id) of a protein"
+The organism identifier (taxon) is stored in the `organism` property of a UniProt entry.
+
+```turtle fixture=p05067
+base <http://purl.uniprot.org/uniprot/>
+prefix up: <http://purl.uniprot.org/core/>
+prefix taxon: <http://purl.uniprot.org/taxonomy/>
+
+<P05067> a up:Protein ;
+         up:organism taxon:9606 .
+```
+
+## Retrieve the taxon (organism id) of a protein
+
+```sparql fixture=p05067
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT ?protein ?taxon
+WHERE {
+  ?protein a up:Protein ;
+           up:organism ?taxon .
+}
+```
+
 ## Taxonomy data
 
-**Properties**:
-- `rank`  
-- `mnemonic`  
-- `scientificName`  
-- `commonName`  
-- `otherName`  
-- `seeAlso` (xref)  
-- `subClassOf` (hierarchy)   
-- <span style=\"color:red\">narrowerTransitive</span>  
-- <span style=\"color:red\">partOfLineage</span>  "
+Common properties on a taxon resource:
+
+- `rank`
+- `mnemonic`
+- `scientificName`
+- `commonName`
+- `otherName`
+- `seeAlso` (cross-reference)
+- `subClassOf` (hierarchy)
+
+```turtle fixture=taxon title="The taxon:9606 (Homo sapiens) entry and its parent"
+base <http://purl.uniprot.org/taxonomy/>
+prefix up: <http://purl.uniprot.org/core/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+
+<9606> a up:Taxon ;
+       up:rank up:Species ;
+       up:mnemonic "HUMAN" ;
+       up:scientificName "Homo sapiens" ;
+       up:commonName "Human" ;
+       up:otherName "Home sapiens", "Homo sapiens Linnaeus, 1758", "man" ;
+       rdfs:seeAlso <http://www.ensembl.org/Homo_sapiens/Info/Index> ;
+       rdfs:subClassOf <9605> ;
+       skos:narrowerTransitive <63221>, <741158> ;
+       up:partOfLineage false .
+
+<9605> a up:Taxon ;
+       up:rank up:Genus ;
+       up:scientificName "Homo" ;
+       up:otherName "Homo Linnaeus, 1758", "humans" ;
+       rdfs:subClassOf <207598> ;
+       skos:narrowerTransitive <9606>, <1425170>, <2665952> ;
+       up:partOfLineage true .
+```
+
 ### Retrieve the rank and the scientific name of the organism
 
-The rank and scientificName are by far the most queried properties of a taxon."
+The `rank` and `scientificName` are by far the most queried properties of a taxon.
+
+```sparql fixture=taxon
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT ?taxon ?rank ?scientificName
+WHERE {
+  ?taxon a up:Taxon ;
+         up:rank ?rank ;
+         up:scientificName ?scientificName .
+}
+```
+
 ## Taxonomy hierarchy
 
-Querying the taxonomic hierarchy is straightforward using the `rdfs:subClassOf` property.  
-In our _taxon_ example shown previously:  
-<9605> rdfs:subClassOf <9606>  
-<9606> rdfs:subClassOf <207598>  
+Querying the taxonomic hierarchy is straightforward with the `rdfs:subClassOf` property. In the taxon example above:
 
-In order to facilitate the search, the UniProt SPARQL endpoint materialized all relationships. In other words, you don't need to use SPARQL property path to query the taxonomy classification.  
-Note that if you use other endpoints you might need to use `rdfs:subClassOf+` to query by higher levels of taxonomy.
+- `<9605>` (*Homo*, genus) `rdfs:subClassOf` `<207598>`
+- `<9606>` (*Homo sapiens*, species) `rdfs:subClassOf` `<9605>`
+
+The UniProt SPARQL endpoint materializes all these relationships, so you don't need a SPARQL property path to query across levels of the taxonomy. Note that on other endpoints you might need `rdfs:subClassOf+` to reach higher levels.
+
+```sparql fixture=taxon
+PREFIX up: <http://purl.uniprot.org/core/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?species ?genus
+WHERE {
+  ?species a up:Taxon ;
+           up:rank up:Species ;
+           rdfs:subClassOf ?genus .
+  ?genus a up:Taxon ;
+         up:rank up:Genus .
+}
+```
+
 ## Host organisms
 
-Sometimes an organism is known to be hosted inside an other one (_e.g._ parasite, symbiont, infection).   
-We defined the `host` property to link an organism to its host.  "
-# <span style=\"color:red\">How to retrieve all UniProt entries for a given organism ?</span>"
-# <span style=\"color:red\">How to retrieve the lineage of an organism ?</span>"
-# <span style=\"color:red\">How to retrieve all organisms with at least one entry in UniProtKB/Swiss-Prot ?</span>"
+Sometimes an organism is known to be hosted inside another one (e.g. a parasite, a symbiont, an infection). The `host` property links an organism to its host.
+
+```turtle fixture=host
+base <http://purl.uniprot.org/taxonomy/>
+prefix up: <http://purl.uniprot.org/core/>
+
+<1241371> a up:Taxon ;
+          up:mnemonic "ABHV" ;
+          up:host <6451> .
+```
+
+```sparql fixture=host
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT ?virus ?host
+WHERE {
+  ?virus up:host ?host .
+}
+```
+
+## Try it yourself: whole-database questions
+
+The following question needs to be answered against the full UniProtKB dataset (counting reviewed entries across every domain of life), so it isn't something a small in-page fixture can meaningfully demonstrate. Try running it yourself against the live endpoint at [sparql.uniprot.org](https://sparql.uniprot.org/sparql).
+
+```sparql reference="How many organisms have at least one reviewed (Swiss-Prot) entry, per taxonomic domain?"
+PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
+PREFIX up: <http://purl.uniprot.org/core/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?taxid ?scientificName ?domain ?domainName
+WHERE {
+  # reviewed entries
+  ?uniprot up:reviewed true .
+  # taxid
+  ?uniprot up:organism ?taxid .
+  ?taxid up:scientificName ?scientificName .
+
+  VALUES ?domain { taxon:2      # bacteria
+                    taxon:2157  # archaea
+                    taxon:2759  # eukaryota
+                    taxon:10239 # viruses
+                  }
+  ?taxid rdfs:subClassOf ?domain .
+}
+LIMIT 3
+```
