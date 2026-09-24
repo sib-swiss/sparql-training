@@ -12,6 +12,7 @@ This series of pages shows you how UniProt's RDF data model works and how to que
 | [03 Replicon & genes](03_replicon_gene.html) | replicon and gene names |
 | [04 Taxonomy](04_taxonomy.html) | organism and taxonomy |
 | [05 Sequence & isoforms](05_sequence.html) | sequences, isoforms, canonical sequence, processing, fragments, mass spectrometry |
+| [09_cross_references](09_cross_references.html) | Cross References and links to other databases |
 | [14 Chemistry](14_chemistry.html) | ligands, catalytic activity, cofactors, similarity search |
 
 ## UniProt RDF

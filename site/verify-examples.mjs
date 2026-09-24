@@ -26,6 +26,7 @@ const FILES = [
   'UniProt/03_replicon_gene.md',
   'UniProt/04_taxonomy.md',
   'UniProt/05_sequence.md',
+  'UniProt/09_cross_references.md',
   'UniProt/14_chemistry.md',
   'Rhea/rhea.md',
 ];

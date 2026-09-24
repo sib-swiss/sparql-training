@@ -22,6 +22,7 @@ export const PAGES = [
   { src: 'UniProt/03_replicon_gene.md', out: 'UniProt/03_replicon_gene.html', title: 'Replicon & genes', group: 'UniProt' },
   { src: 'UniProt/04_taxonomy.md', out: 'UniProt/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
   { src: 'UniProt/05_sequence.md', out: 'UniProt/05_sequence.html', title: 'Sequence & isoforms', group: 'UniProt' },
+  { src: 'UniProt/09_cross_references.md', out: 'UniProt/09_cross_references.html', title: 'Cross-references', group: 'UniProt' },
   { src: 'UniProt/14_chemistry.md', out: 'UniProt/14_chemistry.html', title: 'Chemistry', group: 'UniProt' },
   {
     src: 'Rhea/rhea.md',
