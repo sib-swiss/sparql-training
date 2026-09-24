@@ -24,7 +24,10 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 6. [Sequence & isoforms](UniProt/05_sequence.html) - sequences, isoforms, canonical sequence selection, processing (initiator methionine, chains, signal peptides), fragments and mass spectrometry measurements
 8. [Disease](UniProt/08_disease.html) - disease involvement annotations, linked disease resources, and cross-references to OMIM
 9. [Cross-references](UniProt/09_cross_references.html) - links to PDB, UniRef, UniParc and other external databases, including federated queries
+13. [GO terms & keywords](UniProt/13_classification.html) - classifying proteins with Gene Ontology terms and UniProt keywords
 14. [Chemistry](UniProt/14_chemistry.html) - ligands, cofactors, PTMs, catalytic activity, and a reference example of an IDSM/Sachem chemical similarity search
+
+
 
 ## Rhea
 
