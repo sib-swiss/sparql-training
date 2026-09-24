@@ -4,6 +4,16 @@
   var originalText = new WeakMap();
   var PALETTE = ['#4493f8', '#3fb950', '#d29922', '#db61a2', '#a371f7', '#f85149', '#39c5cf'];
 
+  function reHighlight(pre) {
+    if (!window.Prism) return;
+    var code = pre.querySelector('code');
+    if (!code) return;
+    // Flatten any markup left over from a previous highlight (or from editing
+    // around it) back to plain text before re-tokenizing.
+    code.textContent = code.textContent;
+    window.Prism.highlightElement(code);
+  }
+
   function collectVariables(bindings) {
     var seen = {};
     var vars = [];
@@ -381,6 +391,7 @@
         resetButton.addEventListener('click', function (event) {
           event.preventDefault();
           dataEl.textContent = originalText.get(dataEl);
+          reHighlight(dataEl);
           refreshGraphIfOpen(fixture);
         });
       }
@@ -404,12 +415,61 @@
         resetButton.addEventListener('click', function (event) {
           event.preventDefault();
           queryEl.textContent = originalText.get(queryEl);
+          reHighlight(queryEl);
         });
       }
     });
   }
 
+  function initNavDropdowns() {
+    var dropdowns = Array.from(document.querySelectorAll('.nav-dropdown'));
+    if (dropdowns.length === 0) return;
+
+    dropdowns.forEach(function (dropdown) {
+      dropdown.addEventListener('toggle', function () {
+        if (!dropdown.open) return;
+        dropdowns.forEach(function (other) {
+          if (other !== dropdown) other.removeAttribute('open');
+        });
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      dropdowns.forEach(function (dropdown) {
+        if (dropdown.open && !dropdown.contains(event.target)) {
+          dropdown.removeAttribute('open');
+        }
+      });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key !== 'Escape') return;
+      dropdowns.forEach(function (dropdown) {
+        dropdown.removeAttribute('open');
+      });
+    });
+  }
+
+  function initSyntaxHighlighting() {
+    if (!window.Prism) {
+      console.error('Prism syntax highlighter failed to load; examples will show as plain text.');
+      return;
+    }
+    window.Prism.highlightAll();
+
+    document.querySelectorAll('.sparql-fixture-data, .sparql-query').forEach(function (pre) {
+      // Re-highlight once the user is done editing, rather than on every
+      // keystroke, so the cursor never jumps mid-edit.
+      pre.addEventListener('blur', function () {
+        reHighlight(pre);
+      });
+    });
+  }
+
   function init() {
+    initNavDropdowns();
+    initSyntaxHighlighting();
+
     if (!window.SparqlRunner) {
       console.error('SparqlRunner engine bundle failed to load; run buttons are disabled.');
       return;
