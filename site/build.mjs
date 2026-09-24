@@ -9,15 +9,16 @@ const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, '_site');
 
 // Ordered list of pages that make up the site nav, plus their source markdown
-// and output location. Add new pages here.
+// and output location. Add new pages here. Pages sharing a `group` are folded
+// into one dropdown in the header nav, in the order they first appear.
 const PAGES = [
   { src: 'index.md', out: 'index.html', title: 'Home' },
   { src: 'default/tutorial.md', out: 'default/tutorial.html', title: 'SPARQL basics' },
-  { src: 'uniprot/00_introduction.md', out: 'uniprot/00_introduction.html', title: 'UniProt · Introduction' },
-  { src: 'uniprot/01_basic_information.md', out: 'uniprot/01_basic_information.html', title: 'UniProt · Basic information' },
-  { src: 'uniprot/02_protein_name.md', out: 'uniprot/02_protein_name.html', title: 'UniProt · Protein names' },
-  { src: 'uniprot/03_replicon_gene.md', out: 'uniprot/03_replicon_gene.html', title: 'UniProt · Replicon & genes' },
-  { src: 'uniprot/04_taxonomy.md', out: 'uniprot/04_taxonomy.html', title: 'UniProt · Taxonomy' },
+  { src: 'uniprot/00_introduction.md', out: 'uniprot/00_introduction.html', title: 'Introduction', group: 'UniProt' },
+  { src: 'uniprot/01_basic_information.md', out: 'uniprot/01_basic_information.html', title: 'Basic information', group: 'UniProt' },
+  { src: 'uniprot/02_protein_name.md', out: 'uniprot/02_protein_name.html', title: 'Protein names', group: 'UniProt' },
+  { src: 'uniprot/03_replicon_gene.md', out: 'uniprot/03_replicon_gene.html', title: 'Replicon & genes', group: 'UniProt' },
+  { src: 'uniprot/04_taxonomy.md', out: 'uniprot/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
   {
     src: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.md',
     out: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html',
@@ -108,36 +109,70 @@ function extractTitle(markdown, fallback) {
 }
 
 function renderNav(currentOut) {
-  const items = PAGES.map((page) => {
-    const href = depthPrefix(currentOut) + page.out;
-    const isActive = page.out === currentOut;
-    return `    <a href="${href}"${isActive ? ' class="active"' : ''}>${escapeHtml(page.title)}</a>`;
-  });
+  const base = depthPrefix(currentOut);
+
+  const groupPages = new Map();
+  for (const page of PAGES) {
+    if (!page.group) continue;
+    if (!groupPages.has(page.group)) groupPages.set(page.group, []);
+    groupPages.get(page.group).push(page);
+  }
+
+  const renderedGroups = new Set();
+  const items = [];
+
+  for (const page of PAGES) {
+    if (page.group) {
+      if (renderedGroups.has(page.group)) continue;
+      renderedGroups.add(page.group);
+
+      const pages = groupPages.get(page.group);
+      const isActiveGroup = pages.some((p) => p.out === currentOut);
+      const links = pages
+        .map((p) => {
+          const href = base + p.out;
+          const isActive = p.out === currentOut;
+          return `        <a href="${href}"${isActive ? ' class="active"' : ''}>${escapeHtml(p.title)}</a>`;
+        })
+        .join('\n');
+
+      items.push(
+        `    <details class="nav-dropdown"${isActiveGroup ? ' open' : ''}>\n` +
+          `      <summary${isActiveGroup ? ' class="active"' : ''}>${escapeHtml(page.group)}</summary>\n` +
+          `      <div class="nav-dropdown-menu">\n${links}\n      </div>\n` +
+          `    </details>`
+      );
+    } else {
+      const href = base + page.out;
+      const isActive = page.out === currentOut;
+      items.push(`    <a href="${href}"${isActive ? ' class="active"' : ''}>${escapeHtml(page.title)}</a>`);
+    }
+  }
+
   return items.join('\n');
 }
 
-function buildClientBundles() {
-  esbuild.buildSync({
-    entryPoints: [path.join(__dirname, 'src/comunica-entry.js')],
-    bundle: true,
-    minify: true,
-    format: 'iife',
-    platform: 'browser',
-    target: 'es2020',
-    outfile: path.join(OUT, 'assets/js/comunica-bundle.js'),
-    logLevel: 'info',
-  });
+// Each client bundle is self-contained and loaded via a plain <script> tag in
+// that order from templates/layout.html.
+const CLIENT_BUNDLES = [
+  ['src/comunica-entry.js', 'assets/js/comunica-bundle.js'],
+  ['src/graph-entry.js', 'assets/js/graph-bundle.js'],
+  ['src/prism-entry.js', 'assets/js/prism-bundle.js'],
+];
 
-  esbuild.buildSync({
-    entryPoints: [path.join(__dirname, 'src/graph-entry.js')],
-    bundle: true,
-    minify: true,
-    format: 'iife',
-    platform: 'browser',
-    target: 'es2020',
-    outfile: path.join(OUT, 'assets/js/graph-bundle.js'),
-    logLevel: 'info',
-  });
+function buildClientBundles() {
+  for (const [entry, outfile] of CLIENT_BUNDLES) {
+    esbuild.buildSync({
+      entryPoints: [path.join(__dirname, entry)],
+      bundle: true,
+      minify: true,
+      format: 'iife',
+      platform: 'browser',
+      target: 'es2020',
+      outfile: path.join(OUT, outfile),
+      logLevel: 'info',
+    });
+  }
 }
 
 function copyStaticAssets() {

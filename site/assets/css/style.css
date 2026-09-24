@@ -10,6 +10,11 @@
   --ok-bg: #dafbe1;
   --err-bg: #ffebe9;
   --err-fg: #82071e;
+  --syn-keyword: #cf222e;
+  --syn-string: #0a3069;
+  --syn-function: #8250df;
+  --syn-number: #005cc5;
+  --syn-variable: #953800;
   max-width: 100%;
 }
 
@@ -25,6 +30,11 @@
     --ok-bg: #12261e;
     --err-bg: #2d1214;
     --err-fg: #ff8182;
+    --syn-keyword: #ff7b72;
+    --syn-string: #a5d6ff;
+    --syn-function: #d2a8ff;
+    --syn-number: #79c0ff;
+    --syn-variable: #ffa657;
   }
 }
 
@@ -67,6 +77,72 @@ body {
   color: var(--accent);
 }
 
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  list-style: none;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.92rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.nav-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-dropdown summary::marker {
+  content: '';
+}
+
+.nav-dropdown summary::after {
+  content: '\25BE';
+  font-size: 0.7em;
+  position: relative;
+  top: 1px;
+}
+
+.nav-dropdown summary:hover,
+.nav-dropdown summary.active,
+.nav-dropdown[open] summary {
+  color: var(--accent);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 190px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  z-index: 30;
+}
+
+.nav-dropdown-menu a {
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu a:hover {
+  background: var(--code-bg);
+}
+
+.nav-dropdown-menu a.active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
 main {
   max-width: 860px;
   margin: 0 auto;
@@ -96,6 +172,18 @@ pre {
 }
 
 pre code { background: none; padding: 0; }
+
+.token.comment { color: var(--muted); font-style: italic; }
+.token.string,
+.token.multiline-string,
+.token.url { color: var(--syn-string); }
+.token.keyword,
+.token.tag { color: var(--syn-keyword); font-weight: 600; }
+.token.function { color: var(--syn-function); }
+.token.number,
+.token.boolean { color: var(--syn-number); }
+.token.variable { color: var(--syn-variable); }
+.token.punctuation { color: var(--muted); }
 
 table {
   border-collapse: collapse;
