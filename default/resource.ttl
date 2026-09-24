@@ -1,0 +1,63 @@
+# Instance data (people & pets) for the "SPARQL basics" tutorial dataset
+# used in tutorial.md (fixture id `family`) and described by shapes.ttl.
+#
+# Dereferenceable at https://purl.expasy.org/sparql-examples/training/resource
+# (content-negotiated: text/turtle -> this file, else -> the tutorial page).
+# See ontology.ttl for the class/property definitions this data uses.
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix tto: <https://purl.expasy.org/sparql-examples/training/ontology#> .
+@prefix ttr: <https://purl.expasy.org/sparql-examples/training/resource#> .
+
+ttr:John
+	rdf:type dbo:Person ;
+	dbp:name "John" ;
+	dbp:birthDate "1942-02-02"^^xsd:date ;
+	tto:sex "male" ;
+	tto:pet ttr:TomCat, ttr:LunaCat .
+
+ttr:William
+	rdf:type dbo:Person ;
+	dbp:name "William";
+	dbp:birthDate "1978-07-20"^^xsd:date ;
+	tto:sex "male" ;
+	dbo:parent ttr:John ;
+	tto:pet ttr:RexDog .
+
+ttr:Eve
+	rdf:type dbo:Person ;
+	dbp:name "Eve";
+	dbp:birthDate "2006-11-03"^^xsd:date ;
+	dbo:parent ttr:William ;
+	tto:sex "female" .
+
+ttr:TomCat
+	rdf:type tto:Cat ;
+	dbp:name "Tom";
+	tto:sex "male";
+	tto:color "grey";
+	tto:weight 5.8 .
+
+ttr:LunaCat
+	rdf:type tto:Cat ;
+	dbp:name "Luna" ;
+	tto:sex "female" ;
+	tto:color "violet";
+	tto:weight 4.2 .
+
+ttr:RexDog
+	rdf:type tto:Dog ;
+	dbp:name "Rex";
+	tto:sex "male";
+	tto:color "brown" ;
+	tto:weight 8.8 .
+
+ttr:SnuffMonkey
+	rdf:type tto:Monkey ;
+	dbp:name "Snuff"^^xsd:string ;
+	tto:color "golden"^^xsd:string ;
+	tto:sex "male" ;
+	tto:weight "3.6"^^xsd:decimal .

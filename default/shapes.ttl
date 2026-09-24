@@ -15,8 +15,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix dbp: <http://dbpedia.org/property/> .
-@prefix tto: <http://example.org/tuto/ontology#> .
-@prefix ex: <http://example.org/tuto/shapes#> .
+@prefix tto: <https://purl.expasy.org/sparql-examples/training/ontology#> .
+@prefix ex: <https://purl.expasy.org/sparql-examples/training/shapes#> .
 
 # Every tto:Creature (person or animal) has a sex, matching the tto:sex
 # property's rdfs:domain tto:Creature. Not targeted directly -- PersonShape

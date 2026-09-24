@@ -34,6 +34,8 @@ Properties are attached to their domain with `rdfs:domain` &mdash; it's also goo
 
 Every query on this page runs against the dataset below &mdash; the same ontology and data shown in the diagrams above, combined into one file. It's editable: change it, then re-run (or re-open the graph view for) any query further down the page. A couple of the exercises below will specifically ask you to do that.
 
+The `tto:`/`ttr:` terms used here have real, dereferenceable identifiers under `https://purl.expasy.org/sparql-examples/training/` &mdash; fetch `.../ontology` or `.../resource` with an `Accept: text/turtle` header (or just open [`default/ontology.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/ontology.ttl) / [`default/resource.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/resource.ttl) in this repository) to get the same two files as plain Turtle, split the way the original [SPARQL playground](https://github.com/calipho-sib/sparql-playground) source had them.
+
 ```turtle fixture=family
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -41,8 +43,8 @@ Every query on this page runs against the dataset below &mdash; the same ontolog
 @prefix dbpedia: <http://dbpedia.org/resource/> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix dbp: <http://dbpedia.org/property/> .
-@prefix tto: <http://example.org/tuto/ontology#> .
-@prefix ttr: <http://example.org/tuto/resource#> .
+@prefix tto: <https://purl.expasy.org/sparql-examples/training/ontology#> .
+@prefix ttr: <https://purl.expasy.org/sparql-examples/training/resource#> .
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Classes
@@ -183,8 +185,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing where {
   ?thing rdf:type dbo:Person .
@@ -211,8 +213,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing where {
   ?thing tto:sex "female" .
@@ -233,8 +235,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing where {
   ?thing a dbo:Person .
@@ -274,8 +276,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing ?sex where {
   ?thing tto:sex ?sex .
@@ -302,8 +304,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?person ?pet where {
     ?person rdf:type dbo:Person .
@@ -325,8 +327,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?person ?pet where {
     ?person rdf:type dbo:Person .
@@ -349,8 +351,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?person ?pet where {
     ?person rdf:type dbo:Person .
@@ -372,8 +374,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?pet where {
 	{
@@ -410,8 +412,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?grandfather where {
 	ttr:Eve dbo:parent  *** .
@@ -443,8 +445,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?person where {
 	?person rdf:type dbo:Person .
@@ -465,8 +467,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?relative where {
   {ttr:William *** ?relative}
@@ -508,8 +510,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?subSpecies where {
   ?subSpecies rdfs:subClassOf tto:Creature .
@@ -527,8 +529,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?subSpecies where {
   ?subSpecies rdfs:subClassOf+ tto:Creature .
@@ -559,8 +561,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing ?type where {
   ?type rdfs:subClassOf+ tto:Animal .
@@ -585,8 +587,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?pet ?owner where {
   ?pet a / rdfs:subClassOf+ tto:Animal .
@@ -668,8 +670,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select * where {
   ?creature dbp:name ?name .
@@ -688,8 +690,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?thing ?weight where {
   ?thing tto:weight ?weight .
@@ -717,8 +719,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select * where {
   ?person rdf:type dbo:Person .
@@ -739,8 +741,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?sex (COUNT(?people) as ?peopleCount) where {
   ?people rdf:type dbo:Person .
@@ -762,8 +764,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 SELECT ?owner (count(?pet) as ?cnt) {
   ?owner tto:pet ?pet .
@@ -783,8 +785,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 SELECT * {
 	?thing a tto:Cat .
@@ -804,8 +806,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?species (COUNT(?pet) as ?petCount) (AVG(?weight) as ?avgWeight) where {
   ?species rdfs:subClassOf tto:Animal .
@@ -826,8 +828,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?name ?yearBorn where {
   ?person rdf:type dbo:Person .
@@ -848,8 +850,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select * where {
   ?thing dbp:name ?name .
@@ -872,8 +874,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?people ?sex ?birth ?name where {
   ?people rdf:type dbo:Person .
@@ -895,8 +897,8 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dbpedia: <http://dbpedia.org/resource/>
 PREFIX dbo: <http://dbpedia.org/ontology/>
 PREFIX dbp: <http://dbpedia.org/property/>
-PREFIX tto: <http://example.org/tuto/ontology#>
-PREFIX ttr: <http://example.org/tuto/resource#>
+PREFIX tto: <https://purl.expasy.org/sparql-examples/training/ontology#>
+PREFIX ttr: <https://purl.expasy.org/sparql-examples/training/resource#>
 
 select ?species (COUNT(?member) as ?memberCount) where {
   ?species rdfs:subClassOf tto:Animal .
@@ -917,8 +919,8 @@ A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means 
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
 @prefix dbp: <http://dbpedia.org/property/> .
-@prefix tto: <http://example.org/tuto/ontology#> .
-@prefix ex: <http://example.org/tuto/shapes#> .
+@prefix tto: <https://purl.expasy.org/sparql-examples/training/ontology#> .
+@prefix ex: <https://purl.expasy.org/sparql-examples/training/shapes#> .
 
 ex:CreatureShape
     a sh:NodeShape ;
