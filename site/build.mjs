@@ -21,6 +21,7 @@ export const PAGES = [
   { src: 'uniprot/02_protein_name.md', out: 'uniprot/02_protein_name.html', title: 'Protein names', group: 'UniProt' },
   { src: 'uniprot/03_replicon_gene.md', out: 'uniprot/03_replicon_gene.html', title: 'Replicon & genes', group: 'UniProt' },
   { src: 'uniprot/04_taxonomy.md', out: 'uniprot/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
+  { src: 'uniprot/14_chemistry.md', out: 'uniprot/14_chemistry.html', title: 'Chemistry', group: 'UniProt' },
   {
     src: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.md',
     out: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html',
@@ -40,9 +41,34 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;');
 }
 
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/<[^>]+>/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-');
+}
+
 function buildMarkdownRenderer() {
   const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
   const defaultFence = md.renderer.rules.fence;
+
+  // GitHub-style heading anchors (e.g. `## Q30: Foo` -> id="q30-foo"), so
+  // pages can deep-link into each other's sections with a plain #fragment.
+  md.core.ruler.push('heading_anchors', (state) => {
+    const seen = new Map();
+    state.tokens.forEach((token, idx) => {
+      if (token.type !== 'heading_open') return;
+      const inline = state.tokens[idx + 1];
+      const text = inline ? inline.content : '';
+      let slug = slugify(text) || 'section';
+      const count = seen.get(slug) || 0;
+      seen.set(slug, count + 1);
+      if (count > 0) slug = `${slug}-${count}`;
+      token.attrSet('id', slug);
+    });
+  });
 
   md.renderer.rules.fence = (tokens, idx, options, env, self) => {
     const token = tokens[idx];

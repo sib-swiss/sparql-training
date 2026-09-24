@@ -19,6 +19,7 @@ const FILES = [
   'uniprot/02_protein_name.md',
   'uniprot/03_replicon_gene.md',
   'uniprot/04_taxonomy.md',
+  'uniprot/14_chemistry.md',
   'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.md',
 ];
 

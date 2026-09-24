@@ -17,6 +17,7 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 3. [Protein names](uniprot/02_protein_name.html) &mdash; recommended, alternative and EC names
 4. [Replicon & genes](uniprot/03_replicon_gene.html) &mdash; gene names and the replicon (chromosome, plasmid, organelle) a gene sits on
 5. [Taxonomy](uniprot/04_taxonomy.html) &mdash; organisms, taxonomic ranks, hierarchy and host organisms
+6. [Chemistry](uniprot/14_chemistry.html) &mdash; ligands, cofactors, PTMs, catalytic activity, and a federated IDSM/Sachem chemical similarity search
 
 ## Rhea: metabolic reactions
 
