@@ -7,6 +7,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { QueryEngine } from '@comunica/query-sparql-rdfjs-lite';
 import { Parser, Store } from 'n3';
+import { parseMarkdownSegments, isAskQuery } from './lib/blocks.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -22,36 +23,9 @@ const FILES = [
 ];
 
 function extractBlocks(markdown) {
-  const lines = markdown.split('\n');
-  const blocks = [];
-  let i = 0;
-  while (i < lines.length) {
-    const m = lines[i].match(/^```(turtle|sparql)\s*(.*)$/);
-    if (m) {
-      const lang = m[1];
-      const attrs = {};
-      const re = /(\w[\w-]*)=("([^"]*)"|(\S+))/g;
-      let am;
-      while ((am = re.exec(m[2]))) {
-        attrs[am[1]] = am[3] !== undefined ? am[3] : am[4];
-      }
-      const content = [];
-      i++;
-      while (i < lines.length && lines[i] !== '```') {
-        content.push(lines[i]);
-        i++;
-      }
-      blocks.push({ lang, attrs, content: content.join('\n') });
-    }
-    i++;
-  }
-  return blocks;
-}
-
-function isAskQuery(query) {
-  const withoutComments = query.replace(/#[^\n]*/g, '');
-  const withoutPrologue = withoutComments.replace(/^\s*(PREFIX|BASE)\b[^\n]*$/gim, '');
-  return /^\s*ASK\b/i.test(withoutPrologue);
+  return parseMarkdownSegments(markdown)
+    .filter((s) => s.type === 'fence' && (s.lang === 'turtle' || s.lang === 'sparql'))
+    .map(({ lang, attrs, content }) => ({ lang, attrs, content }));
 }
 
 let totalOk = 0;

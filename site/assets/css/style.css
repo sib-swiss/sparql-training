@@ -149,6 +149,26 @@ main {
   padding: 1.5rem clamp(16px, 4vw, 2rem) 4rem;
 }
 
+.notebook-download {
+  margin: 0 0 0.5rem;
+  text-align: right;
+}
+
+.notebook-download a {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.notebook-download a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 h1, h2, h3, h4 { line-height: 1.25; }
 h1 { font-size: 1.9rem; }
 h2 { font-size: 1.4rem; margin-top: 2.2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
