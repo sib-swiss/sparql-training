@@ -905,3 +905,78 @@ select ?species (COUNT(?member) as ?memberCount) where {
 GROUP BY ?species
 HAVING (COUNT(?member) > 1)
 ```
+
+## Data shape (SHACL)
+
+A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means for this dataset &mdash; which classes exist, which properties they're expected to have, and what those properties' values should look like. It's a useful reference alongside the ontology diagrams at the top of this page, and it's exactly the kind of thing a real data provider publishes so consumers know what to expect.
+
+[`default/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn &mdash; SHACL's version of the "inheritance" those classes show in the ontology diagram.
+
+```turtle
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix tto: <http://example.org/tuto/ontology#> .
+@prefix ex: <http://example.org/tuto/shapes#> .
+
+ex:CreatureShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path tto:sex ;
+        sh:datatype xsd:string ;
+        sh:in ( "male" "female" ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:PersonShape
+    a sh:NodeShape ;
+    sh:targetClass dbo:Person ;
+    sh:node ex:CreatureShape ;
+    sh:property [
+        sh:path dbp:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dbp:birthDate ;
+        sh:datatype xsd:date ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path tto:pet ;
+        sh:class tto:Animal ;
+    ] ;
+    sh:property [
+        sh:path dbo:parent ;
+        sh:class dbo:Person ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:AnimalShape
+    a sh:NodeShape ;
+    sh:node ex:CreatureShape ;
+    sh:property [
+        sh:path dbp:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path tto:weight ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path tto:color ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:CatShape a sh:NodeShape ; sh:targetClass tto:Cat ; sh:node ex:AnimalShape .
+ex:DogShape a sh:NodeShape ; sh:targetClass tto:Dog ; sh:node ex:AnimalShape .
+ex:MonkeyShape a sh:NodeShape ; sh:targetClass tto:Monkey ; sh:node ex:AnimalShape .
+```
+
+This is shown as reference material rather than a runnable example &mdash; SHACL validation is a different kind of engine from the SPARQL queries this site runs in your browser, so there's no **Run** button here (yet &mdash; a client-side SHACL visualizer/validator is on the roadmap for this site).

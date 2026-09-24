@@ -6,4 +6,5 @@
 [] Investigate a UniProt mini tutorial arround chemistry. Ligands, Co-Factors, PTMs and Catalytic Activity. Include federated queries to IDSM/Sachem
 [] Generate a SHACL shape for the basic tutorial data. 
 [] Search for a SHACL shape client side diagram renderer and propose on a different branch each visualization
+[] Make an export to Jupyther notebooks. As that was usefull functionality
 
