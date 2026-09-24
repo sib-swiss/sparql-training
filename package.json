@@ -11,6 +11,10 @@
   },
   "devDependencies": {
     "@comunica/query-sparql-rdfjs-lite": "^5.4.1",
+    "d3-drag": "^3.0.0",
+    "d3-force": "^3.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0",
     "esbuild": "^0.24.0",
     "markdown-it": "^14.1.0",
     "n3": "^1.17.4"

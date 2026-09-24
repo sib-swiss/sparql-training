@@ -127,11 +127,15 @@ th { background: var(--code-bg); }
   color: var(--muted);
 }
 
+.sparql-editable-hint {
+  font-style: italic;
+}
+
 .sparql-fixture pre {
   margin: 0;
   border: none;
   border-top: 1px solid var(--border);
-  border-radius: 0 0 6px 6px;
+  border-radius: 0;
 }
 
 .sparql-example {
@@ -147,18 +151,36 @@ th { background: var(--code-bg); }
   border-radius: 0;
 }
 
-.sparql-example-toolbar {
+[contenteditable="true"] {
+  outline: none;
+  cursor: text;
+}
+
+[contenteditable="true"]:hover {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+[contenteditable="true"]:focus {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--bg);
+}
+
+.sparql-example-toolbar,
+.sparql-fixture-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   padding: 0.5rem 0.9rem;
   background: var(--code-bg);
   border-top: 1px solid var(--border);
 }
 
-.sparql-run {
-  background: var(--accent);
-  color: var(--accent-contrast);
+.sparql-fixture-toolbar {
+  border-radius: 0 0 6px 6px;
+}
+
+.sparql-btn {
   border: none;
   border-radius: 5px;
   padding: 0.4rem 0.9rem;
@@ -166,8 +188,20 @@ th { background: var(--code-bg); }
   cursor: pointer;
 }
 
-.sparql-run:disabled { opacity: 0.6; cursor: progress; }
-.sparql-run:hover:not(:disabled) { filter: brightness(1.08); }
+.sparql-run,
+.sparql-graph-toggle {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.sparql-btn:disabled { opacity: 0.6; cursor: progress; }
+.sparql-btn:hover:not(:disabled) { filter: brightness(1.08); }
+
+.sparql-btn-secondary {
+  background: transparent;
+  color: var(--muted);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
 
 .sparql-reference-note {
   font-size: 0.85rem;
@@ -199,6 +233,66 @@ th { background: var(--code-bg); }
   border-radius: 4px;
   margin: 0.75rem 0;
   white-space: pre-wrap;
+}
+
+.sparql-graph {
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.sparql-graph:empty {
+  border-top: none;
+}
+
+.sparql-graph-svg {
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+
+.sparql-graph-svg:active {
+  cursor: grabbing;
+}
+
+.sparql-graph-links line {
+  stroke: var(--muted);
+  stroke-opacity: 0.6;
+  stroke-width: 1.5px;
+}
+
+.sparql-graph-link-labels text {
+  fill: var(--muted);
+  font-size: 10px;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+}
+
+.sparql-graph-nodes circle {
+  stroke: var(--bg);
+  stroke-width: 1.5px;
+}
+
+.sparql-graph-nodes text {
+  fill: var(--fg);
+  font-size: 11px;
+  font-weight: 600;
+  text-anchor: middle;
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 3px;
+}
+
+.sparql-graph-nodes g {
+  cursor: grab;
+}
+
+.sparql-graph-empty {
+  color: var(--muted);
+  font-style: italic;
+  padding: 0.9rem;
+  margin: 0;
 }
 
 .reference-block {

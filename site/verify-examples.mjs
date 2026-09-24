@@ -12,6 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const FILES = [
+  'default/tutorial.md',
   'uniprot/00_introduction.md',
   'uniprot/01_basic_information.md',
   'uniprot/02_protein_name.md',
@@ -87,6 +88,10 @@ for (const file of FILES) {
       if (!store) {
         console.log(`  [query -> ${id}] NO FIXTURE`);
         totalFail++;
+        continue;
+      }
+      if (block.content.includes('***')) {
+        console.log(`  [query -> ${id}] SKIPPED (unsolved exercise with *** blanks, expected to fail as written)`);
         continue;
       }
       try {

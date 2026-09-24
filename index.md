@@ -2,7 +2,11 @@
 
 This site teaches you how to query SIB (Swiss Institute of Bioinformatics) resources &mdash; UniProt and Rhea &mdash; with SPARQL.
 
-Every example query on these pages runs **directly in your browser**, using the [Comunica](https://comunica.dev/) SPARQL engine loaded as JavaScript. Each example ships with a small, self-contained snippet of Turtle data, so you can click **Run query**, see real results immediately, and then edit the query and run it again &mdash; no account, no server, no installation.
+Every example query on these pages runs **directly in your browser**, using the [Comunica](https://comunica.dev/) SPARQL engine loaded as JavaScript. Each example ships with a small, self-contained snippet of Turtle data &mdash; both the data and the query are editable, so you can click **Run query**, see real results immediately, tweak either one, and run it again. No account, no server, no installation. Every example dataset can also be drawn out as a graph with the **Visualize as graph** button.
+
+## New to SPARQL?
+
+- [SPARQL basics](default/tutorial.html) &mdash; the classic introductory tutorial (a small people-and-pets dataset) covering triple patterns, property paths, `OPTIONAL`/`FILTER`, aggregation, and federated queries
 
 ## UniProt: SPARQL and RDF
 
