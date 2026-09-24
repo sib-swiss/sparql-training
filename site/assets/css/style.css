@@ -1,0 +1,225 @@
+:root {
+  color-scheme: light dark;
+  --fg: #1b1f23;
+  --bg: #ffffff;
+  --muted: #57606a;
+  --border: #d0d7de;
+  --code-bg: #f6f8fa;
+  --accent: #0969da;
+  --accent-contrast: #ffffff;
+  --ok-bg: #dafbe1;
+  --err-bg: #ffebe9;
+  --err-fg: #82071e;
+  max-width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #e6edf3;
+    --bg: #0d1117;
+    --muted: #8b949e;
+    --border: #30363d;
+    --code-bg: #161b22;
+    --accent: #4493f8;
+    --accent-contrast: #0d1117;
+    --ok-bg: #12261e;
+    --err-bg: #2d1214;
+    --err-fg: #ff8182;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+}
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1rem clamp(16px, 4vw, 2rem);
+}
+
+.site-header .brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--fg);
+  font-size: 1.05rem;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.92rem;
+}
+
+.site-nav a:hover, .site-nav a.active {
+  color: var(--accent);
+}
+
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem clamp(16px, 4vw, 2rem) 4rem;
+}
+
+h1, h2, h3, h4 { line-height: 1.25; }
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.4rem; margin-top: 2.2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+h3 { font-size: 1.15rem; margin-top: 1.6rem; }
+
+a { color: var(--accent); }
+
+code {
+  background: var(--code-bg);
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+
+pre code { background: none; padding: 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  overflow-x: auto;
+  display: block;
+  margin: 0.75rem 0;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+  font-size: 0.92rem;
+}
+
+th { background: var(--code-bg); }
+
+.sparql-fixture {
+  margin: 1rem 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.sparql-fixture summary {
+  cursor: pointer;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.sparql-fixture pre {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 6px 6px;
+}
+
+.sparql-example {
+  margin: 0.5rem 0 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.sparql-example .sparql-query {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
+.sparql-example-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.9rem;
+  background: var(--code-bg);
+  border-top: 1px solid var(--border);
+}
+
+.sparql-run {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sparql-run:disabled { opacity: 0.6; cursor: progress; }
+.sparql-run:hover:not(:disabled) { filter: brightness(1.08); }
+
+.sparql-reference-note {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.sparql-results {
+  padding: 0 0.9rem;
+}
+
+.sparql-results:empty { padding: 0; }
+
+.sparql-empty {
+  color: var(--muted);
+  font-style: italic;
+  padding: 0.75rem 0;
+}
+
+.sparql-ask-result {
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 0.75rem 0;
+}
+
+.sparql-error {
+  background: var(--err-bg);
+  color: var(--err-fg);
+  border: none;
+  border-radius: 4px;
+  margin: 0.75rem 0;
+  white-space: pre-wrap;
+}
+
+.reference-block {
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0 1.75rem;
+}
+
+.reference-block .reference-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 1.5rem clamp(16px, 4vw, 2rem) 3rem;
+  text-align: center;
+}
