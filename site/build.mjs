@@ -12,6 +12,7 @@ const OUT = path.join(ROOT, '_site');
 // and output location. Add new pages here.
 const PAGES = [
   { src: 'index.md', out: 'index.html', title: 'Home' },
+  { src: 'default/tutorial.md', out: 'default/tutorial.html', title: 'SPARQL basics' },
   { src: 'uniprot/00_introduction.md', out: 'uniprot/00_introduction.html', title: 'UniProt · Introduction' },
   { src: 'uniprot/01_basic_information.md', out: 'uniprot/01_basic_information.html', title: 'UniProt · Basic information' },
   { src: 'uniprot/02_protein_name.md', out: 'uniprot/02_protein_name.html', title: 'UniProt · Protein names' },
@@ -61,9 +62,14 @@ function buildMarkdownRenderer() {
 
     if (lang === 'turtle' && attrs.fixture) {
       return (
-        `<details class="sparql-fixture" data-fixture-id="${attrs.fixture}">` +
-        `<summary>Example data (Turtle)${attrs.title ? ' &ndash; ' + escapeHtml(attrs.title) : ''}</summary>` +
-        `<pre><code class="language-turtle">${code}</code></pre>` +
+        `<details class="sparql-fixture" data-fixture-id="${attrs.fixture}" open>` +
+        `<summary>Example data (Turtle)${attrs.title ? ' &ndash; ' + escapeHtml(attrs.title) : ''} <span class="sparql-editable-hint">&mdash; edit it, then re-run any query below</span></summary>` +
+        `<pre class="sparql-fixture-data" contenteditable="true" spellcheck="false"><code class="language-turtle">${code}</code></pre>` +
+        `<div class="sparql-fixture-toolbar">` +
+        `<button type="button" class="sparql-btn sparql-graph-toggle">&#9679; Visualize as graph</button>` +
+        `<button type="button" class="sparql-btn sparql-btn-secondary sparql-reset" data-reset-target="fixture">&#8630; Reset data</button>` +
+        `</div>` +
+        `<div class="sparql-graph" hidden></div>` +
         `</details>`
       );
     }
@@ -71,9 +77,10 @@ function buildMarkdownRenderer() {
     if (lang === 'sparql' && attrs.fixture) {
       return (
         `<div class="sparql-example" data-fixture-id="${attrs.fixture}">` +
-        `<pre class="sparql-query"><code class="language-sparql">${code}</code></pre>` +
+        `<pre class="sparql-query" contenteditable="true" spellcheck="false"><code class="language-sparql">${code}</code></pre>` +
         `<div class="sparql-example-toolbar">` +
-        `<button type="button" class="sparql-run">&#9654; Run query</button>` +
+        `<button type="button" class="sparql-btn sparql-run">&#9654; Run query</button>` +
+        `<button type="button" class="sparql-btn sparql-btn-secondary sparql-reset" data-reset-target="query">&#8630; Reset query</button>` +
         `</div>` +
         `<div class="sparql-results"></div>` +
         `</div>`
@@ -109,7 +116,7 @@ function renderNav(currentOut) {
   return items.join('\n');
 }
 
-function buildComunicaBundle() {
+function buildClientBundles() {
   esbuild.buildSync({
     entryPoints: [path.join(__dirname, 'src/comunica-entry.js')],
     bundle: true,
@@ -118,6 +125,17 @@ function buildComunicaBundle() {
     platform: 'browser',
     target: 'es2020',
     outfile: path.join(OUT, 'assets/js/comunica-bundle.js'),
+    logLevel: 'info',
+  });
+
+  esbuild.buildSync({
+    entryPoints: [path.join(__dirname, 'src/graph-entry.js')],
+    bundle: true,
+    minify: true,
+    format: 'iife',
+    platform: 'browser',
+    target: 'es2020',
+    outfile: path.join(OUT, 'assets/js/graph-bundle.js'),
     logLevel: 'info',
   });
 }
@@ -147,6 +165,13 @@ function buildPages(md, layout) {
     mkdirSync(path.dirname(outPath), { recursive: true });
     writeFileSync(outPath, html);
     console.log('wrote', page.out);
+
+    // Pages may ship a sibling `assets/` folder (images, etc.) referenced with a
+    // relative path from the markdown; mirror it next to the built page.
+    const srcAssets = path.join(path.dirname(srcPath), 'assets');
+    if (existsSync(srcAssets)) {
+      cpSync(srcAssets, path.join(path.dirname(outPath), 'assets'), { recursive: true });
+    }
   }
 }
 
@@ -154,7 +179,7 @@ function main() {
   if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true });
   mkdirSync(OUT, { recursive: true });
 
-  buildComunicaBundle();
+  buildClientBundles();
   copyStaticAssets();
 
   const md = buildMarkdownRenderer();

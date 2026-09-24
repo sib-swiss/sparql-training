@@ -33,7 +33,7 @@ You can also fetch a single UniProtKB entry directly in RDF/XML or Turtle format
 
 ## How these pages work
 
-Every runnable example on this site is a small Turtle snippet (a tiny, self-contained excerpt of what a real UniProt entry looks like in RDF) paired with a SPARQL query. Click **Run query** and the query runs immediately, in your browser, against that snippet &mdash; powered by [Comunica](https://comunica.dev/), a SPARQL engine written in JavaScript. Nothing is sent to a server. Try it below.
+Every runnable example on this site is a small Turtle snippet (a tiny, self-contained excerpt of what a real UniProt entry looks like in RDF) paired with a SPARQL query. Click **Run query** and the query runs immediately, in your browser, against that snippet &mdash; powered by [Comunica](https://comunica.dev/), a SPARQL engine written in JavaScript. Nothing is sent to a server. Both the data and the query are editable, so feel free to change either one and run it again. Click **Visualize as graph** on the data box to see it drawn out as a graph of resources and relationships. Try it all below.
 
 ```turtle fixture=intro-example
 base <http://purl.uniprot.org/uniprot/>
