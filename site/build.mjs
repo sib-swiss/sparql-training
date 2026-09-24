@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import esbuild from 'esbuild';
 import MarkdownIt from 'markdown-it';
+import { parseFenceAttrs } from './lib/blocks.mjs';
+import { exportNotebooks } from './export-notebooks.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -11,7 +13,7 @@ const OUT = path.join(ROOT, '_site');
 // Ordered list of pages that make up the site nav, plus their source markdown
 // and output location. Add new pages here. Pages sharing a `group` are folded
 // into one dropdown in the header nav, in the order they first appear.
-const PAGES = [
+export const PAGES = [
   { src: 'index.md', out: 'index.html', title: 'Home' },
   { src: 'default/tutorial.md', out: 'default/tutorial.html', title: 'SPARQL basics' },
   { src: 'uniprot/00_introduction.md', out: 'uniprot/00_introduction.html', title: 'Introduction', group: 'UniProt' },
@@ -29,18 +31,6 @@ const PAGES = [
 function depthPrefix(outRelPath) {
   const depth = outRelPath.split('/').length - 1;
   return depth === 0 ? '' : '../'.repeat(depth);
-}
-
-/** Parses a fence info string like: sparql fixture=basic-entry title="A title" */
-function parseFenceAttrs(info) {
-  const rest = info.trim().split(/\s+/).slice(1).join(' ');
-  const attrs = {};
-  const re = /(\w[\w-]*)=("([^"]*)"|(\S+))/g;
-  let m;
-  while ((m = re.exec(rest))) {
-    attrs[m[1]] = m[3] !== undefined ? m[3] : m[4];
-  }
-  return attrs;
 }
 
 function escapeHtml(str) {
@@ -182,7 +172,15 @@ function copyStaticAssets() {
   cpSync(path.join(__dirname, 'assets/js/sparql-runner.js'), path.join(OUT, 'assets/js/sparql-runner.js'));
 }
 
-function buildPages(md, layout) {
+function renderNotebookLink(base, notebookPath) {
+  if (!notebookPath) return '';
+  return (
+    `<p class="notebook-download"><a href="${base}${notebookPath}" download>` +
+    `&#128211; Download this page as a Jupyter notebook</a></p>`
+  );
+}
+
+function buildPages(md, layout, notebookFor) {
   for (const page of PAGES) {
     const srcPath = path.join(ROOT, page.src);
     const markdown = readFileSync(srcPath, 'utf8');
@@ -194,6 +192,7 @@ function buildPages(md, layout) {
       .replaceAll('{{TITLE}}', escapeHtml(title))
       .replaceAll('{{BASE}}', base)
       .replace('{{NAV}}', renderNav(page.out))
+      .replace('{{NOTEBOOK}}', renderNotebookLink(base, notebookFor.get(page.out)))
       .replace('{{CONTENT}}', contentHtml);
 
     const outPath = path.join(OUT, page.out);
@@ -216,10 +215,11 @@ function main() {
 
   buildClientBundles();
   copyStaticAssets();
+  const notebookFor = exportNotebooks(PAGES, ROOT, OUT);
 
   const md = buildMarkdownRenderer();
   const layout = readFileSync(path.join(__dirname, 'templates/layout.html'), 'utf8');
-  buildPages(md, layout);
+  buildPages(md, layout, notebookFor);
 
   console.log(`\nBuilt site into ${path.relative(ROOT, OUT)}/`);
 }
