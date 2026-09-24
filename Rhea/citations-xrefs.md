@@ -8,7 +8,7 @@ Unlike the [metabolism tutorial](rhea.html), almost none of this needs `SERVICE`
 
 ## Q1: Select all citations of a given reaction
 
-Adapted from [sparql-examples Rhea/40](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/40_Select_all_citations_of_a_given_reaction).
+Adapted from [sparql-examples Rhea/40](https://sib-swiss.github.io/sparql-examples/examples/Rhea/40_Select_all_citations_of_a_given_reaction).
 
 ```turtle fixture=q1-citations
 prefix rh: <http://rdf.rhea-db.org/>
@@ -40,7 +40,7 @@ WHERE {
 
 ## Q2: Count citations per reaction, most-cited first
 
-Adapted from [sparql-examples Rhea/41](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/41_Select_all_reactions_with_citations_display_the_number_of_citations_and_order_by_reaction_ID).
+Adapted from [sparql-examples Rhea/41](https://sib-swiss.github.io/sparql-examples/examples/Rhea/41_Select_all_reactions_with_citations_display_the_number_of_citations_and_order_by_reaction_ID).
 
 ```turtle fixture=q2-citation-counts
 prefix rh: <http://rdf.rhea-db.org/>
@@ -72,7 +72,7 @@ ORDER BY DESC(COUNT(DISTINCT ?citation))
 
 ## Q3: Average number of citations, among reactions that have at least one
 
-Adapted from [sparql-examples Rhea/42](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/42_Select_the_average_number_of_citation_of_reactions_that_have_at_least_one_citation).
+Adapted from [sparql-examples Rhea/42](https://sib-swiss.github.io/sparql-examples/examples/Rhea/42_Select_the_average_number_of_citation_of_reactions_that_have_at_least_one_citation).
 
 A nested `SELECT` first counts citations per reaction, then the outer query averages those counts. Reactions with zero citations never appear in the inner query, so they don't pull the average down - that's a different question, asked in Q5 below.
 
@@ -107,7 +107,7 @@ WHERE {
 
 ## Q4: Find reactions cited by a given PubMed ID
 
-Adapted from [sparql-examples Rhea/30](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/30_Select_all_approved_reactions_annotated_with_a_given_Pubmed_ID).
+Adapted from [sparql-examples Rhea/30](https://sib-swiss.github.io/sparql-examples/examples/Rhea/30_Select_all_approved_reactions_annotated_with_a_given_Pubmed_ID).
 
 `rh:citation` points at a PubMed IRI, not a plain number, so to show the PubMed ID as readable text the query strips the IRI down to its last segment with `STRAFTER`.
 
@@ -145,9 +145,9 @@ WHERE {
 
 ## Q5: Approved reactions that are missing a citation
 
-Adapted from [sparql-examples Rhea/119](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/119_Give_me_the_set_of_approved_reactions_missing_citations).
+Adapted from [sparql-examples Rhea/119](https://sib-swiss.github.io/sparql-examples/examples/Rhea/119_Give_me_the_set_of_approved_reactions_missing_citations).
 
-Not every approved reaction has a citation yet. `OPTIONAL` plus `FILTER NOT EXISTS` finds the reactions where the pattern never matches at all - the same trick used for the `chebi` cross-reference in the metabolism tutorial's H. pylori query. Swap the `SELECT ?reaction` for `SELECT (COUNT(?reaction) AS ?count)` and you get [Rhea/118](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/118_Number_of_approved_reactions_missing_citations), just a count instead of the list.
+Not every approved reaction has a citation yet. `OPTIONAL` plus `FILTER NOT EXISTS` finds the reactions where the pattern never matches at all - the same trick used for the `chebi` cross-reference in the metabolism tutorial's H. pylori query. Swap the `SELECT ?reaction` for `SELECT (COUNT(?reaction) AS ?count)` and you get [Rhea/118](https://sib-swiss.github.io/sparql-examples/examples/Rhea/118_Number_of_approved_reactions_missing_citations), just a count instead of the list.
 
 ```turtle fixture=q5-missing-citations
 prefix rh: <http://rdf.rhea-db.org/>
@@ -184,7 +184,7 @@ A cross-reference is not stored as directly as a citation. Rhea reactions come i
 
 ## Q6: Retrieve all cross-references for a given reaction
 
-Adapted from [sparql-examples Rhea/35](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/35_Select_all_cross-references_Kegg_MetaCyc_Macie_for_a_given_reaction).
+Adapted from [sparql-examples Rhea/35](https://sib-swiss.github.io/sparql-examples/examples/Rhea/35_Select_all_cross-references_Kegg_MetaCyc_Macie_for_a_given_reaction).
 
 ```turtle fixture=q6-xrefs-for-reaction
 prefix rh: <http://rdf.rhea-db.org/>
@@ -220,7 +220,7 @@ WHERE {
 
 ## Q7: Count how many reactions have at least one cross-reference
 
-Adapted from [sparql-examples Rhea/27](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/27_Select_the_number_of_reactions_that_have_Xrefs).
+Adapted from [sparql-examples Rhea/27](https://sib-swiss.github.io/sparql-examples/examples/Rhea/27_Select_the_number_of_reactions_that_have_Xrefs).
 
 ```turtle fixture=q7-xref-count
 prefix rh: <http://rdf.rhea-db.org/>
@@ -267,7 +267,7 @@ WHERE {
 
 ## Q8: Count reactions cross-referenced to KEGG specifically
 
-Adapted from [sparql-examples Rhea/36](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/36_Select_the_number_of_reactions_with_cross-references_to_KEGG_resource).
+Adapted from [sparql-examples Rhea/36](https://sib-swiss.github.io/sparql-examples/examples/Rhea/36_Select_the_number_of_reactions_with_cross-references_to_KEGG_resource).
 
 Cross-references aren't typed by predicate - a KEGG link and a MetaCyc link both arrive as a plain `rdfs:seeAlso`. To scope a query to one specific external database, match the shape of its identifier IRI instead, with a `regex` filter against the known namespace.
 
@@ -311,7 +311,7 @@ WHERE {
 
 ## Going further: resolve a KEGG reaction back to Rhea and its enzymes
 
-Adapted from [sparql-examples Rhea/137](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/137_kegg_reaction_to_rhea_ec_and_uniprot_enzymes).
+Adapted from sparql-examples Rhea/137 ("kegg reaction to rhea ec and uniprot enzymes") - not yet published on the sparql-examples site, so no link here.
 
 Cross-references also work in reverse: given a KEGG reaction accession, the same `rh:bidirectionalReaction`/`rdfs:seeAlso` link resolves it back to the matching Rhea reaction(s) and their EC numbers, and from there `SERVICE` reaches into UniProt for the enzymes that actually catalyze it in a given organism. This crosses two live endpoints, so it's reference-only here - run it directly against Rhea:
 

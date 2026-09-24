@@ -12,8 +12,12 @@ This series of pages shows you how UniProt's RDF data model works and how to que
 | [03 Replicon & genes](03_replicon_gene.html) | replicon and gene names |
 | [04 Taxonomy](04_taxonomy.html) | organism and taxonomy |
 | [05 Sequence & isoforms](05_sequence.html) | sequences, isoforms, canonical sequence, processing, fragments, mass spectrometry |
+| [06 Domains & topology](06_domains_topology.html) | protein domains, zinc fingers, coiled-coils, transmembrane regions, membrane topology |
+| [07 Natural variants](07_variants.html) | sequence variants, their position, evidence and literature references |
+| [08 Disease](08_disease.html) | disease involvement annotations, linked disease resources, cross-references to OMIM |
 | [09 Cross References](09_cross_references.html) | Cross References and links to other databases |
 | [10 Evidence & citations](10_evidence_citation.html)| Why data was added to UniProt and how much you can trust it |
+| [11 Transporters](11_transporters.html) | transporter proteins, Rhea transport annotations, lipid transport, tissue-specific expression |
 | [12 Metabolism & Rhea](12_metabolism.html) | How catalytic activity is represented and linked to Rhea |
 | [13 GO terms & keywords](13_classification.html) | [GO](https://www.geneontology.org) and UniProt keywords |
 | [14 Chemistry](14_chemistry.html) | ligands, catalytic activity, cofactors, similarity search |
