@@ -1,0 +1,99 @@
+# SHACL shapes describing the "SPARQL basics" tutorial dataset (tutorial.md,
+# fixture id `family`). Mirrors the tto:/dbo: class hierarchy used there:
+#
+#   tto:Creature
+#     dbo:Person
+#     tto:Animal
+#       tto:Cat / tto:Dog / tto:Monkey
+#
+# Validate against the real fixture with Apache Jena's shacl CLI, e.g.:
+#   shacl validate --shapes default/shapes.ttl --data <(sed -n '/```turtle fixture=family/,/```/p' default/tutorial.md | sed '1d;$d')
+
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+@prefix dbp: <http://dbpedia.org/property/> .
+@prefix tto: <http://example.org/tuto/ontology#> .
+@prefix ex: <http://example.org/tuto/shapes#> .
+
+# Every tto:Creature (person or animal) has a sex, matching the tto:sex
+# property's rdfs:domain tto:Creature. Not targeted directly -- PersonShape
+# and AnimalShape both pull this in with sh:node, the SHACL equivalent of
+# "inheriting" a shared base shape.
+ex:CreatureShape
+    a sh:NodeShape ;
+    sh:property [
+        sh:path tto:sex ;
+        sh:datatype xsd:string ;
+        sh:in ( "male" "female" ) ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:PersonShape
+    a sh:NodeShape ;
+    sh:targetClass dbo:Person ;
+    sh:node ex:CreatureShape ;
+    sh:property [
+        sh:path dbp:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path dbp:birthDate ;
+        sh:datatype xsd:date ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        # tto:pet's rdfs:range is tto:Animal
+        sh:path tto:pet ;
+        sh:class tto:Animal ;
+    ] ;
+    sh:property [
+        # dbo:parent isn't defined in tto: (it's plain DBpedia ontology),
+        # but every use of it in the tutorial data links Person to Person.
+        sh:path dbo:parent ;
+        sh:class dbo:Person ;
+        sh:maxCount 1 ;
+    ] .
+
+# Common shape for tto:Animal and its subclasses (tto:Cat/Dog/Monkey). Not
+# targeted directly: our data always types animals with the specific
+# subclass (e.g. `a tto:Cat`), never the abstract `a tto:Animal`, and SHACL's
+# sh:targetClass matches by asserted rdf:type only, with no RDFS reasoning.
+ex:AnimalShape
+    a sh:NodeShape ;
+    sh:node ex:CreatureShape ;
+    sh:property [
+        sh:path dbp:name ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        # tto:weight's rdfs:range is xsd:decimal, in kilograms
+        sh:path tto:weight ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxCount 1 ;
+    ] ;
+    sh:property [
+        sh:path tto:color ;
+        sh:datatype xsd:string ;
+        sh:maxCount 1 ;
+    ] .
+
+ex:CatShape a sh:NodeShape ;
+    sh:targetClass tto:Cat ;
+    sh:node ex:AnimalShape .
+
+ex:DogShape a sh:NodeShape ;
+    sh:targetClass tto:Dog ;
+    sh:node ex:AnimalShape .
+
+ex:MonkeyShape a sh:NodeShape ;
+    sh:targetClass tto:Monkey ;
+    sh:node ex:AnimalShape .
