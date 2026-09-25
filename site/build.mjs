@@ -23,8 +23,8 @@ export const PAGES = [
   { src: 'UniProt/04_taxonomy.md', out: 'UniProt/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
   { src: 'UniProt/14_chemistry.md', out: 'UniProt/14_chemistry.html', title: 'Chemistry', group: 'UniProt' },
   {
-    src: 'rhea/rhea.md',
-    out: 'rhea/rhea.html',
+    src: 'Rhea/Rhea.md',
+    out: 'Rhea/Rhea.html',
     title: 'Rhea · Metabolism tutorial',
   },
 ];

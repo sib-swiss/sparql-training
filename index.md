@@ -23,7 +23,7 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 
 [Rhea](https://www.rhea-db.org/) is an expert-curated resource of biochemical reactions, cross-referenced with UniProt, ChEBI, and other resources, queryable at [sparql.rhea-db.org/sparql](https://sparql.rhea-db.org/sparql).
 
-- [Metabolism tutorial (SWAT4HCLS 2019)](rhea/rhea.html) &mdash; a hands-on walk through querying metabolism data across Rhea, UniProt, ChEBI and more
+- [Metabolism tutorial (SWAT4HCLS 2019)](Rhea/rhea.html) &mdash; a hands-on walk through querying metabolism data across Rhea, UniProt, ChEBI and more
 
 ## Source
 
