@@ -73,24 +73,6 @@ WHERE {
 }
 ```
 
-```sparql reference="Real version, scoped to the UniProt named graph &mdash; run at https://sparql.uniprot.org/sparql"
-PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
-PREFIX up: <http://purl.uniprot.org/core/>
-
-SELECT ?entry ?sequence
-WHERE {
-  # We don't want to look into the UniParc graph which will
-  # confuse matters
-  GRAPH <http://sparql.uniprot.org/uniprot> {
-      # we need the UniProt entries that are human
-      ?entry a up:Protein ;
-        up:organism taxon:9606 ;
-      # and we select the computationally mapped sequences
-        up:potentialSequence ?sequence .
-  }
-}
-```
-
 ## Which sequence is canonical?
 
 A UniProt entry can have several isoforms, but `up:sequence` always points at whichever one is *canonical*. This query marks each sequence as canonical or not: a `Simple_Sequence` is likely canonical, unless it's *also* an `External_Sequence` whose IRI doesn't correspond to the entry's own accession (an external isoform mapped in from elsewhere).
