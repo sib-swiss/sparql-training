@@ -57,10 +57,15 @@ function buildMarkdownRenderer() {
 
   // GitHub-style heading anchors (e.g. `## Q30: Foo` -> id="q30-foo"), so
   // pages can deep-link into each other's sections with a plain #fragment.
+  // Also collects h2/h3 headings into `state.env.headings` (skipping the
+  // page's own h1 title) so buildPages() can render an "on this page"
+  // sidebar without a second markdown pass.
   md.core.ruler.push('heading_anchors', (state) => {
     const seen = new Map();
+    const headings = (state.env.headings = state.env.headings || []);
     state.tokens.forEach((token, idx) => {
       if (token.type !== 'heading_open') return;
+      const level = Number(token.tag.slice(1));
       const inline = state.tokens[idx + 1];
       const text = inline ? inline.content : '';
       let slug = slugify(text) || 'section';
@@ -68,6 +73,7 @@ function buildMarkdownRenderer() {
       seen.set(slug, count + 1);
       if (count > 0) slug = `${slug}-${count}`;
       token.attrSet('id', slug);
+      if (level === 2 || level === 3) headings.push({ id: slug, text, level });
     });
   });
 
@@ -215,6 +221,26 @@ function copyStaticAssets() {
   cpSync(path.join(__dirname, 'assets/js/sparql-runner.js'), path.join(OUT, 'assets/js/sparql-runner.js'));
 }
 
+// Strips the light inline markdown a heading might carry (`` `code` ``,
+// **bold**) down to plain text for the sidebar, since it's not rendered
+// through markdown-it a second time.
+function headingText(text) {
+  return escapeHtml(text.replace(/`([^`]*)`/g, '$1').replace(/\*\*([^*]*)\*\*/g, '$1'));
+}
+
+function renderPageToc(headings) {
+  if (!headings || headings.length === 0) return '';
+  const items = headings
+    .map((h) => `      <li class="page-toc-h${h.level}"><a href="#${h.id}">${headingText(h.text)}</a></li>`)
+    .join('\n');
+  return (
+    `<nav class="page-toc" aria-label="On this page">\n` +
+    `    <p class="page-toc-title">On this page</p>\n` +
+    `    <ul>\n${items}\n    </ul>\n` +
+    `  </nav>`
+  );
+}
+
 function renderNotebookLink(base, notebookPath) {
   if (!notebookPath) return '';
   return (
@@ -228,7 +254,8 @@ function buildPages(md, layout, notebookFor) {
     const srcPath = path.join(ROOT, page.src);
     const markdown = readFileSync(srcPath, 'utf8');
     const title = extractTitle(markdown, page.title);
-    const contentHtml = md.render(markdown);
+    const env = {};
+    const contentHtml = md.render(markdown, env);
     const base = depthPrefix(page.out);
 
     const html = layout
@@ -236,6 +263,7 @@ function buildPages(md, layout, notebookFor) {
       .replaceAll('{{BASE}}', base)
       .replace('{{NAV}}', renderNav(page.out))
       .replace('{{NOTEBOOK}}', renderNotebookLink(base, notebookFor.get(page.out)))
+      .replace('{{TOC}}', renderPageToc(env.headings))
       .replace('{{CONTENT}}', contentHtml);
 
     const outPath = path.join(OUT, page.out);

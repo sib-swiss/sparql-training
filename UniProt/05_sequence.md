@@ -141,6 +141,155 @@ WHERE
 LIMIT 5
 ```
 
+## Initiator methionine
+
+Translation always starts with a methionine, but that residue is often enzymatically removed afterwards. When UniProt has evidence for this, it's recorded as a `up:Initiator_Methionine_Annotation` &mdash; a single-residue [FALDO](https://link.springer.com/article/10.1186/s13326-016-0067-z) position (`faldo:begin` and `faldo:end` both point at the same spot) at the very start of the sequence. Below, human hemoglobin subunit alpha ([P69905](https://www.uniprot.org/uniprotkb/P69905)): the query looks up that position in the full (unprocessed) sequence to double-check it really is an "M".
+
+```turtle fixture=seq-initiator-met
+base <http://purl.uniprot.org/uniprot/>
+prefix up: <http://purl.uniprot.org/core/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix faldo: <http://biohackathon.org/resource/faldo#>
+prefix isoform: <http://purl.uniprot.org/isoforms/>
+
+<P69905> a up:Protein ;
+  up:sequence isoform:P69905-1 ;
+  up:annotation <P69905#InitMet> .
+
+isoform:P69905-1 rdf:value "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR" .
+
+<P69905#InitMet> a up:Initiator_Methionine_Annotation ;
+  up:range <P69905#InitMet_range> .
+
+<P69905#InitMet_range> faldo:begin <P69905#pos1> ;
+  faldo:end <P69905#pos1> .
+
+<P69905#pos1> faldo:position 1 ;
+  faldo:reference isoform:P69905-1 .
+```
+
+```sparql fixture=seq-initiator-met
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT
+  ?protein
+  ?removedResidue
+WHERE {
+  ?protein up:annotation ?met ;
+    up:sequence ?sequence .
+  ?met a up:Initiator_Methionine_Annotation ;
+    up:range/faldo:begin ?begin .
+  ?begin faldo:position ?position ;
+    faldo:reference ?sequence .
+  ?sequence rdf:value ?sequenceVal .
+  BIND(SUBSTR(?sequenceVal, ?position, 1) AS ?removedResidue)
+}
+```
+
+## Chains: the mature, processed protein
+
+Once initiator methionines, signal peptides and other processing steps are accounted for, what's left is the *mature* protein &mdash; recorded as a `up:Chain_Annotation` with a `rdfs:comment` naming it and a range covering the residues it spans. Continuing the hemoglobin example: after the initiator methionine above is removed, the mature chain covers residues 2&ndash;142 of the same 142-residue sequence.
+
+```turtle fixture=seq-chain
+base <http://purl.uniprot.org/uniprot/>
+prefix up: <http://purl.uniprot.org/core/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix faldo: <http://biohackathon.org/resource/faldo#>
+prefix isoform: <http://purl.uniprot.org/isoforms/>
+
+<P69905> a up:Protein ;
+  up:sequence isoform:P69905-1 ;
+  up:annotation <P69905#Chain1> .
+
+isoform:P69905-1 rdf:value "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR" .
+
+<P69905#Chain1> a up:Chain_Annotation ;
+  rdfs:comment "Hemoglobin subunit alpha" ;
+  up:range <P69905#Chain1_range> .
+
+<P69905#Chain1_range> faldo:begin <P69905#pos2> ;
+  faldo:end <P69905#pos142> .
+
+<P69905#pos2> faldo:position 2 ;
+  faldo:reference isoform:P69905-1 .
+
+<P69905#pos142> faldo:position 142 ;
+  faldo:reference isoform:P69905-1 .
+```
+
+```sparql fixture=seq-chain
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT
+  ?protein
+  ?description
+  ?begin
+  ?end
+WHERE {
+  ?protein up:annotation ?chain .
+  ?chain a up:Chain_Annotation ;
+    rdfs:comment ?description ;
+    up:range ?range .
+  ?range faldo:begin/faldo:position ?begin ;
+    faldo:end/faldo:position ?end .
+}
+```
+
+## Signal peptides
+
+Secreted and membrane proteins carry a `up:Signal_Peptide_Annotation` at their N-terminus &mdash; a short stretch that targets the protein for translocation and is cleaved off before the mature chain begins, so it's never part of the functional protein. Below, the amyloid precursor protein ([P05067](https://www.uniprot.org/uniprotkb/P05067)) again, this time extracting the actual signal peptide sequence (residues 1&ndash;17) with `SUBSTR`.
+
+```turtle fixture=seq-signal-peptide
+base <http://purl.uniprot.org/uniprot/>
+prefix up: <http://purl.uniprot.org/core/>
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix faldo: <http://biohackathon.org/resource/faldo#>
+prefix isoform: <http://purl.uniprot.org/isoforms/>
+
+<P05067> a up:Protein ;
+  up:sequence isoform:P05067-1 ;
+  up:annotation <P05067#Signal1> .
+
+isoform:P05067-1 rdf:value "MLPGLALLLLAAWTARALEVPTDGNAGLL" .
+
+<P05067#Signal1> a up:Signal_Peptide_Annotation ;
+  up:range <P05067#Signal1_range> .
+
+<P05067#Signal1_range> faldo:begin <P05067#pos1> ;
+  faldo:end <P05067#pos17> .
+
+<P05067#pos1> faldo:position 1 ;
+  faldo:reference isoform:P05067-1 .
+
+<P05067#pos17> faldo:position 17 ;
+  faldo:reference isoform:P05067-1 .
+```
+
+```sparql fixture=seq-signal-peptide
+PREFIX faldo: <http://biohackathon.org/resource/faldo#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX up: <http://purl.uniprot.org/core/>
+
+SELECT
+  ?protein
+  ?signalPeptide
+WHERE {
+  ?protein up:annotation ?sp ;
+    up:sequence ?sequence .
+  ?sp a up:Signal_Peptide_Annotation ;
+    up:range ?range .
+  ?range faldo:begin/faldo:position ?begin ;
+    faldo:end/faldo:position ?end .
+  ?sequence rdf:value ?sequenceVal .
+  BIND(SUBSTR(?sequenceVal, ?begin, ?end - ?begin + 1) AS ?signalPeptide)
+}
+```
+
 ## Fragmented sequences
 
 Not every sequence is complete: `up:fragment` marks a sequence as being composed of fragments.
