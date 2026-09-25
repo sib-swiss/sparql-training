@@ -12,12 +12,12 @@ Every example query on these pages runs **directly in your browser**, using the 
 
 The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a comprehensive resource for protein sequence and annotation data, available as RDF and queryable with SPARQL at [sparql.uniprot.org](https://sparql.uniprot.org/sparql).
 
-1. [Introduction](uniprot/00_introduction.html) &mdash; what UniProt RDF and SPARQL are, and how the examples on this site work
-2. [Basic information](uniprot/01_basic_information.html) &mdash; accession, entry name, status, dates and versions
-3. [Protein names](uniprot/02_protein_name.html) &mdash; recommended, alternative and EC names
-4. [Replicon & genes](uniprot/03_replicon_gene.html) &mdash; gene names and the replicon (chromosome, plasmid, organelle) a gene sits on
-5. [Taxonomy](uniprot/04_taxonomy.html) &mdash; organisms, taxonomic ranks, hierarchy and host organisms
-6. [Chemistry](uniprot/14_chemistry.html) &mdash; ligands, cofactors, PTMs, catalytic activity, and a federated IDSM/Sachem chemical similarity search
+1. [Introduction](UniProt/00_introduction.html) &mdash; what UniProt RDF and SPARQL are, and how the examples on this site work
+2. [Basic information](UniProt/01_basic_information.html) &mdash; accession, entry name, status, dates and versions
+3. [Protein names](UniProt/02_protein_name.html) &mdash; recommended, alternative and EC names
+4. [Replicon & genes](UniProt/03_replicon_gene.html) &mdash; gene names and the replicon (chromosome, plasmid, organelle) a gene sits on
+5. [Taxonomy](UniProt/04_taxonomy.html) &mdash; organisms, taxonomic ranks, hierarchy and host organisms
+6. [Chemistry](UniProt/14_chemistry.html) &mdash; ligands, cofactors, PTMs, catalytic activity, and a federated IDSM/Sachem chemical similarity search
 
 ## Rhea: metabolic reactions
 
