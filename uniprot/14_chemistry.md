@@ -246,7 +246,7 @@ The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` paramet
 
 ## Active site chemistry
 
-An active site's position is recorded with [FALDO](https://github.com/JervenBolleman/FALDO) (a small ontology for describing sequence positions/ranges), pointing at a specific position on the protein's sequence. Combined with the raw sequence string, you can check what residue is actually sitting there &mdash; here, filtering for active sites where that residue is tyrosine (Y).
+An active site's position is recorded with [FALDO](https://link.springer.com/article/10.1186/s13326-016-0067-z) (a small ontology for describing sequence positions/ranges), pointing at a specific position on the protein's sequence. Combined with the raw sequence string, you can check what residue is actually sitting there &mdash; here, filtering for active sites where that residue is tyrosine (Y).
 
 ```turtle fixture=active-site
 base <http://purl.uniprot.org/uniprot/>
