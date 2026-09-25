@@ -253,3 +253,7 @@ WHERE {
   }
 }
 ```
+
+## Rhea as a special case
+
+[Rhea](https://www.rhea-db.org) cross-references are a special case. Read more about how Rhea is used in UniProt in the [chemistry](14_chemistry.html) tutorial.
