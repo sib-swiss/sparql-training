@@ -17,13 +17,13 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 3. [Protein names](UniProt/02_protein_name.html) &mdash; recommended, alternative and EC names
 4. [Replicon & genes](UniProt/03_replicon_gene.html) &mdash; gene names and the replicon (chromosome, plasmid, organelle) a gene sits on
 5. [Taxonomy](UniProt/04_taxonomy.html) &mdash; organisms, taxonomic ranks, hierarchy and host organisms
-6. [Chemistry](UniProt/14_chemistry.html) &mdash; ligands, cofactors, PTMs, catalytic activity, and a federated IDSM/Sachem chemical similarity search
+6. [Chemistry](UniProt/14_chemistry.html) &mdash; ligands, cofactors, PTMs, catalytic activity, and a reference example of an IDSM/Sachem chemical similarity search
 
 ## Rhea: metabolic reactions
 
 [Rhea](https://www.rhea-db.org/) is an expert-curated resource of biochemical reactions, cross-referenced with UniProt, ChEBI, and other resources, queryable at [sparql.rhea-db.org/sparql](https://sparql.rhea-db.org/sparql).
 
-- [Metabolism tutorial (SWAT4HCLS 2019)](Rhea/rhea.html) &mdash; a hands-on walk through querying metabolism data across Rhea, UniProt, ChEBI and more
+- [Metabolism tutorial](Rhea/rhea.html) &mdash; a hands-on walk through querying metabolism data across Rhea, UniProt, ChEBI and more
 
 ## Source
 

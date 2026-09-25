@@ -213,7 +213,7 @@ WHERE {
 ORDER BY DESC(?ligandSimilarityScore)
 ```
 
-The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../Rhea/rhea#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites &mdash; same reasoning applies there.
+The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../Rhea/rhea.html#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites &mdash; same reasoning applies there.
 
 ## Active site chemistry
 

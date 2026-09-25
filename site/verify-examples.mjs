@@ -18,14 +18,14 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const FILES = [
-  'default/tutorial.md',
-  'uniprot/00_introduction.md',
-  'uniprot/01_basic_information.md',
-  'uniprot/02_protein_name.md',
-  'uniprot/03_replicon_gene.md',
-  'uniprot/04_taxonomy.md',
-  'uniprot/14_chemistry.md',
-  'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.md',
+  'basic/tutorial.md',
+  'UniProt/00_introduction.md',
+  'UniProt/01_basic_information.md',
+  'UniProt/02_protein_name.md',
+  'UniProt/03_replicon_gene.md',
+  'UniProt/04_taxonomy.md',
+  'UniProt/14_chemistry.md',
+  'Rhea/rhea.md',
 ];
 
 function extractBlocks(markdown) {
