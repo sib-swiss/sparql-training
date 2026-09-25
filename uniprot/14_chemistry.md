@@ -56,35 +56,6 @@ WHERE {
 }
 ```
 
-```sparql reference="Real version, restricted to the reviewed section via a named graph &mdash; run at https://sparql.uniprot.org/sparql"
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX up: <http://purl.uniprot.org/core/>
-
-SELECT
-  ?protein
-  ?rhea
-WHERE {
-  # ECO 269 is experimental evidence
-  BIND (<http://purl.obolibrary.org/obo/ECO_0000269> as ?evidence)
-  GRAPH <http://sparql.uniprot.org/uniprot> {
-    ?protein up:reviewed true ;
-      up:annotation ?a ;
-      up:attribution ?attribution  .
-
-    ?a a up:Catalytic_Activity_Annotation ;
-      up:catalyticActivity ?ca .
-    ?ca up:catalyzedReaction ?rhea .
-
-    [] rdf:subject ?a ;
-      rdf:predicate up:catalyticActivity ;
-      rdf:object ?ca ;
-      up:attribution ?attribution .
-
-    ?attribution up:evidence ?evidence .
-  }
-}
-```
-
 ## Cofactors & metal binding
 
 Binding sites are annotated with `up:ligand`, pointing at a ligand resource that is itself `rdfs:subClassOf` a ChEBI term &mdash; so you can search "binds a metal ion" by walking up the ChEBI hierarchy with a property path, rather than listing every possible metal individually. `CHEBI:25213` is the general "metal cation" class.
@@ -242,7 +213,7 @@ WHERE {
 ORDER BY DESC(?ligandSimilarityScore)
 ```
 
-The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites &mdash; same reasoning applies there.
+The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../rhea/rhea#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites &mdash; same reasoning applies there.
 
 ## Active site chemistry
 

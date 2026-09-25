@@ -1,5 +1,0 @@
-This directory contains the practical part of the **SPARQLing Rhea tutorial** presented at the 12th International [**SWAT4HCLS**](http://www.swat4ls.org/) (**S**emantic **W**eb **A**pplications and **T**ools for **H**ealth**c**are and **L**ife **S**ciences) Conference (December 9, 2019 - Edinburgh, Scotland).
-It is part of the [Tutorial: Querying SIB Swiss Institute of Bioinformatics resources with SPARQL](http://www.swat4ls.org/workshops/edinburgh2019/programme/tutorials/).
-The slides of the **SPARQLing Rhea tutorial** are available at [edu.isb-sib.ch](https://edu.isb-sib.ch/course/view.php?id=440).
-
-The tutorial itself is [rhea_tutorial_SWAT4HCLS_2019.md](./rhea_tutorial_SWAT4HCLS_2019.md) &mdash; a Markdown page where every self-contained query runs directly in your browser (see [the published site](https://sib-swiss.github.io/sparql-training/) for the interactive version). Queries that federate with a live UniProt/Rhea/Bgee/MetaNetX endpoint via `SERVICE`, or reach the IDSM/Sachem chemical substructure search, are kept as reference-only SPARQL you can paste straight into the SPARQL endpoints listed in the tutorial.

@@ -1,4 +1,4 @@
-# Rhea metabolism tutorial (SWAT4HCLS 2019)
+# Rhea metabolism tutorial
 
 A hands-on introduction to querying metabolism-related data across multiple resources with SPARQL.
 
