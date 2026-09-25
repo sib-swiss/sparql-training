@@ -77,9 +77,9 @@ WHERE {
 
 A UniProt entry can have several isoforms, but `up:sequence` always points at whichever one is *canonical*. This query marks each sequence as canonical or not: a `Simple_Sequence` is likely canonical, unless it's *also* an `External_Sequence` whose IRI doesn't correspond to the entry's own accession (an external isoform mapped in from elsewhere).
 
-Both queries below use a `FILTER` *inside* an `OPTIONAL` block that depends on a value from a `BIND` &mdash; a combination [Comunica](https://comunica.dev/) (the engine running the examples on this site) can't currently plan, even though it's valid SPARQL that real endpoints like UniProt's run fine. That's a genuine engine limitation, not a problem with the query or the data, so these two stay reference-only rather than being forced into a rewrite that might quietly change what they mean. Copy them into a full SPARQL implementation (or run them directly at [sparql.uniprot.org](https://sparql.uniprot.org/sparql)) to see them work.
+Both queries below use a `FILTER` *inside* an `OPTIONAL` block that depends on a value from a `BIND` &mdash; a combination [Comunica](https://comunica.dev/) (the engine running the examples on this site) can't plan when evaluating a query itself against a small local dataset, even though it's valid SPARQL. Sent whole to a real, conformant endpoint instead &mdash; which is exactly what happens below, since the query targets `sparql.uniprot.org` live, with no local fixture &mdash; that endpoint does its own native evaluation and there's no issue.
 
-```sparql reference="FILTER inside OPTIONAL depending on a BIND — not supported by this site's in-browser engine"
+```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
 PREFIX up: <http://purl.uniprot.org/core/>
 
@@ -108,13 +108,14 @@ WHERE {
       BIND(IF(BOUND(?isComplicated), STRENDS(STR(?entry), STRBEFORE(SUBSTR(STR(?sequence), 34),'-')),?likelyIsCanonical) AS ?isCanonical)
   }
 }
+LIMIT 5
 ```
 
 ### The canonical isoform doesn't have to end in "-1"
 
-`up:sequence` points at whichever isoform was chosen as canonical &mdash; usually `-1`, but not always. This query finds reviewed proteins where it isn't, ordered by the highest isoform number used as the canonical sequence.
+`up:sequence` points at whichever isoform was chosen as canonical &mdash; usually `-1`, but not always. This query finds reviewed proteins where it isn't, ordered by the highest isoform number used as the canonical sequence. Like the query above, this one also mixes a `FILTER` inside an `OPTIONAL` with a `BIND`, so it runs live against `sparql.uniprot.org` rather than a local fixture.
 
-```sparql reference="FILTER inside OPTIONAL depending on a BIND — not supported by this site's in-browser engine"
+```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX up: <http://purl.uniprot.org/core/>
 PREFIX uniprotkb: <http://purl.uniprot.org/uniprot/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -137,6 +138,7 @@ WHERE
     FILTER(?isExternalSequence || !BOUND(?isExternalSequence))
   BIND(xsd:int(STRAFTER(STR(?sequence), "-")) AS ?isoformCount)
 } ORDER BY DESC(?isoformCount)
+LIMIT 5
 ```
 
 ## Fragmented sequences
