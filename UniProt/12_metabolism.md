@@ -2,7 +2,7 @@
 
 UniProt cross-references the chemical reactions an enzyme catalyzes to [Rhea](https://www.rhea-db.org/), and classifies enzymes with [EC (Enzyme Commission) numbers](https://iubmb.qmul.ac.uk/enzyme/index.html). This page shows how to query that from the UniProt side &mdash; starting at a protein and reaching into Rhea and the enzyme classification hierarchy &mdash; plus how UniProt links a protein to the biological pathway(s) it's part of.
 
-For queries that start on the *Rhea* side instead (reactions, chemical participants, cross-species comparisons), see the [Rhea metabolism tutorial](../rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html).
+For queries that start on the *Rhea* side instead (reactions, chemical participants, cross-species comparisons), see the [Rhea metabolism tutorial](../Rhea/rhea.html).
 
 ## Catalytic activity, with its supporting evidence
 
@@ -56,37 +56,6 @@ WHERE {
     up:attribution ?attribution .
 
   ?attribution up:evidence ?evidence .
-}
-```
-
-On the live endpoint, UniProt's core annotation data is held in its own named graph, so the real version of this query wraps the pattern in `GRAPH <http://sparql.uniprot.org/uniprot> { ... }`:
-
-```sparql reference="Runs against the named graph on https://sparql.uniprot.org/sparql"
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX up: <http://purl.uniprot.org/core/>
-
-SELECT
-  ?protein
-  ?rhea
-WHERE {
-  # ECO 269 is experimental evidence
-  BIND (<http://purl.obolibrary.org/obo/ECO_0000269> as ?evidence)
-  GRAPH <http://sparql.uniprot.org/uniprot> {
-    ?protein up:reviewed true ;
-      up:annotation ?a ;
-      up:attribution ?attribution  .
-
-    ?a a up:Catalytic_Activity_Annotation ;
-      up:catalyticActivity ?ca .
-    ?ca up:catalyzedReaction ?rhea .
-
-    [] rdf:subject ?a ;
-      rdf:predicate up:catalyticActivity ;
-      rdf:object ?ca ;
-      up:attribution ?attribution .
-
-    ?attribution up:evidence ?evidence .
-  }
 }
 ```
 
