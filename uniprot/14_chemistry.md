@@ -1,6 +1,6 @@
 # Chemistry: ligands, cofactors, PTMs & catalytic activity
 
-UniProt annotates a lot of chemistry directly on a protein entry: the ligands and cofactors bound at specific sites (cross-referenced to [ChEBI](https://www.ebi.ac.uk/chebi/)), post-translational modifications (PTMs) like phosphorylation and glycosylation, and the catalytic activity of enzymes (linked to [Rhea](https://www.rhea-db.org/) reactions and EC numbers). For some questions, UniProt also federates out to specialized chemistry services &mdash; this page ends with a real example that reaches [IDSM/Sachem](https://idsm.elixir-czech.cz/) to do a *chemical substructure similarity search*, finding proteins that bind something structurally similar to a given molecule.
+UniProt annotates a lot of chemistry directly on a protein entry: the ligands and cofactors bound at specific sites (cross-referenced to [ChEBI](https://www.ebi.ac.uk/chebi/)), post-translational modifications (PTMs) like phosphorylation, and the catalytic activity of enzymes (linked to [Rhea](https://www.rhea-db.org/) reactions and EC numbers). For some questions, UniProt also federates out with a live SPARQL `SERVICE` call to other public endpoints &mdash; this page ends with a chemical substructure similarity search against [IDSM/Sachem](https://idsm.elixir-czech.cz/), finding proteins that bind something structurally similar to a given molecule (kept as a reference example rather than runnable, for reasons explained there).
 
 ## Catalytic activity
 
@@ -147,8 +147,6 @@ ORDER BY DESC(?entries)
 
 ## Post-translational modifications
 
-### Phosphorylation
-
 Modified residues are annotated with `up:Modified_Residue_Annotation`; which residue was modified and how is recorded as free text in `rdfs:comment` (e.g. `"Phosphoserine"`, sometimes followed by the responsible kinase, e.g. `"Phosphoserine; by PKA"`). This example buckets reviewed human proteins by which of the three phosphorylatable residues (serine, threonine, tyrosine) they have annotated.
 
 ```turtle fixture=phosphorylation
@@ -205,40 +203,11 @@ GROUP BY ?residue
 ORDER BY DESC(?proteinCount)
 ```
 
-### Glycosylation
-
-Glycan structures themselves aren't UniProt data &mdash; they live in [GlyConnect](https://glyconnect.expasy.org/). This real example federates a UniProt glycosylation site with the actual glycan structure attached there, reached via `SERVICE`, so it isn't something an in-page fixture can stand in for.
-
-```sparql reference="Federates UniProt with GlyConnect &mdash; run at https://sparql.uniprot.org/sparql"
-PREFIX faldo: <http://biohackathon.org/resource/faldo#>
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-PREFIX glycan: <http://purl.jp/bio/12/glyco/glycan#>
-PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
-PREFIX up: <http://purl.uniprot.org/core/>
-
-SELECT
-        DISTINCT
-            ?protein ?glycosite ?glycostructure ?glycoimage
-WHERE{
-  ?protein up:annotation ?annotation .
-  ?protein up:organism taxon:9606 .
-  ?annotation a up:Catalytic_Activity_Annotation .
-  ?protein up:sequence ?isoform .
-
-  SERVICE <https://glyconnect.expasy.org/sparql> {
-    ?glycosite faldo:reference ?isoform .
-    ?glycosite faldo:position ?position .
-    ?specificglycosite faldo:location ?glycosite .
-    ?glycoprotein glycan:glycosylated_at ?specificglycosite .
-    ?glycostructure glycan:glycosylates_at ?specificglycosite .
-    ?glycostructure foaf:depiction ?glycoimage .
-  }
-}
-```
-
 ## Chemical similarity search: ligands like heme
 
-This is the star example on this page: a real *federated chemical substructure/similarity search*. [IDSM/Sachem](https://idsm.elixir-czech.cz/) is a specialized cheminformatics engine that indexes ChEBI by molecular structure. Given a query molecule as a SMILES string (here, heme), it returns every ChEBI compound structurally similar to it, ranked by similarity score &mdash; and because ChEBI compounds are exactly what UniProt's `up:ligand` links point at, the result plugs directly into "which proteins bind something like this molecule?". This is genuinely not something a small in-page dataset can reproduce (there's no substructure-search engine running in your browser), so it's reference-only &mdash; paste it into the UniProt SPARQL endpoint to run it for real.
+[IDSM/Sachem](https://idsm.elixir-czech.cz/) is a specialized cheminformatics engine that indexes ChEBI by molecular structure. Given a query molecule as a SMILES string (here, heme), it returns every ChEBI compound structurally similar to it, ranked by similarity score &mdash; and because ChEBI compounds are exactly what UniProt's `up:ligand` links point at, the result plugs directly into "which proteins bind something like this molecule?".
+
+This site's [Comunica](https://comunica.dev/) engine is capable of real, live federation &mdash; standard public endpoints like `sparql.uniprot.org` and `sparql.rhea-db.org` reliably answer arbitrary SPARQL sent to them this way. IDSM/Sachem is different: it's a non-standard SPARQL *extension* (the `sachem:similaritySearch` predicate isn't a real triple, it's a trigger for a procedural structure search), and testing it repeatedly showed Comunica's query planner handles that inconsistently &mdash; sometimes it sends the real search, sometimes it gives up after a discovery request the service doesn't answer the way a normal endpoint would, non-deterministically, request to request. The service itself is fine every time (confirmed by calling it directly); the flakiness is specifically in how the generic federation engine talks to this specific non-standard one. Rather than ship a **Run query** button that silently fails at random, this one stays a reference example &mdash; paste it into the UniProt SPARQL endpoint to run it for real, every time:
 
 ```sparql reference="Chemical substructure similarity search via IDSM/Sachem &mdash; run at https://sparql.uniprot.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -273,7 +242,7 @@ WHERE {
 ORDER BY DESC(?ligandSimilarityScore)
 ```
 
-The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is &mdash; worth experimenting with on the live endpoint. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites.
+The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` parameters control how strict the "similar to" match is. `SERVICE idsm:chebi` (a shorthand for this same endpoint) also appears in the [Rhea metabolism tutorial](../rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html#q30-retrieve-the-rhea-reactions-that-involve-cholesterol-or-cholesterol-derivatives) on this site, searching Rhea reactions instead of UniProt binding sites &mdash; same reasoning applies there.
 
 ## Active site chemistry
 

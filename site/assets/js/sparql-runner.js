@@ -75,6 +75,39 @@
     return pre;
   }
 
+  // Finds distinct `SERVICE <uri>` targets in a query so they can be
+  // pre-registered as `{ type: 'sparql', value: uri }` sources. Comunica's
+  // federation support otherwise tries to auto-discover the endpoint type by
+  // fetching the bare URI first; several real endpoints (e.g. IDSM/Sachem)
+  // respond to that discovery probe with an error instead of a normal 404,
+  // which aborts the whole query before it ever sends the real one.
+  // Pre-registering the type skips that broken discovery step.
+  function extractServiceUris(query) {
+    var uris = [];
+    var seen = {};
+    var re = /SERVICE\s+(?:SILENT\s+)?<([^>]+)>/gi;
+    var m;
+    while ((m = re.exec(query))) {
+      if (!seen[m[1]]) {
+        seen[m[1]] = true;
+        uris.push(m[1]);
+      }
+    }
+    return uris;
+  }
+
+  // `lenient: true` keeps the query going even if the extra pre-registered
+  // SERVICE sources end up also being probed for the *rest* of the query
+  // (Comunica unions all `sources` by default) and that probe fails -- the
+  // SERVICE clause's own explicit results still come back either way.
+  function buildQueryContext(query, store) {
+    var sources = [store];
+    extractServiceUris(query).forEach(function (uri) {
+      sources.push({ type: 'sparql', value: uri });
+    });
+    return { sources: sources, lenient: true };
+  }
+
   function parseFixtureText(turtle) {
     var runner = window.SparqlRunner;
     var store = new runner.Store();
@@ -112,15 +145,16 @@
       var query = queryEl.textContent.trim();
       var engine = new window.SparqlRunner.QueryEngine();
       var isAsk = isAskQuery(query);
+      var context = buildQueryContext(query, store);
 
       if (isAsk) {
-        var boolResult = await engine.queryBoolean(query, { sources: [store] });
+        var boolResult = await engine.queryBoolean(query, context);
         var p = document.createElement('p');
         p.className = 'sparql-ask-result';
         p.textContent = boolResult ? 'true' : 'false';
         resultsEl.appendChild(p);
       } else {
-        var bindingsStream = await engine.queryBindings(query, { sources: [store] });
+        var bindingsStream = await engine.queryBindings(query, context);
         var bindings = await bindingsStream.toArray();
         resultsEl.appendChild(renderTable(bindings));
       }

@@ -10,7 +10,7 @@
     "serve": "npx --yes serve _site"
   },
   "devDependencies": {
-    "@comunica/query-sparql-rdfjs-lite": "^5.4.1",
+    "@comunica/query-sparql": "^5.4.1",
     "d3-drag": "^3.0.0",
     "d3-force": "^3.0.0",
     "d3-selection": "^3.0.0",
