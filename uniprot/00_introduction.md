@@ -11,6 +11,7 @@ This series of pages shows you how UniProt's RDF data model works and how to que
 | [02 Protein names](02_protein_name.html) | protein names |
 | [03 Replicon & genes](03_replicon_gene.html) | replicon and gene names |
 | [04 Taxonomy](04_taxonomy.html) | organism and taxonomy |
+| [14 Chemistry](14_chemistry.html) | ligands, catalytic activity, cofactors, similarity search |
 
 ## UniProt RDF
 

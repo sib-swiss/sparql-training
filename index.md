@@ -6,7 +6,7 @@ Every example query on these pages runs **directly in your browser**, using the 
 
 ## New to SPARQL?
 
-- [SPARQL basics](default/tutorial.html) &mdash; the classic introductory tutorial (a small people-and-pets dataset) covering triple patterns, property paths, `OPTIONAL`/`FILTER`, aggregation, and federated queries
+- [SPARQL basics](basic/tutorial.html) &mdash; the classic introductory tutorial (a small people-and-pets dataset) covering triple patterns, property paths, `OPTIONAL`/`FILTER`, aggregation, and federated queries
 
 ## UniProt: SPARQL and RDF
 

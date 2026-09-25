@@ -15,7 +15,7 @@ const OUT = path.join(ROOT, '_site');
 // into one dropdown in the header nav, in the order they first appear.
 export const PAGES = [
   { src: 'index.md', out: 'index.html', title: 'Home' },
-  { src: 'default/tutorial.md', out: 'default/tutorial.html', title: 'SPARQL basics' },
+  { src: 'basic/tutorial.md', out: 'basic/tutorial.html', title: 'SPARQL basics' },
   { src: 'uniprot/00_introduction.md', out: 'uniprot/00_introduction.html', title: 'Introduction', group: 'UniProt' },
   { src: 'uniprot/01_basic_information.md', out: 'uniprot/01_basic_information.html', title: 'Basic information', group: 'UniProt' },
   { src: 'uniprot/02_protein_name.md', out: 'uniprot/02_protein_name.html', title: 'Protein names', group: 'UniProt' },
@@ -23,8 +23,8 @@ export const PAGES = [
   { src: 'uniprot/04_taxonomy.md', out: 'uniprot/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
   { src: 'uniprot/14_chemistry.md', out: 'uniprot/14_chemistry.html', title: 'Chemistry', group: 'UniProt' },
   {
-    src: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.md',
-    out: 'rhea/SWAT4HCLS_2019/rhea_tutorial_SWAT4HCLS_2019.html',
+    src: 'rhea/rhea.md',
+    out: 'rhea/rhea.html',
     title: 'Rhea · Metabolism tutorial',
   },
 ];
