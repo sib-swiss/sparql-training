@@ -104,6 +104,22 @@ function buildMarkdownRenderer() {
       );
     }
 
+    if (lang === 'sparql' && attrs.live) {
+      return (
+        `<div class="sparql-example" data-live-endpoint="${escapeHtml(attrs.live)}">` +
+        `<p class="sparql-reference-note">This query runs live against the real public endpoint ` +
+        `<a href="${escapeHtml(attrs.live)}">${escapeHtml(attrs.live)}</a> &mdash; there's no local example data here, ` +
+        `so it makes a real network request and results (and response time) depend on that service.</p>` +
+        `<pre class="sparql-query" contenteditable="true" spellcheck="false"><code class="language-sparql">${code}</code></pre>` +
+        `<div class="sparql-example-toolbar">` +
+        `<button type="button" class="sparql-btn sparql-run">&#9654; Run query</button>` +
+        `<button type="button" class="sparql-btn sparql-btn-secondary sparql-reset" data-reset-target="query">&#8630; Reset query</button>` +
+        `</div>` +
+        `<div class="sparql-results"></div>` +
+        `</div>`
+      );
+    }
+
     if (lang === 'sparql' && attrs.reference) {
       return (
         `<div class="reference-block">` +

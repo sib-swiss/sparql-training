@@ -140,18 +140,19 @@ WHERE {
 }
 ```
 
-```sparql reference="Reference proteome replicons for human, queried live against sparql.uniprot.org"
+The query above works against any small example dataset, but "reference proteome" and "reviewed" are real UniProtKB-wide classifications a local fixture can't meaningfully stand in for &mdash; so here's the real version, restricted to human, running live against `sparql.uniprot.org`:
+
+```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX up: <http://purl.uniprot.org/core/>
 PREFIX keywords: <http://purl.uniprot.org/keywords/>
 PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
 
 SELECT DISTINCT ?proteomeData
 WHERE {
-  # reviewed entries (UniProtKB/Swiss-Prot)
-  ?protein up:reviewed true .
-  # restricted to Human taxid
-  ?uniprot up:organism taxon:9606 .
+  # reviewed entries (UniProtKB/Swiss-Prot), restricted to Human taxid,
   # reference proteome
+  ?uniprot up:reviewed true .
+  ?uniprot up:organism taxon:9606 .
   ?uniprot up:classifiedWith keywords:1185 .
   ?uniprot up:proteome ?proteomeData .
   BIND(strbefore(str(?proteomeData), "#") AS ?proteome)

@@ -4,9 +4,10 @@
 // they ship. Run with `npm run verify`.
 //
 // Uses the full query-sparql engine (see site/src/comunica-entry.js for why),
-// so examples using SERVICE make real network calls to live public endpoints
+// so examples using SERVICE, or a `sparql live="<endpoint>"` block with no
+// local fixture at all, make real network calls to live public endpoints
 // during verification -- that's intentional: it's the only way to actually
-// verify a federated example works, not just that it parses.
+// verify a federated or live example works, not just that it parses.
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -55,6 +56,18 @@ function extractServiceUris(query) {
 
 function buildQueryContext(query, store) {
   const sources = [store, ...extractServiceUris(query).map((value) => ({ type: 'sparql', value }))];
+  return { sources, lenient: true };
+}
+
+// For `sparql live="<endpoint>"` blocks: no local fixture, run directly
+// against the real endpoint (see sparql-runner.js's buildLiveQueryContext).
+function buildLiveQueryContext(query, endpoint) {
+  const sources = [
+    { type: 'sparql', value: endpoint },
+    ...extractServiceUris(query)
+      .filter((uri) => uri !== endpoint)
+      .map((value) => ({ type: 'sparql', value })),
+  ];
   return { sources, lenient: true };
 }
 
@@ -115,6 +128,27 @@ for (const file of FILES) {
         totalOk++;
       } catch (err) {
         console.log(`  [query -> ${id}] QUERY ERROR: ${err.message}`);
+        totalFail++;
+      }
+    } else if (block.lang === 'sparql' && block.attrs.live) {
+      const endpoint = block.attrs.live;
+      try {
+        const context = buildLiveQueryContext(block.content, endpoint);
+        if (isAskQuery(block.content)) {
+          const result = await engine.queryBoolean(block.content, context);
+          console.log(`  [live -> ${endpoint}] ASK OK -> ${result}`);
+        } else {
+          const stream = await engine.queryBindings(block.content, context);
+          const bindings = await stream.toArray();
+          console.log(`  [live -> ${endpoint}] SELECT OK -> ${bindings.length} row(s)`);
+          if (bindings.length === 0) {
+            console.log('    !! WARNING: zero rows');
+            totalFail++;
+          }
+        }
+        totalOk++;
+      } catch (err) {
+        console.log(`  [live -> ${endpoint}] QUERY ERROR: ${err.message}`);
         totalFail++;
       }
     } else if (block.lang === 'sparql' && block.attrs.reference) {

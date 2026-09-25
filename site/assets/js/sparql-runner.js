@@ -108,6 +108,18 @@
     return { sources: sources, lenient: true };
   }
 
+  // For `sparql live="<endpoint>"` blocks: no local fixture at all, the query
+  // runs directly against a real public endpoint (needed for examples like
+  // FROM/GRAPH clauses over named graphs that only exist on that endpoint,
+  // or whole-database questions a small fixture can't meaningfully answer).
+  function buildLiveQueryContext(query, endpoint) {
+    var sources = [{ type: 'sparql', value: endpoint }];
+    extractServiceUris(query).forEach(function (uri) {
+      if (uri !== endpoint) sources.push({ type: 'sparql', value: uri });
+    });
+    return { sources: sources, lenient: true };
+  }
+
   function parseFixtureText(turtle) {
     var runner = window.SparqlRunner;
     var store = new runner.Store();
@@ -132,20 +144,26 @@
     var queryEl = example.querySelector('.sparql-query');
     var button = example.querySelector('.sparql-run');
     var fixtureId = example.getAttribute('data-fixture-id');
+    var liveEndpoint = example.getAttribute('data-live-endpoint');
 
     resultsEl.innerHTML = '';
     resultsEl.classList.add('is-loading');
     button.disabled = true;
 
     try {
-      var store = getFixtureStore(fixtureId);
-      if (!store) {
-        throw new Error('No fixture data found for id "' + fixtureId + '"');
-      }
       var query = queryEl.textContent.trim();
       var engine = new window.SparqlRunner.QueryEngine();
       var isAsk = isAskQuery(query);
-      var context = buildQueryContext(query, store);
+      var context;
+      if (liveEndpoint) {
+        context = buildLiveQueryContext(query, liveEndpoint);
+      } else {
+        var store = getFixtureStore(fixtureId);
+        if (!store) {
+          throw new Error('No fixture data found for id "' + fixtureId + '"');
+        }
+        context = buildQueryContext(query, store);
+      }
 
       if (isAsk) {
         var boolResult = await engine.queryBoolean(query, context);

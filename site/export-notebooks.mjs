@@ -97,6 +97,19 @@ function buildCells(markdown, upPrefix, pageOut) {
       continue;
     }
 
+    if (lang === 'sparql' && attrs.live) {
+      const body =
+        `from rdflib import Graph\n` +
+        `from rdflib.plugins.stores.sparqlstore import SPARQLStore\n\n` +
+        `store = SPARQLStore("${attrs.live}")\n` +
+        `g = Graph(store=store)\n` +
+        (isAskQuery(content)
+          ? `result = g.query("""\n${pyTripleQuoted(content)}\n""")\nprint("ASK result:", result.askAnswer)`
+          : `result = g.query("""\n${pyTripleQuoted(content)}\n""")\nfor row in result:\n    print(row)`);
+      cells.push(codeCell(body));
+      continue;
+    }
+
     if (lang === 'sparql' && attrs.reference) {
       cells.push(
         markdownCell(`**Reference only — not executed here:** ${attrs.reference}\n\n\`\`\`sparql\n${content}\n\`\`\``)
@@ -140,7 +153,7 @@ export function exportNotebooks(pages, rootDir, outDir) {
   for (const page of pages) {
     const markdown = readFileSync(path.join(rootDir, page.src), 'utf8');
     const segments = parseMarkdownSegments(markdown);
-    const hasFixtures = segments.some((s) => s.type === 'fence' && s.attrs.fixture);
+    const hasFixtures = segments.some((s) => s.type === 'fence' && (s.attrs.fixture || s.attrs.live));
 
     if (!hasFixtures) {
       notebookFor.set(page.out, null);
