@@ -121,7 +121,7 @@ WHERE
 
 ## Similar proteins via UniRef clusters
 
-[UniRef](https://www.uniprot.org/help/uniref) groups UniProtKB entries into clusters of similar sequences. On the live endpoint, UniProtKB and UniRef data live in separate named graphs, so the real query restricts itself to those graphs with `FROM`. In one local example dataset there's only ever a single (default) graph, so the runnable version below just drops the `FROM` clauses &mdash; everything needed is already in the one graph.
+[UniRef](https://www.uniprot.org/help/uniref) groups UniProtKB entries into clusters of similar sequences. On the live endpoint, UniProtKB and UniRef data live in separate named graphs, so the real query restricts itself to those graphs with `FROM`. In one local example dataset there's only ever a single (default) graph, so the first runnable version below just drops the `FROM` clauses &mdash; everything needed is already in the one graph. The second version below is the real query with the `FROM` clauses, running live against `sparql.uniprot.org` itself (there's no local data to fake this one with, since it depends on two real named graphs).
 
 ```turtle fixture=uniref-similarity
 base <http://purl.uniprot.org/uniprot/>
@@ -155,7 +155,7 @@ WHERE
 ORDER BY DESC(?identity)
 ```
 
-```sparql reference="Real version with FROM clauses to run at https://sparql.uniprot.org/sparql"
+```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX uniprotkb: <http://purl.uniprot.org/uniprot/>
 PREFIX up: <http://purl.uniprot.org/core/>
 
@@ -170,14 +170,15 @@ WHERE
              up:member/up:sequenceFor ?protein;
              up:identity ?identity .
     ?member up:sequenceFor ?similar .
-    FILTER(!sameTerm(?similar, ?protein))
+    FILTER(?similar != ?protein)
 }
 ORDER BY DESC(?identity)
+LIMIT 5
 ```
 
 ## UniParc: the same sequence under different UniProtKB entries
 
-[UniParc](https://www.uniprot.org/help/uniparc) is UniProt's non-redundant archive of every protein sequence it has ever seen, independent of which database entry it came from. Given a UniParc accession, you can ask which *active* UniProtKB entries currently share that exact sequence. Just like UniRef above, the live query keeps UniParc and UniProtKB data apart with `GRAPH` blocks; locally, they're already merged into one graph, so the runnable version drops the `GRAPH` wrappers.
+[UniParc](https://www.uniprot.org/help/uniparc) is UniProt's non-redundant archive of every protein sequence it has ever seen, independent of which database entry it came from. Given a UniParc accession, you can ask which *active* UniProtKB entries currently share that exact sequence. Just like UniRef above, the live query keeps UniParc and UniProtKB data apart with `GRAPH` blocks; locally, they're already merged into one graph, so the first runnable version below drops the `GRAPH` wrappers. The second version is the real query, running live against `sparql.uniprot.org`.
 
 ```turtle fixture=uniparc-link
 base <http://purl.uniprot.org/uniprot/>
@@ -201,7 +202,7 @@ WHERE {
 }
 ```
 
-```sparql reference="Real version with GRAPH blocks to run at https://sparql.uniprot.org/sparql"
+```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX up: <http://purl.uniprot.org/core/>
 
 SELECT
@@ -220,9 +221,15 @@ WHERE {
 
 ## Federated cross-references: reaching into another SPARQL endpoint
 
-UniProtKB's own PDB cross-references are locally stored (as seen above), but you can also federate live with another endpoint's *own* cross-reference data, rather than UniProt's copy of it. This is a genuine two-endpoint federated query &mdash; not something a local example dataset can stand in for &mdash; so it's reference-only here.
+UniProtKB's own PDB cross-references are locally stored (as seen above), but you can also federate live with another endpoint's *own* cross-reference data, rather than UniProt's copy of it, using `SERVICE`. This runs for real: the `BIND` below is evaluated locally (there's no other local data needed for that part), and the `SERVICE` block sends its part of the query straight to PDBj/RDF Portal over the network, so it's a little slower than the other examples on this page &mdash; a handful of seconds is normal.
 
-```sparql reference="Federates with PDBj/RDF Portal &mdash; run at https://sparql.uniprot.org/sparql"
+```turtle fixture=pdbj-federated
+# Intentionally empty: this example needs no local data. `?protein` is bound
+# directly in the query below, and all matching happens inside the SERVICE
+# block, against PDBj/RDF Portal's own data.
+```
+
+```sparql fixture=pdbj-federated
 PREFIX up: <http://purl.uniprot.org/core/>
 PREFIX uniprotkb: <http://purl.uniprot.org/uniprot/>
 PREFIX pdbo: <http://rdf.wwpdb.org/schema/pdbx-with-vrptx-v50.owl#>
