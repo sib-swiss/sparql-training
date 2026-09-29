@@ -10,28 +10,31 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, '_site');
 
-// Ordered list of pages that make up the site nav, plus their source markdown
-// and output location. Add new pages here. Pages sharing a `group` are folded
-// into one dropdown in the header nav, in the order they first appear.
+function mdToHtml(src) {
+  return src.replace(/\.md$/, '.html');
+}
+
+// Ordered list of pages that make up the site nav, plus their source markdown.
+// Add new pages here -- just `src`, `title` and (optionally) `group`; `out` is
+// derived from `src` automatically (every page's output is that same path
+// with `.html` instead of `.md`, with no exceptions so far) unless a def sets
+// its own `out` explicitly. Pages sharing a `group` are folded into one
+// dropdown in the header nav, in the order they first appear.
 export const PAGES = [
-  { src: 'index.md', out: 'index.html', title: 'Home' },
-  { src: 'intro/tutorial.md', out: 'intro/tutorial.html', title: 'RDF & linked data', group: 'Basics' },
-  { src: 'basic/tutorial.md', out: 'basic/tutorial.html', title: 'SPARQL basics', group: 'Basics' },
-  { src: 'UniProt/00_introduction.md', out: 'UniProt/00_introduction.html', title: 'Introduction', group: 'UniProt' },
-  { src: 'UniProt/01_basic_information.md', out: 'UniProt/01_basic_information.html', title: 'Basic information', group: 'UniProt' },
-  { src: 'UniProt/02_protein_name.md', out: 'UniProt/02_protein_name.html', title: 'Protein names', group: 'UniProt' },
-  { src: 'UniProt/03_replicon_gene.md', out: 'UniProt/03_replicon_gene.html', title: 'Replicon & genes', group: 'UniProt' },
-  { src: 'UniProt/04_taxonomy.md', out: 'UniProt/04_taxonomy.html', title: 'Taxonomy', group: 'UniProt' },
-  { src: 'UniProt/05_sequence.md', out: 'UniProt/05_sequence.html', title: 'Sequence & isoforms', group: 'UniProt' },
-  { src: 'UniProt/08_disease.md', out: 'UniProt/08_disease.html', title: 'Disease', group: 'UniProt' },
-  { src: 'UniProt/09_cross_references.md', out: 'UniProt/09_cross_references.html', title: 'Cross-references', group: 'UniProt' },
-  { src: 'UniProt/14_chemistry.md', out: 'UniProt/14_chemistry.html', title: 'Chemistry', group: 'UniProt' },
-  {
-    src: 'Rhea/rhea.md',
-    out: 'Rhea/rhea.html',
-    title: 'Rhea · Metabolism tutorial',
-  },
-];
+  { src: 'index.md', title: 'Home' },
+  { src: 'intro/tutorial.md', title: 'RDF & linked data', group: 'Basics' },
+  { src: 'basic/tutorial.md', title: 'SPARQL basics', group: 'Basics' },
+  { src: 'UniProt/00_introduction.md', title: 'Introduction', group: 'UniProt' },
+  { src: 'UniProt/01_basic_information.md', title: 'Basic information', group: 'UniProt' },
+  { src: 'UniProt/02_protein_name.md', title: 'Protein names', group: 'UniProt' },
+  { src: 'UniProt/03_replicon_gene.md', title: 'Replicon & genes', group: 'UniProt' },
+  { src: 'UniProt/04_taxonomy.md', title: 'Taxonomy', group: 'UniProt' },
+  { src: 'UniProt/05_sequence.md', title: 'Sequence & isoforms', group: 'UniProt' },
+  { src: 'UniProt/08_disease.md', title: 'Disease', group: 'UniProt' },
+  { src: 'UniProt/09_cross_references.md', title: 'Cross-references', group: 'UniProt' },
+  { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
+  { src: 'Rhea/rhea.md', title: 'Rhea · Metabolism tutorial' },
+].map((def) => ({ out: mdToHtml(def.src), ...def }));
 
 function depthPrefix(outRelPath) {
   const depth = outRelPath.split('/').length - 1;
@@ -340,4 +343,10 @@ function main() {
   console.log(`\nBuilt site into ${path.relative(ROOT, OUT)}/`);
 }
 
-main();
+// Only run the build when this file is executed directly (`node
+// site/build.mjs`) -- not when another script (e.g. verify-examples.mjs)
+// imports `PAGES` from it, which must not have the side effect of building
+// the whole site.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

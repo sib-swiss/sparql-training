@@ -14,24 +14,15 @@ import { fileURLToPath } from 'node:url';
 import { QueryEngine } from '@comunica/query-sparql';
 import { Parser, Store } from 'n3';
 import { parseMarkdownSegments, isAskQuery } from './lib/blocks.mjs';
+import { PAGES } from './build.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const FILES = [
-  'intro/tutorial.md',
-  'basic/tutorial.md',
-  'UniProt/00_introduction.md',
-  'UniProt/01_basic_information.md',
-  'UniProt/02_protein_name.md',
-  'UniProt/03_replicon_gene.md',
-  'UniProt/04_taxonomy.md',
-  'UniProt/05_sequence.md',
-  'UniProt/08_disease.md',
-  'UniProt/09_cross_references.md',
-  'UniProt/14_chemistry.md',
-  'Rhea/rhea.md',
-];
+// Every page in build.mjs's PAGES list, checked here too -- one list, not two
+// kept manually in sync. A page with no turtle/sparql fences (e.g. index.md)
+// is harmless to include: extractBlocks() below just finds nothing to run.
+const FILES = PAGES.map((page) => page.src);
 
 function extractBlocks(markdown) {
   return parseMarkdownSegments(markdown)

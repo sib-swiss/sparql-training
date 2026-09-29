@@ -89,32 +89,27 @@ means for the dataset shown alongside it.
 1. Write the Markdown file wherever it belongs (existing directory, or a new
    top-level one if it's a genuinely new section &mdash; follow the
    `basic/README.md` + tutorial-file pattern if so).
-2. Register it in **`site/build.mjs`**'s `PAGES` array: `src` (the Markdown
-   path), `out` (the built HTML path), `title` (nav label), and optionally
-   `group` (pages sharing a `group` collapse into one nav dropdown, in the
-   order they first appear in `PAGES`). **`PAGES` order is nav order** &mdash;
+2. Register it in **`site/build.mjs`**'s `PAGES` array: just `src` (the
+   Markdown path), `title` (nav label), and optionally `group` (pages sharing
+   a `group` collapse into one nav dropdown, in the order they first appear
+   in `PAGES`). The built HTML path (`out`) is derived from `src`
+   automatically (swap `.md` for `.html`); only set it explicitly if a page
+   genuinely needs a different one. **`PAGES` order is nav order** &mdash;
    put a prerequisite page before the pages that assume it.
-3. If the page has any `fixture=`/`live=` blocks you want checked by
-   `npm run verify`, add its path to the `FILES` list in
-   **`site/verify-examples.mjs`**. (A page with no runnable examples, like a
-   pure-prose intro, doesn't need to be there.)
-4. That's it for the Jupyter notebook export: `site/export-notebooks.mjs`
-   runs automatically over the same `PAGES` list from `build.mjs` and needs
-   no separate registration. A page gets a downloadable notebook
-   automatically if it has at least one `fixture=` or `live=` block; a
-   page with none (e.g. plain prose, or only `reference=` blocks) silently
-   gets no notebook link, which is correct, not a bug to fix.
-5. A page can ship a sibling `assets/` folder (images etc.) referenced with a
+3. That's it &mdash; `site/verify-examples.mjs` and `site/export-notebooks.mjs`
+   both run automatically over this same `PAGES` list (via `import { PAGES }
+   from './build.mjs'`), so there's no second list to keep in sync. A page
+   with no `fixture=`/`live=` blocks (a pure-prose intro, or one with only
+   `reference=` blocks) is harmless to include in both: the verifier finds
+   nothing to run, and the notebook exporter silently gives it no notebook
+   link, which is correct, not a bug to fix.
+4. A page can ship a sibling `assets/` folder (images etc.) referenced with a
    relative path from its Markdown (see `basic/assets/`) &mdash; the build
    copies it next to the built page automatically; no registration needed.
 
-Reducing how much of this is manual (step 2 in particular) is tracked as its
-own open item in `TODO.md` &mdash; check there before assuming this list is
-final.
-
 ## Adding a new *kind* of fence block
 
-The five conventions above are all you need for an ordinary tutorial page.
+The conventions above are all you need for an ordinary tutorial page.
 If you need a genuinely new interactive block type (not just a new page using
 the existing ones), you're extending the renderer itself:
 
