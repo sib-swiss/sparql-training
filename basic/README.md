@@ -7,5 +7,5 @@ Read it on the [published site](https://sib-swiss.github.io/sparql-training/defa
 [shapes.ttl](./shapes.ttl) is a [SHACL](https://www.w3.org/TR/shacl/) shape describing that same dataset's class hierarchy and properties, validated clean against the real data with Apache Jena's `shacl` CLI:
 
 ```sh
-shacl validate --shapes default/shapes.ttl --data default/ontology.ttl --data default/resource.ttl
+shacl validate --shapes basic/shapes.ttl --data basic/ontology.ttl --data basic/resource.ttl
 ```

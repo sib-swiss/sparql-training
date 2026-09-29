@@ -39,6 +39,8 @@ WHERE {
 
 ### Extracting a primaryAccession from an IRI
 
+Adapted from [sparql-examples UniProt/102](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/102_uniprot_primary_accession.ttl).
+
 This is easy enough with some string manipulation. While UniProt primary accessions are unique within UniProtKB, they may be reused by accident or intentionally by other data sources. If you provide them as plain strings (not IRIs) in a query, you might accidentally retrieve completely wrong records &mdash; so prefer matching on the full IRI, and only extract the accession as a string for display.
 
 ```sparql fixture=entry
@@ -53,6 +55,8 @@ WHERE {
 ```
 
 ## UniProt entry name (mnemonic)
+
+Adapted from [sparql-examples UniProt/79](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/79_mnemonic_also_known_as_id.ttl).
 
 The UniProtKB/Swiss-Prot **entry name** consists of up to 11 uppercase alphanumeric characters, following the convention **X_Y**, where:
 
@@ -75,6 +79,8 @@ WHERE {
 ```
 
 ### Old mnemonics
+
+Adapted from [sparql-examples UniProt/80](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/80_obsolete_mnemonic_also_known_as_id.ttl).
 
 ```sparql fixture=entry
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -147,6 +153,8 @@ WHERE {
 ```
 
 ## Dates and versions
+
+Adapted from [sparql-examples UniProt/93](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/93_uniprot_created_modified_updated.ttl).
 
 The date an entry was integrated into UniProtKB is stored in the `created` property; the last modification date and current version of the entry are stored in the `modified` and `version` properties. The last modification date and current version of the *sequence* are stored the same way, but on the `sequence` resource. Dates use the international standard [ISO 8601 notation](http://www.w3.org/QA/Tips/iso-date).
 

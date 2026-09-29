@@ -912,7 +912,7 @@ HAVING (COUNT(?member) > 1)
 
 A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means for this dataset &mdash; which classes exist, which properties they're expected to have, and what those properties' values should look like. It's a useful reference alongside the ontology diagrams at the top of this page, and it's exactly the kind of thing a real data provider publishes so consumers know what to expect.
 
-[`default/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn &mdash; SHACL's version of the "inheritance" those classes show in the ontology diagram.
+[`basic/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/basic/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn &mdash; SHACL's version of the "inheritance" those classes show in the ontology diagram.
 
 ```turtle
 @prefix sh: <http://www.w3.org/ns/shacl#> .

@@ -46,6 +46,8 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 ### Selecting encoding genes
 
+Adapted from [sparql-examples UniProt/94](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/94_uniprot_encoding_gene.ttl).
+
 ```sparql fixture=gene
 PREFIX up: <http://purl.uniprot.org/core/>
 
@@ -57,6 +59,8 @@ WHERE {
 ```
 
 ### Selecting the recommended gene names
+
+Adapted from [sparql-examples UniProt/96](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/96_uniprot_encoding_gene_name.ttl).
 
 ```sparql fixture=gene
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -71,6 +75,8 @@ WHERE {
 ```
 
 ### Selecting alternative gene names
+
+Adapted from [sparql-examples UniProt/95](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/95_uniprot_encoding_gene_alternative_names.ttl).
 
 ```sparql fixture=gene
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -98,6 +104,8 @@ WHERE {
 ```
 
 ### Selecting ORF names
+
+Adapted from [sparql-examples UniProt/97](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/97_uniprot_encoding_gene_org_name.ttl).
 
 ```sparql fixture=gene
 PREFIX up: <http://purl.uniprot.org/core/>

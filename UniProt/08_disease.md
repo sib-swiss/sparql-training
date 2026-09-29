@@ -81,6 +81,8 @@ location:Mitochondrial_matrix
 
 ## List proteins and the diseases they're linked to
 
+Adapted from [sparql-examples UniProt/121](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/121_proteins_and_diseases_linked.ttl).
+
 The simplest disease query: proteins, their disease annotations, and the disease each annotation points to.
 
 ```sparql fixture=diseases
@@ -99,6 +101,8 @@ WHERE {
 ```
 
 ## Preferred gene name of human disease-related proteins
+
+Adapted from [sparql-examples UniProt/8](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/8_prefered_gene_name_of_human_disease_related_proteins.ttl).
 
 Combine `up:encodedBy` (see the [Replicon & genes](03_replicon_gene.html) page) with a disease annotation to get the gene name alongside the disease description text. Note that the description text (`?text`) here comes from the *annotation*'s own `rdfs:comment`, not from the disease resource.
 
@@ -123,6 +127,8 @@ WHERE
 
 ## Where are disease-related proteins located in the cell?
 
+Adapted from [sparql-examples UniProt/21](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/21_where_are_genetic_disease_related_proteins_in_a_cell.ttl).
+
 Joining a disease annotation with a subcellular location annotation on the same protein.
 
 ```sparql fixture=diseases
@@ -145,6 +151,8 @@ WHERE
 
 ## Diseases involving enzymes
 
+Adapted from [sparql-examples UniProt/62](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/62_diseases_involving_enzymes.ttl).
+
 A protein can be linked to an enzyme classification two ways: directly with `up:enzyme`, or indirectly through a catalytic activity annotation (`up:annotation/up:catalyticActivity/up:enzymeClass`). The property path alternation `|` matches either.
 
 ```sparql fixture=diseases
@@ -163,6 +171,8 @@ WHERE {
 ```
 
 ## Diseases involving enzymes located in the mitochondrion
+
+Adapted from [sparql-examples UniProt/63](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/63_diseases_involving_enzymes_located_in_mitochondrion.ttl).
 
 A more specific version of the previous query: restrict to enzymes whose subcellular location is the mitochondrion (`http://purl.uniprot.org/locations/173`) or a part of it, using the `up:partOf*` property path (zero or more `partOf` hops) and a `UNION` for the two ways of being an enzyme.
 
@@ -193,6 +203,8 @@ WHERE {
 ```
 
 ## Genetic disease-related proteins, with their OMIM cross-reference
+
+Adapted from [sparql-examples UniProt/78](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/78_genetic_disease_related_proteins.ttl).
 
 On the real endpoint, protein annotations and disease descriptions live in separate named graphs (`GRAPH <http://sparql.uniprot.org/uniprot>` and `GRAPH <http://sparql.uniprot.org/diseases>`), joined with the shared `?disease` variable. That turns out to be unnecessary, though: the query below runs fine on the live endpoint without the `GRAPH { ... }` wrapper too, so it's shown just once, the simpler way.
 

@@ -69,6 +69,8 @@ prefix skos: <http://www.w3.org/2004/02/skos/core#>
 
 ### Retrieve the rank and the scientific name of the organism
 
+Adapted from [sparql-examples UniProt/86](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/86_taxonomy_rank_and_scientific_name.ttl).
+
 The `rank` and `scientificName` are by far the most queried properties of a taxon.
 
 ```sparql fixture=taxon
@@ -83,6 +85,8 @@ WHERE {
 ```
 
 ## Taxonomy hierarchy
+
+Adapted from [sparql-examples UniProt/84](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/84_taxonomy_hierarchy.ttl).
 
 Querying the taxonomic hierarchy is straightforward with the `rdfs:subClassOf` property. In the taxon example above:
 
@@ -107,6 +111,8 @@ WHERE {
 
 ## Host organisms
 
+Adapted from [sparql-examples UniProt/85](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/85_taxonomy_host.ttl).
+
 Sometimes an organism is known to be hosted inside another one (e.g. a parasite, a symbiont, an infection). The `host` property links an organism to its host.
 
 ```turtle fixture=host
@@ -130,6 +136,8 @@ WHERE {
 ## Try it yourself: whole-database questions
 
 The following question needs to be answered against the full UniProtKB dataset (counting reviewed entries across every domain of life), so it isn't something a small in-page fixture can meaningfully demonstrate. It's also, we found by actually testing it, too expensive to offer as a live "Run query" button here: joining every reviewed entry's organism against `rdfs:subClassOf` for all four taxonomic domains is a genuinely heavy query over the full dataset, and it timed out (30s+) both through this site's engine and with a raw request straight to the endpoint itself &mdash; a real performance limit of the query at this scale, not a client-side or federation issue. Try running it yourself, patiently, against the live endpoint at [sparql.uniprot.org](https://sparql.uniprot.org/sparql).
+
+Adapted from [sparql-examples UniProt/87](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/87_taxonomy_with_at_least_one_swissprot.ttl).
 
 ```sparql reference="How many organisms have at least one reviewed (Swiss-Prot) entry, per taxonomic domain?"
 PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
