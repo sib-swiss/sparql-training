@@ -13,4 +13,4 @@
 [] See if we can reduce the need to explicitly add files to build.mjs
 [x] Update BioSoda bgee example to use www.bgee.org/sparql
 [] Notes about comunica not working for a certain example should be styled explicitly as a comunica limitation using color and a comunica logo.
-[] The D3.js visualization does not show literal and prefixes. We should fix that.
+[x] The D3.js visualization does not show literal and prefixes. We should fix that.

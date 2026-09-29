@@ -480,6 +480,24 @@ th { background: var(--code-bg); }
   cursor: grab;
 }
 
+.sparql-graph-node-literal {
+  rect {
+    fill: var(--code-bg);
+    stroke: var(--muted);
+    stroke-width: 1.5px;
+  }
+
+  text {
+    fill: var(--fg);
+    font-size: 11px;
+    font-weight: 400;
+    font-style: italic;
+    text-anchor: middle;
+    paint-order: stroke;
+    stroke: none;
+  }
+}
+
 .sparql-graph-empty {
   color: var(--muted);
   font-style: italic;

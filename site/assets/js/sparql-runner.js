@@ -128,6 +128,25 @@
     return store;
   }
 
+  // Re-parses the same turtle just for its `prefix`/`@prefix` declarations, so
+  // the graph view can render terms as `prefix:local` instead of always
+  // stripping down to a bare local name. N3's Parser.parse() still runs (and
+  // returns) synchronously when only the prefix callback is given, so this is
+  // a second, cheap pass over the same (small) fixture text, not a real cost.
+  function extractPrefixes(turtle) {
+    var prefixes = {};
+    try {
+      var runner = window.SparqlRunner;
+      var parser = new runner.Parser({ baseIRI: 'https://sparql-training.example/' });
+      parser.parse(turtle, undefined, function (prefix, iri) {
+        prefixes[prefix] = iri.value;
+      });
+    } catch (e) {
+      // ignore; parseFixtureText() surfaces parse errors to the user already
+    }
+    return prefixes;
+  }
+
   function getFixtureStore(fixtureId) {
     var fixture = document.querySelector('.sparql-fixture[data-fixture-id="' + cssEscape(fixtureId) + '"]');
     if (!fixture) return null;
@@ -186,7 +205,26 @@
 
   // --- graph visualization -------------------------------------------------
 
-  function shortLabel(iri) {
+  // Shortens an IRI for display. With a `prefixes` map (as extracted by
+  // extractPrefixes()), tries a `prefix:local` form first -- matching the
+  // longest declared namespace so e.g. both `up:` and a more specific
+  // sub-namespace resolve to the more precise one -- and only falls back to
+  // a bare local name (the old behavior) when nothing declared matches.
+  function shortLabel(iri, prefixes) {
+    if (prefixes) {
+      var bestPrefix = null;
+      var bestNs = '';
+      Object.keys(prefixes).forEach(function (p) {
+        var ns = prefixes[p];
+        if (ns && ns.length > bestNs.length && iri.indexOf(ns) === 0 && iri.length > ns.length) {
+          bestPrefix = p;
+          bestNs = ns;
+        }
+      });
+      if (bestPrefix !== null) {
+        return bestPrefix + ':' + iri.slice(bestNs.length);
+      }
+    }
     var value = iri.replace(/[#/]+$/, '');
     var idx = Math.max(value.lastIndexOf('#'), value.lastIndexOf('/'));
     var local = idx >= 0 ? value.slice(idx + 1) : value;
@@ -198,25 +236,50 @@
     return local || iri;
   }
 
-  function buildGraphData(store) {
+  // Renders a literal term as a short, quoted label, e.g. `"male"` or
+  // `"1942-02-02"^^xsd:date` or `"Home"@en` -- so a graph reader can tell it's
+  // a plain value (not another linked resource) and still see its datatype
+  // or language tag.
+  function literalLabel(term, prefixes) {
+    var text = term.value;
+    if (text.length > 28) text = text.slice(0, 25) + '…';
+    var suffix = '';
+    if (term.language) {
+      suffix = '@' + term.language;
+    } else if (term.datatype && term.datatype.value && term.datatype.value !== 'http://www.w3.org/2001/XMLSchema#string') {
+      suffix = '^^' + shortLabel(term.datatype.value, prefixes);
+    }
+    return '"' + text + '"' + suffix;
+  }
+
+  function buildGraphData(store, prefixes) {
     var nodesMap = new Map();
     var links = [];
+    var literalCount = 0;
 
-    function ensureNode(id) {
+    function ensureNode(id, kind, label, tooltip) {
       if (!nodesMap.has(id)) {
-        nodesMap.set(id, { id: id, label: shortLabel(id), degree: 0 });
+        nodesMap.set(id, { id: id, label: label, tooltip: tooltip, degree: 0, kind: kind });
       }
       return nodesMap.get(id);
     }
 
     store.forEach(
       function (quad) {
-        if (quad.object.termType === 'Literal') return;
-        var s = ensureNode(quad.subject.value);
-        var o = ensureNode(quad.object.value);
+        var s = ensureNode(quad.subject.value, 'resource', shortLabel(quad.subject.value, prefixes), quad.subject.value);
+        var o;
+        if (quad.object.termType === 'Literal') {
+          // Each literal gets its own node (never shared across triples,
+          // even with an identical value) -- two people both having the
+          // literal "male" doesn't mean they're the same node.
+          var label = literalLabel(quad.object, prefixes);
+          o = ensureNode('literal:' + literalCount++ + ':' + quad.subject.value, 'literal', label, label);
+        } else {
+          o = ensureNode(quad.object.value, 'resource', shortLabel(quad.object.value, prefixes), quad.object.value);
+        }
         s.degree++;
         o.degree++;
-        links.push({ source: quad.subject.value, target: quad.object.value, label: shortLabel(quad.predicate.value) });
+        links.push({ source: s.id, target: o.id, label: shortLabel(quad.predicate.value, prefixes) });
       },
       null,
       null,
@@ -228,6 +291,7 @@
   }
 
   function nodeRadius(d) {
+    if (d.kind === 'literal') return 7;
     return 9 + Math.min(14, Math.sqrt(d.degree) * 4);
   }
 
@@ -257,7 +321,7 @@
     container.appendChild(p);
   }
 
-  function renderGraph(container, store) {
+  function renderGraph(container, store, prefixes) {
     var G = window.SparqlGraph;
     container.innerHTML = '';
 
@@ -266,12 +330,9 @@
       return;
     }
 
-    var data = buildGraphData(store);
+    var data = buildGraphData(store, prefixes);
     if (data.links.length === 0) {
-      renderGraphError(
-        container,
-        'No relationships between resources to draw here \u2014 every property in this example has a literal value (a string, number, date...), not a link to another resource.'
-      );
+      renderGraphError(container, 'No triples in this example to draw yet.');
       return;
     }
 
@@ -351,26 +412,31 @@
       .selectAll('g')
       .data(data.nodes)
       .join('g')
+      .attr('class', function (d) {
+        return 'sparql-graph-node-' + d.kind;
+      })
       .call(dragBehavior(G, simulation));
 
-    node
-      .append('circle')
-      .attr('r', nodeRadius)
-      .attr('fill', function (d, i) {
-        return PALETTE[i % PALETTE.length];
-      });
-
-    node
-      .append('text')
-      .attr('dy', function (d) {
-        return -(nodeRadius(d) + 6);
-      })
-      .text(function (d) {
-        return d.label;
-      });
+    node.each(function (d, i) {
+      var g = G.select(this);
+      if (d.kind === 'literal') {
+        var w = Math.max(34, d.label.length * 6.2 + 12);
+        var h = 22;
+        g.append('rect').attr('x', -w / 2).attr('y', -h / 2).attr('width', w).attr('height', h).attr('rx', 5);
+        g.append('text').attr('dy', 4).text(d.label);
+      } else {
+        var r = nodeRadius(d);
+        g.append('circle')
+          .attr('r', r)
+          .attr('fill', PALETTE[i % PALETTE.length]);
+        g.append('text')
+          .attr('dy', -(r + 6))
+          .text(d.label);
+      }
+    });
 
     node.append('title').text(function (d) {
-      return d.id;
+      return d.tooltip || d.id;
     });
 
     simulation.on('tick', function () {
@@ -406,8 +472,10 @@
     var container = fixture.querySelector('.sparql-graph');
     if (!container || container.hasAttribute('hidden')) return;
     try {
-      var store = parseFixtureText(fixture.querySelector('.sparql-fixture-data').textContent);
-      renderGraph(container, store);
+      var turtle = fixture.querySelector('.sparql-fixture-data').textContent;
+      var store = parseFixtureText(turtle);
+      var prefixes = extractPrefixes(turtle);
+      renderGraph(container, store, prefixes);
     } catch (err) {
       renderGraphError(container, 'Could not parse this data: ' + (err && err.message ? err.message : String(err)));
     }
