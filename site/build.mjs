@@ -35,7 +35,8 @@ export const PAGES = [
   { src: 'UniProt/08_disease.md', title: 'Disease', group: 'UniProt' },
   { src: 'UniProt/09_cross_references.md', title: 'Cross-references', group: 'UniProt' },
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
-  { src: 'Rhea/rhea.md', title: 'Rhea · Metabolism tutorial' },
+  { src: 'Rhea/rhea.md', title: 'Metabolism', group: 'Rhea' },
+  { src: 'Rhea/citations-xrefs.md', title: 'Citations & cross-references', group: 'Rhea' },
   { src: 'tools/tools.md', title: 'Tools & ecosystem' },
   { src: 'tips-and-tricks/tutorial.md', title: 'Tips and tricks: publishing your own RDF' },
 ].map((def) => ({ out: mdToHtml(def.src), ...def }));

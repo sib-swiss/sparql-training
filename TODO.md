@@ -26,6 +26,6 @@
 [x] Make one more page with tools and ecosytems.
    * Use wikidata to create this life and show the SPARQL query required to do so.
    * Note that if a tool is missing that they can add it to wikidata themselves
-[] Make a new Rhea tutorial about how citations in Rhea and cross-references to other databases.
+[x] Make a new Rhea tutorial about how citations in Rhea and cross-references to other databases.
   * then make a single dropdown for Rhea metabolism and Rhea citations+xrefs
 
