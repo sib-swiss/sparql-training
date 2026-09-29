@@ -1,8 +1,9 @@
 # SPARQL training
 
-This site teaches you how to query SIB (Swiss Institute of Bioinformatics) resources - UniProt and Rhea - with SPARQL.
+This site teaches you how to query SIB (Swiss Institute of Bioinformatics) resources with SPARQL.
+It also looks at RDF and some tools you can use, so it could be used as general introduction to RDF & SPARQL, however these pages will have a life science orientation.
 
-Every example query on these pages runs **directly in your browser**, using the [Comunica](https://comunica.dev/) SPARQL engine loaded as JavaScript. Each example ships with a small, self-contained snippet of Turtle data - both the data and the query are editable, so you can click **Run query**, see real results immediately, tweak either one, and run it again. No account, no server, no installation. Every example dataset can also be drawn out as a graph with the **Visualize as graph** button.
+Every example query on these pages runs **directly in your browser**, using the [Comunica](https://comunica.dev/) SPARQL engine loaded as JavaScript. Each example ships with a small, self-contained snippet of Turtle data - both the data and the query are editable, so you can click **Run query**, see real results immediately, tweak either one, and run it again. No account, no server, no installation. Every example dataset can also be drawn out as a graph with the **Visualize as graph** button. You can't break anything on our servers so feel free to experiment here to your ❤️ delight.
 
 ## New to SPARQL?
 
