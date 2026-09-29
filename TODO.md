@@ -23,6 +23,6 @@
    * If possible color the nodes from the page, wikidata and orcid differently
 [x] Make a page about schema.org and (bio)schema.org
 [x] Create a tip and tricks page for creating your own RDF resource in the life sciences
-[] Make one more page with tools and ecosytems.
+[x] Make one more page with tools and ecosytems.
    * Use wikidata to create this life and show the SPARQL query required to do so.
    * Note that if a tool is missing that they can add it to wikidata themselves
