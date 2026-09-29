@@ -23,9 +23,9 @@ function mdToHtml(src) {
 export const PAGES = [
   { src: 'index.md', title: 'Home' },
   { src: 'intro/tutorial.md', title: 'RDF & linked data', group: 'Basics' },
+  { src: 'basic/tutorial.md', title: 'SPARQL querying data', group: 'Basics' },
   { src: 'intro/formats.md', title: 'RDF file formats', group: 'Basics' },
-  { src: 'basic/tutorial.md', title: 'SPARQL basics', group: 'Basics' },
-  { src: 'schema-org/tutorial.md', title: 'schema.org & Bioschemas' },
+  { src: 'intro/schema_org.md', title: 'schema.org & Bioschemas', Group: 'Basics' },
   { src: 'UniProt/00_introduction.md', title: 'Introduction', group: 'UniProt' },
   { src: 'UniProt/01_basic_information.md', title: 'Basic information', group: 'UniProt' },
   { src: 'UniProt/02_protein_name.md', title: 'Protein names', group: 'UniProt' },
@@ -37,8 +37,8 @@ export const PAGES = [
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
   { src: 'Rhea/rhea.md', title: 'Metabolism', group: 'Rhea' },
   { src: 'Rhea/citations-xrefs.md', title: 'Citations & cross-references', group: 'Rhea' },
-  { src: 'tools/tools.md', title: 'Tools & ecosystem' },
-  { src: 'tips-and-tricks/tutorial.md', title: 'Tips and tricks: publishing your own RDF' },
+  { src: 'tools/tools.md', title: 'Tools & ecosystem', group: 'Basics' },
+  { src: 'intro/tips-and-tricks.md', title: 'Tips and tricks: publishing your own RDF', group: 'Basics' },
 ].map((def) => ({ out: mdToHtml(def.src), ...def }));
 
 function depthPrefix(outRelPath) {
