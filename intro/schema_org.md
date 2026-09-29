@@ -30,10 +30,10 @@ The [UniProt introduction](../UniProt/00_introduction.html) page builds a small 
 {
   "@context": "https://schema.org/",
   "@type": "Dataset",
-  "@id": "https://www.uniprot.org/uniprotkb/P0A877",
+  "@id": "http://purl.uniprot.org/uniprot/P0A877",
   "name": "TRPE_ECOLI - Anthranilate synthase component 1",
   "description": "UniProtKB entry for Anthranilate synthase component 1 from Escherichia coli (strain K12).",
-  "url": "https://www.uniprot.org/uniprotkb/P0A877",
+  "url": "http://purl.uniprot.org/uniprot/P0A877",
   "identifier": {
     "@type": "PropertyValue",
     "propertyID": "UniProtKB",
@@ -42,7 +42,7 @@ The [UniProt introduction](../UniProt/00_introduction.html) page builds a small 
   "creator": {
     "@type": "Organization",
     "name": "UniProt Consortium",
-    "url": "https://www.uniprot.org/"
+    "url": "https://www.uniprot.org/help/about"
   },
   "license": "https://creativecommons.org/licenses/by/4.0/"
 }
@@ -61,7 +61,7 @@ Written out as the plain RDF triples that JSON-LD block actually means, it looks
 
 ```turtle fixture=schemaorg title="The same UniProt entry, as schema.org triples"
 prefix schema: <https://schema.org/>
-prefix uniprot: <https://www.uniprot.org/uniprotkb/>
+prefix uniprot: <http://purl.uniprot.org/uniprot/>
 
 uniprot:P0A877 a schema:Dataset ;
   schema:name "TRPE_ECOLI - Anthranilate synthase component 1" ;
@@ -92,6 +92,8 @@ SELECT ?dataset ?name ?creatorName WHERE {
 ```
 
 A Bioschemas profile for `Dataset` would go a step further than plain schema.org and say, precisely, which of these properties a conformant record must, should, or may carry, so that every resource publishing a `Dataset` record fills in the same handful of fields. Some Bioschemas profiles also add a `dct:conformsTo` property (from Dublin Core, another widely reused vocabulary) pointing at the profile's own URL, as a machine-readable way of saying "this record follows that specification" - worth knowing the pattern exists, without needing to memorize every profile's exact fields here.
+
+Note: we use the same purl.uniprot.org identifiers in our schema.org markup. Because we want to describe the entity and not the webpage.
 
 ## Checking or adding markup on your own site
 
