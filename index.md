@@ -31,6 +31,10 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 
 - [Metabolism tutorial](Rhea/rhea.html) - a hands-on walk through querying metabolism data across Rhea, UniProt, ChEBI and more
 
+## Tools & ecosystem
+
+- [Tools & ecosystem](tools/tools.html) - a live-generated list of SPARQL/RDF/semantic-web tools, queried straight from Wikidata
+
 ## Publishing your own data
 
 - [Tips and tricks: publishing your own RDF](tips-and-tricks/tutorial.html) - a practical checklist for turning your own life science dataset into RDF: identifiers, reusing vocabulary, content negotiation, SHACL shapes and common pitfalls

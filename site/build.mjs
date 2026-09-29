@@ -36,6 +36,7 @@ export const PAGES = [
   { src: 'UniProt/09_cross_references.md', title: 'Cross-references', group: 'UniProt' },
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
   { src: 'Rhea/rhea.md', title: 'Rhea · Metabolism tutorial' },
+  { src: 'tools/tools.md', title: 'Tools & ecosystem' },
   { src: 'tips-and-tricks/tutorial.md', title: 'Tips and tricks: publishing your own RDF' },
 ].map((def) => ({ out: mdToHtml(def.src), ...def }));
 
