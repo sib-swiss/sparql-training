@@ -141,11 +141,11 @@ You've probably already produced or consumed RDF-like structured data without ca
 - PDF files, spreadsheets and office documents carry metadata (author, creation date, revision history) in a similarly structured, subject&ndash;predicate&ndash;object way.
 - Flight and hotel bookings in your email, and the ontologies and controlled vocabularies used throughout bioinformatics, all encode the same basic pattern.
 
-None of this is exotic. It's a big part of what the FAIR data principles mean by "Findable" and "Interoperable" (**F1**, **I1**): stable identifiers, in a common, machine-readable structure.
+None of this is exotic. It's a big part of what the FAIR data principles mean by ["Findable"](https://www.gofair.foundation/f1), ["Accessible"](https://www.gofair.foundation/a1) and ["Interoperable"](https://www.gofair.foundation/i1) (**F1**, **I1**): stable identifiers, in a common, machine-readable knowledge representation, retrievable by their identifier over a standardized communications protocol.
 
 ## Who actually publishes this in bioinformatics?
 
-RDF and SPARQL aren't an academic exercise here: a long list of ELIXIR and SIB resources already publish their data this way and answer SPARQL queries live, including [UniProt](https://sparql.uniprot.org/sparql), [Rhea](https://sparql.rhea-db.org/sparql), ChEBI, [Bgee](https://www.bgee.org/sparql), ChEMBL, SwissLipids, OrthoDB, HAMAP, Cellosaurus, BRENDA and IDSM/Sachem (used for chemical similarity search), among others.
+RDF and SPARQL aren't an academic exercise here: a long list of ELIXIR and [SIB resources](https://www.expasy.org/search/sparql) already publish their data this way and answer SPARQL queries live, including [UniProt](https://sparql.uniprot.org/sparql), [Rhea](https://sparql.rhea-db.org/sparql), ChEBI, [Bgee](https://www.bgee.org/sparql), ChEMBL, [SwissLipids](https://beta.sparql.swisslipids.org), [OrthoDB](https://https://sparql.orthodb.org/), [HAMAP](https://expasy.org/hamap/sparql), [Cellosaurus](https://api.cellosaurus.org/sparql-editor), [BRENDA](https://sparql.dsmz.de/brenda/) and [IDSM/Sachem](https://idsm.elixir-czech.cz/sparql) (used for chemical similarity search), among others.
 
 ## What's next
 
