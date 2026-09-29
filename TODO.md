@@ -14,4 +14,5 @@
 [x] Update BioSoda bgee example to use www.bgee.org/sparql
 [x] Notes about comunica not working for a certain example should be styled explicitly as a comunica limitation using color and a comunica logo.
 [x] The D3.js visualization does not show literal and prefixes. We should fix that.
-[] There should be a basic drop down with RDF & Linked Data and SPARQL for questions
+[x] There should be a basic drop down with RDF & Linked Data and SPARQL for questions
+[] Add a watch command to npm run that builds and serves the site and watches for changes in the repository
