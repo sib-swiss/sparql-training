@@ -2,15 +2,13 @@
 
 Before you write a single SPARQL query, it helps to know what you're actually querying. This page is the missing first step before the [SPARQL basics](../basic/tutorial.html) tutorial - it doesn't teach any query syntax at all, just what RDF is, what a "triple" is, and why bioinformatics resources like UniProt and Rhea publish their data this way in the first place. If you already know what a triple is, skip straight to [SPARQL basics](../basic/tutorial.html).
 
-The example below is adapted from a real talk given to the ELIXIR track at ECCB, *"Bottom up interoperability using semantics in ELIXIR resources"* - the plain Markdown source and the original slides are both in the [source repository](https://github.com/sib-swiss/sparql-training).
+The example below is adapted from a talk given to the ELIXIR track at ECCB, *"Bottom up interoperability using semantics in ELIXIR resources"*
 
 ## Why bother with a common format at all?
 
-Every bioinformatics resource historically invented its own thing: its own file format, its own parser, its own database schema, its own loading pipeline - just to make its own data queryable by its own users. UniProt has one such pipeline, Bgee has another, and if you're building a new resource, you're expected to build a third. Each of those "parse, parse, parse" steps costs real engineering time and money, and at the end of it you have a database that only speaks its own private schema.
+Every bioinformatics resource historically invented its own thing: its own file format, its own parser, its own database schema, its own loading pipeline - just to make its own data queryable by users. To get UniProt data one had to build such a pipeline, for Bgee another, and if you're building a new resource, you're expected to build a third, for your own. Each of those "parse, parse, parse" steps costs real engineering time and money, and at the end of it you have a database that only speaks its own private schema.
 
-It's the same problem as electrical plugs: mains sockets look different in every country, so travelling with a laptop charger means carrying a bag of country-specific adaptors, or worse, forcing a plug that doesn't quite fit. Every resource-specific database schema is a differently-shaped socket, and every custom parser is an adaptor built to fit exactly one of them.
-
-RDF (the Resource Description Framework) is the boring, deliberate fix for this: instead of everyone inventing their own schema, everyone represents their data as the same kind of thing - a graph made of very small, simple statements, described below. Once two resources are both RDF, you can query them *together*, live, over the network, with SPARQL's `SERVICE` keyword (the [Rhea metabolism tutorial](../Rhea/rhea.html) has real examples of this) - without ever copying either resource's data into some new central warehouse. That's the payoff: one generic format, plus federated SPARQL, instead of yet another bespoke integration project for every pair of resources that want to talk to each other.
+RDF (the Resource Description Framework) is the boring, simple fix for this: instead of everyone inventing their own schema, everyone represents their data as the same kind of thing - a graph made of very small, simple statements, described below. Once two resources are both RDF, you can query them *together*, live, over the network, with SPARQL's `SERVICE` keyword (the [Rhea metabolism tutorial](../Rhea/rhea.html) has real examples of this) - without ever copying either resource's data into some new central warehouse. That's the payoff: one generic format, plus federated SPARQL, instead of yet another bespoke integration project for every pair of resources that want to talk to each other.
 
 ## The smallest possible RDF statement: a triple
 
@@ -39,6 +37,8 @@ Put together, with a period to end the statement (exactly the way a sentence end
 ```
 
 Read literally: *the thing identified by that ORCID* stands in *the relationship identified by that Wikidata item* to *the thing identified by that ROR ID*. In other words: "I ❤️ ELIXIR" - except every single part of it is a real, resolvable identifier, minted by three completely independent registries (a researcher-ID registry, a general-knowledge database, and an organisation registry) that don't know about each other and didn't have to agree on anything in advance.
+
+As a note RDF that looks like this is RDF in the ntriples format.
 
 ## Prefixes: the same triple, easier to read and write
 
@@ -88,9 +88,7 @@ jerven: wd:Q316 ELIXIR: .
 
 That's a real, parseable Turtle triple, and it says exactly the same thing as every version above - `jerven:` and `ELIXIR:` are what Turtle calls a *prefixed name with an empty local part*: a colon with nothing after it is valid on its own, and it expands to precisely the IRI the prefix was bound to, no local part needed. It reads almost like English: `jerven: wd:Q316 ELIXIR:` - "Jerven loves ELIXIR".
 
-The original slide goes one step further and binds a ❤️ emoji itself as the prefix name for `wd:Q316`, to spell it `jerven: ❤️: ELIXIR:`. That part is presentation license, not something you can paste into a real Turtle parser: prefix names are restricted to letters, digits and a few punctuation marks from a specific list, and an emoji isn't one of them - a parser rejects `@prefix ❤️: ...` outright. The `jerven:`/`ELIXIR:` trick above is genuinely valid Turtle; the heart is just a picture of the idea.
-
-Either way, treat this as a party trick, not the normal pattern: everywhere else on this site (and in almost everything you'll read elsewhere), a prefix is bound once to a shared namespace stem - like `wd:` above - and then reused across many different terms (`wd:Q316`, `wd:Q42`, `wd:Q5`, ...), not declared fresh for every single term the way `jerven:` and `ELIXIR:` are here.
+Either way, treat this as a trick, not the normal pattern: everywhere else on this site (and in almost everything you'll read elsewhere), a prefix is bound once to a shared namespace stem - like `wd:` above - and then reused across many different terms (`wd:Q316`, `wd:Q42`, `wd:Q5`, ...), not declared fresh for every single term the way `jerven:` and `ELIXIR:` are here. However, in some datasets this can turn a soup of identifiers into a very readable set of knowledge.
 
 ## There's more: semantics via rules (optional, just a taste)
 
