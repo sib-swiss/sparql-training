@@ -325,7 +325,15 @@
         }
         s.degree++;
         o.degree++;
-        links.push({ source: s.id, target: o.id, label: shortLabel(quad.predicate.value, group.prefixes) });
+        // `linkGroup` (not `source`/`target` -- d3-force owns those names,
+        // mutating them from a node id string into a node object reference
+        // once the simulation starts) records which fetch group this edge
+        // itself came from, so renderGraphData() can color it the same way
+        // it colors that group's nodes. Without this, a merged graph's
+        // original edge (e.g. this page's "I love ELIXIR" triple) becomes
+        // visually indistinguishable from a newly-fetched node's own edges
+        // once enough of them fan out from the same shared node.
+        links.push({ source: s.id, target: o.id, label: shortLabel(quad.predicate.value, group.prefixes), linkGroup: group.source });
       });
     });
 
@@ -443,6 +451,9 @@
       .selectAll('line')
       .data(data.links)
       .join('line')
+      .attr('class', function (d) {
+        return d.linkGroup && d.linkGroup !== 'local' ? 'sparql-graph-link-source-' + d.linkGroup : null;
+      })
       .attr('marker-end', 'url(#sparql-graph-arrow)');
 
     var linkLabel = zoomLayer
@@ -451,6 +462,9 @@
       .selectAll('text')
       .data(data.links)
       .join('text')
+      .attr('class', function (d) {
+        return d.linkGroup && d.linkGroup !== 'local' ? 'sparql-graph-link-source-' + d.linkGroup : null;
+      })
       .text(function (d) {
         return d.label;
       });

@@ -458,6 +458,16 @@ th { background: var(--code-bg); }
   stroke: var(--muted);
   stroke-opacity: 0.6;
   stroke-width: 1.5px;
+
+  &.sparql-graph-link-source-wikidata {
+    stroke: var(--wikidata-fg);
+    stroke-opacity: 0.8;
+  }
+
+  &.sparql-graph-link-source-orcid {
+    stroke: var(--orcid-fg);
+    stroke-opacity: 0.8;
+  }
 }
 
 .sparql-graph-link-labels text {
@@ -467,6 +477,14 @@ th { background: var(--code-bg); }
   paint-order: stroke;
   stroke: var(--bg);
   stroke-width: 3px;
+
+  &.sparql-graph-link-source-wikidata {
+    fill: var(--wikidata-fg);
+  }
+
+  &.sparql-graph-link-source-orcid {
+    fill: var(--orcid-fg);
+  }
 }
 
 .sparql-graph-nodes circle {
