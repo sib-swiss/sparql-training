@@ -4,9 +4,9 @@ This repository contains training material for querying SIB (Swiss Institute of 
 
 **Read it here: <https://sib-swiss.github.io/sparql-training/>**
 
-Every worked example on the site runs directly in your browser, powered by the [Comunica](https://comunica.dev/) SPARQL engine &mdash; no server, no installation, no account.
+Every worked example on the site runs directly in your browser, powered by the [Comunica](https://comunica.dev/) SPARQL engine - no server, no installation, no account.
 
-- [SPARQL basics](basic/) &mdash; the classic introductory tutorial (people & pets)
+- [SPARQL basics](basic/) - the classic introductory tutorial (people & pets)
 - [UniProt: SPARQL and RDF tutorials](UniProt/)
 - [Rhea: metabolism tutorial](Rhea/)
 
