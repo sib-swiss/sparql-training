@@ -19,6 +19,7 @@ npm install
 npm run verify   # runs every example query through Comunica and checks it returns results
 npm run build    # builds the site into _site/
 npm run serve    # serves _site/ locally
+npm run watch    # builds, serves, and rebuilds automatically whenever a source file changes
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the Markdown/fence-block conventions and where to register a new page.

@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node site/build.mjs",
     "verify": "node site/verify-examples.mjs",
-    "serve": "npx --yes serve _site"
+    "serve": "npx --yes serve _site",
+    "watch": "node site/watch.mjs"
   },
   "devDependencies": {
     "@comunica/query-sparql": "^5.4.1",
