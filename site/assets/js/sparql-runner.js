@@ -413,6 +413,343 @@
     }
   }
 
+  // --- SHACL shape diagram ---------------------------------------------------
+  //
+  // Reuses the same n3 (parsing) + d3-force (layout) infrastructure as the
+  // triple graph above, but with a SHACL-aware model instead of a plain
+  // triple graph: nodes are shapes / target classes / datatypes, and edges
+  // are sh:node ("extends") and sh:property (with the path + cardinality as
+  // the edge label) -- the shape-graph equivalent of a UML class diagram.
+
+  var SH_NS = 'http://www.w3.org/ns/shacl#';
+  var RDF_TYPE = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+
+  function cardinalityLabel(attrs) {
+    if (attrs.minCount === undefined && attrs.maxCount === undefined) return '';
+    var lo = attrs.minCount !== undefined ? attrs.minCount : '0';
+    var hi = attrs.maxCount !== undefined ? attrs.maxCount : '*';
+    return ' [' + lo + '..' + hi + ']';
+  }
+
+  function constraintSuffix(attrs) {
+    var bits = [];
+    if (attrs.hasIn) bits.push('enum');
+    if (attrs.minInclusive !== undefined) bits.push('≥' + attrs.minInclusive);
+    if (attrs.pattern !== undefined) bits.push('pattern');
+    return bits.length ? ' (' + bits.join(', ') + ')' : '';
+  }
+
+  // Walks the store once, sorting every quad into the handful of SHACL
+  // predicates this diagram understands. Property shapes are usually blank
+  // nodes, so they're tracked by whatever term id n3 assigned them.
+  function buildShaclGraphData(store) {
+    var shapeIds = new Set();
+    var targetClassOf = new Map();
+    var nodeRefsOf = new Map(); // shapeId -> [baseShapeId, ...]  (sh:node)
+    var propertyRefsOf = new Map(); // shapeId -> [propShapeId, ...]  (sh:property)
+    var propAttrs = new Map(); // propShapeId -> {path, datatype, class, minCount, maxCount, hasIn, minInclusive, pattern}
+
+    function ensurePropAttrs(id) {
+      if (!propAttrs.has(id)) propAttrs.set(id, {});
+      return propAttrs.get(id);
+    }
+
+    store.forEach(
+      function (quad) {
+        var s = quad.subject.value;
+        var p = quad.predicate.value;
+        var o = quad.object;
+
+        if (p === RDF_TYPE && o.value === SH_NS + 'NodeShape') {
+          shapeIds.add(s);
+        } else if (p === SH_NS + 'targetClass') {
+          targetClassOf.set(s, o.value);
+        } else if (p === SH_NS + 'node') {
+          if (!nodeRefsOf.has(s)) nodeRefsOf.set(s, []);
+          nodeRefsOf.get(s).push(o.value);
+        } else if (p === SH_NS + 'property') {
+          if (!propertyRefsOf.has(s)) propertyRefsOf.set(s, []);
+          propertyRefsOf.get(s).push(o.value);
+        } else if (p === SH_NS + 'path') {
+          ensurePropAttrs(s).path = o.value;
+        } else if (p === SH_NS + 'datatype') {
+          ensurePropAttrs(s).datatype = o.value;
+        } else if (p === SH_NS + 'class') {
+          ensurePropAttrs(s).class = o.value;
+        } else if (p === SH_NS + 'minCount') {
+          ensurePropAttrs(s).minCount = o.value;
+        } else if (p === SH_NS + 'maxCount') {
+          ensurePropAttrs(s).maxCount = o.value;
+        } else if (p === SH_NS + 'minInclusive') {
+          ensurePropAttrs(s).minInclusive = o.value;
+        } else if (p === SH_NS + 'pattern') {
+          ensurePropAttrs(s).pattern = o.value;
+        } else if (p === SH_NS + 'in') {
+          ensurePropAttrs(s).hasIn = true;
+        }
+      },
+      null,
+      null,
+      null,
+      null
+    );
+
+    var nodesMap = new Map();
+    var links = [];
+
+    function ensureNode(id, kind, label) {
+      if (!nodesMap.has(id)) nodesMap.set(id, { id: id, kind: kind, label: label });
+      return nodesMap.get(id);
+    }
+
+    shapeIds.forEach(function (shapeId) {
+      var label = shortLabel(shapeId);
+      var targetClass = targetClassOf.get(shapeId);
+      if (targetClass) label += '\n→ ' + shortLabel(targetClass);
+      ensureNode(shapeId, 'shape', label);
+    });
+
+    nodeRefsOf.forEach(function (bases, shapeId) {
+      ensureNode(shapeId, 'shape', shortLabel(shapeId));
+      bases.forEach(function (baseId) {
+        ensureNode(baseId, 'shape', shortLabel(baseId));
+        links.push({ source: shapeId, target: baseId, label: 'sh:node', kind: 'extends' });
+      });
+    });
+
+    propertyRefsOf.forEach(function (propIds, shapeId) {
+      ensureNode(shapeId, 'shape', shortLabel(shapeId));
+      propIds.forEach(function (propId) {
+        var attrs = propAttrs.get(propId);
+        if (!attrs || !attrs.path) return;
+        var pathLabel = shortLabel(attrs.path) + cardinalityLabel(attrs) + constraintSuffix(attrs);
+        if (attrs.class) {
+          ensureNode(attrs.class, 'class', shortLabel(attrs.class));
+          links.push({ source: shapeId, target: attrs.class, label: pathLabel, kind: 'property' });
+        } else if (attrs.datatype) {
+          var dtId = 'datatype:' + attrs.datatype;
+          ensureNode(dtId, 'datatype', shortLabel(attrs.datatype));
+          links.push({ source: shapeId, target: dtId, label: pathLabel, kind: 'property' });
+        }
+      });
+    });
+
+    return { nodes: Array.from(nodesMap.values()), links: links };
+  }
+
+  function shaclLabelLines(label) {
+    return label.split('\n');
+  }
+
+  // Shape nodes are drawn as a rounded rect sized to fit their (possibly
+  // two-line) label, UML-class-box style; class/datatype nodes stay simple
+  // circles like the triple graph's nodes.
+  function shaclNodeMetrics(d) {
+    var lines = shaclLabelLines(d.label);
+    var maxLen = lines.reduce(function (m, l) {
+      return Math.max(m, l.length);
+    }, 0);
+    return { w: Math.max(76, maxLen * 6.6 + 24), h: 22 + lines.length * 16 };
+  }
+
+  function shaclNodeRadius(d) {
+    return d.kind === 'class' ? 20 : 15;
+  }
+
+  function shaclCollideRadius(d) {
+    if (d.kind === 'shape') {
+      var m = shaclNodeMetrics(d);
+      return Math.max(m.w, m.h) / 2 + 16;
+    }
+    return shaclNodeRadius(d) + 18;
+  }
+
+  function renderShaclGraph(container, store) {
+    var G = window.SparqlGraph;
+    container.innerHTML = '';
+
+    if (!G) {
+      renderGraphError(container, 'Graph visualization failed to load.');
+      return;
+    }
+
+    var data = buildShaclGraphData(store);
+    if (data.nodes.length === 0) {
+      renderGraphError(container, 'No sh:NodeShape / sh:property constraints found to draw here.');
+      return;
+    }
+
+    var width = container.clientWidth || 640;
+    var height = 460;
+
+    var svg = G.select(container)
+      .append('svg')
+      .attr('viewBox', [0, 0, width, height])
+      .attr('width', '100%')
+      .attr('height', height)
+      .attr('class', 'sparql-graph-svg sparql-shacl-graph-svg');
+
+    svg
+      .append('defs')
+      .append('marker')
+      .attr('id', 'sparql-shacl-arrow')
+      .attr('viewBox', '0 -5 10 10')
+      .attr('refX', 22)
+      .attr('refY', 0)
+      .attr('markerWidth', 6)
+      .attr('markerHeight', 6)
+      .attr('orient', 'auto')
+      .append('path')
+      .attr('d', 'M0,-5L10,0L0,5')
+      .attr('class', 'sparql-graph-arrowhead');
+
+    var zoomLayer = svg.append('g');
+
+    svg.call(
+      G.zoom()
+        .scaleExtent([0.3, 4])
+        .on('zoom', function (event) {
+          zoomLayer.attr('transform', event.transform);
+        })
+    );
+
+    var simulation = G.forceSimulation(data.nodes)
+      .force(
+        'link',
+        G.forceLink(data.links)
+          .id(function (d) {
+            return d.id;
+          })
+          .distance(130)
+      )
+      .force('charge', G.forceManyBody().strength(-420))
+      .force('center', G.forceCenter(width / 2, height / 2))
+      .force('collide', G.forceCollide().radius(shaclCollideRadius));
+
+    var link = zoomLayer
+      .append('g')
+      .attr('class', 'sparql-graph-links')
+      .selectAll('line')
+      .data(data.links)
+      .join('line')
+      .attr('class', function (d) {
+        return d.kind === 'extends' ? 'sparql-shacl-edge-extends' : 'sparql-shacl-edge-property';
+      })
+      .attr('marker-end', 'url(#sparql-shacl-arrow)');
+
+    var linkLabel = zoomLayer
+      .append('g')
+      .attr('class', 'sparql-graph-link-labels')
+      .selectAll('text')
+      .data(data.links)
+      .join('text')
+      .text(function (d) {
+        return d.label;
+      });
+
+    var node = zoomLayer
+      .append('g')
+      .attr('class', 'sparql-graph-nodes sparql-shacl-graph-nodes')
+      .selectAll('g')
+      .data(data.nodes)
+      .join('g')
+      .attr('class', function (d) {
+        return 'sparql-shacl-node sparql-shacl-node-' + d.kind;
+      })
+      .call(dragBehavior(G, simulation));
+
+    node.each(function (d) {
+      var g = G.select(this);
+      if (d.kind === 'shape') {
+        var m = shaclNodeMetrics(d);
+        g.append('rect')
+          .attr('x', -m.w / 2)
+          .attr('y', -m.h / 2)
+          .attr('width', m.w)
+          .attr('height', m.h)
+          .attr('rx', 8);
+        var lines = shaclLabelLines(d.label);
+        var text = g.append('text').attr('text-anchor', 'middle');
+        lines.forEach(function (line, i) {
+          text
+            .append('tspan')
+            .attr('x', 0)
+            .attr('dy', i === 0 ? -((lines.length - 1) * 7) : 14)
+            .text(line);
+        });
+      } else {
+        g.append('circle').attr('r', shaclNodeRadius(d));
+        g.append('text')
+          .attr('dy', -(shaclNodeRadius(d) + 6))
+          .attr('text-anchor', 'middle')
+          .text(d.label);
+      }
+      g.append('title').text(d.id);
+    });
+
+    simulation.on('tick', function () {
+      link
+        .attr('x1', function (d) {
+          return d.source.x;
+        })
+        .attr('y1', function (d) {
+          return d.source.y;
+        })
+        .attr('x2', function (d) {
+          return d.target.x;
+        })
+        .attr('y2', function (d) {
+          return d.target.y;
+        });
+
+      linkLabel
+        .attr('x', function (d) {
+          return (d.source.x + d.target.x) / 2;
+        })
+        .attr('y', function (d) {
+          return (d.source.y + d.target.y) / 2;
+        });
+
+      node.attr('transform', function (d) {
+        return 'translate(' + d.x + ',' + d.y + ')';
+      });
+    });
+  }
+
+  function refreshShaclGraphIfOpen(fixture) {
+    var container = fixture.querySelector('.sparql-shacl-graph');
+    if (!container || container.hasAttribute('hidden')) return;
+    try {
+      var store = parseFixtureText(fixture.querySelector('.sparql-fixture-data').textContent);
+      renderShaclGraph(container, store);
+    } catch (err) {
+      renderGraphError(container, 'Could not parse this data: ' + (err && err.message ? err.message : String(err)));
+    }
+  }
+
+  function initShaclFixtures() {
+    document.querySelectorAll('.sparql-shacl-fixture').forEach(function (fixture) {
+      var toggle = fixture.querySelector('.sparql-shacl-graph-toggle');
+      var container = fixture.querySelector('.sparql-shacl-graph');
+      if (!toggle || !container) return;
+
+      toggle.addEventListener('click', function (event) {
+        event.preventDefault();
+        var isHidden = container.hasAttribute('hidden');
+        if (isHidden) {
+          fixture.setAttribute('open', '');
+          container.removeAttribute('hidden');
+          toggle.innerHTML = '&#9679; Hide shape diagram';
+          refreshShaclGraphIfOpen(fixture);
+        } else {
+          container.setAttribute('hidden', '');
+          container.innerHTML = '';
+          toggle.innerHTML = '&#9679; Visualize shape diagram';
+        }
+      });
+    });
+  }
+
   // --- wiring ---------------------------------------------------------------
 
   function initFixtures() {
@@ -528,6 +865,7 @@
     }
     initFixtures();
     initExamples();
+    initShaclFixtures();
   }
 
   if (document.readyState === 'loading') {

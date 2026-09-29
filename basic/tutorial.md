@@ -914,7 +914,7 @@ A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means 
 
 [`basic/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/basic/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn &mdash; SHACL's version of the "inheritance" those classes show in the ontology diagram.
 
-```turtle
+```turtle shapes=basic-shapes title="basic/shapes.ttl"
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dbo: <http://dbpedia.org/ontology/> .
@@ -981,4 +981,4 @@ ex:DogShape a sh:NodeShape ; sh:targetClass tto:Dog ; sh:node ex:AnimalShape .
 ex:MonkeyShape a sh:NodeShape ; sh:targetClass tto:Monkey ; sh:node ex:AnimalShape .
 ```
 
-This is shown as reference material rather than a runnable example &mdash; SHACL validation is a different kind of engine from the SPARQL queries this site runs in your browser, so there's no **Run** button here (yet &mdash; a client-side SHACL visualizer/validator is on the roadmap for this site).
+This is shown as reference material rather than a runnable example &mdash; SHACL validation is a different kind of engine from the SPARQL queries this site runs in your browser, so there's no **Run** button here. Click **Visualize shape diagram** above, though: it draws the shapes graph itself (shapes, target classes, datatypes, and how `sh:node`/`sh:property` connect them), reusing the same in-browser graph renderer as the "Visualize as graph" button on the data fixtures further up this page. A full client-side SHACL *validator* is still on the roadmap.

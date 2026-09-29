@@ -5,7 +5,7 @@
 [x] For each section on a UniProt entry page. Start in a different branch a mini tutorial using queries that are already written in ~/git/sparql-examples/examples/UniProt
 [x] Investigate a UniProt mini tutorial arround chemistry. Ligands, Co-Factors, PTMs and Catalytic Activity. Include federated queries to IDSM/Sachem
 [x] Generate a SHACL shape for the basic tutorial data. 
-[] Search for a SHACL shape client side diagram renderer and propose on a different branch each visualization
+[x] Search for a SHACL shape client side diagram renderer and propose on a different branch each visualization
 [x] Make an export to Jupyther notebooks. As that was usefull functionality
 [] Add a basic RDF and linked data tutorial
    * Build on the "I Love X" example in the downloaded presentation given to Elixir at ECCB 4_Tuesday_1145_Bolleman.pdf

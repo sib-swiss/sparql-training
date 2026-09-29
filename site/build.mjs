@@ -100,6 +100,19 @@ function buildMarkdownRenderer() {
       );
     }
 
+    if (lang === 'turtle' && attrs.shapes) {
+      return (
+        `<details class="sparql-fixture sparql-shacl-fixture" data-shapes-id="${attrs.shapes}" open>` +
+        `<summary>SHACL shapes (Turtle)${attrs.title ? ' &ndash; ' + escapeHtml(attrs.title) : ''}</summary>` +
+        `<pre class="sparql-fixture-data"><code class="language-turtle">${code}</code></pre>` +
+        `<div class="sparql-fixture-toolbar">` +
+        `<button type="button" class="sparql-btn sparql-shacl-graph-toggle">&#9679; Visualize shape diagram</button>` +
+        `</div>` +
+        `<div class="sparql-shacl-graph" hidden></div>` +
+        `</details>`
+      );
+    }
+
     if (lang === 'sparql' && attrs.fixture) {
       return (
         `<div class="sparql-example" data-fixture-id="${attrs.fixture}">` +
