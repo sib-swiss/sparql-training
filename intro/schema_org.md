@@ -93,7 +93,9 @@ SELECT ?dataset ?name ?creatorName WHERE {
 
 A Bioschemas profile for `Dataset` would go a step further than plain schema.org and say, precisely, which of these properties a conformant record must, should, or may carry, so that every resource publishing a `Dataset` record fills in the same handful of fields. Some Bioschemas profiles also add a `dct:conformsTo` property (from Dublin Core, another widely reused vocabulary) pointing at the profile's own URL, as a machine-readable way of saying "this record follows that specification" - worth knowing the pattern exists, without needing to memorize every profile's exact fields here.
 
-Note: we use the same purl.uniprot.org identifiers in our schema.org markup. Because we want to describe the entity and not the webpage.
+```note
+We use the same purl.uniprot.org identifiers in our schema.org markup. Because we want to describe the entity and not the webpage.
+```
 
 ## Checking or adding markup on your own site
 

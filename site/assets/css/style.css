@@ -19,6 +19,7 @@
   --comunica-bg: #fdeceb;
   --wikidata-fg: #0b7285;
   --orcid-fg: #5a7d1a;
+  --note-bg: #ddf4ff;
   max-width: 100%;
 }
 
@@ -38,6 +39,7 @@
     --comunica-bg: #2d1214;
     --wikidata-fg: #39c5cf;
     --orcid-fg: #a6ce39;
+    --note-bg: #122b42;
     --syn-keyword: #ff7b72;
     --syn-string: #a5d6ff;
     --syn-function: #d2a8ff;
@@ -690,6 +692,45 @@ th { background: var(--code-bg); }
   .comunica-note-label {
     margin: 0 0 0.35rem;
     color: var(--comunica-fg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
+/* The one consistent way this site marks up a short side-remark -- a "Note",
+   "One honest caveat", "Worth remembering", whatever a page's prose used to
+   call it ad hoc -- so every aside looks the same everywhere instead of each
+   page inventing its own unstyled lead-in phrase. Reuses --accent rather
+   than a dedicated color pair: a plain informational note doesn't need its
+   own hue the way a branded Comunica-limitation callout does. */
+.sparql-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  border: 1px solid var(--accent);
+  border-left-width: 4px;
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0 1.75rem;
+  background: var(--note-bg);
+
+  .sparql-note-icon {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    margin-top: 0.15rem;
+    color: var(--accent);
+  }
+
+  .sparql-note-body {
+    min-width: 0;
+  }
+
+  .sparql-note-label {
+    margin: 0 0 0.35rem;
+    color: var(--accent);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;

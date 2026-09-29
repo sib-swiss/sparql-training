@@ -82,6 +82,16 @@ const COMUNICA_ICON_SVG =
   '<path d="M100,173.42H68a8,8,0,0,1-8-8v-8.15h48v8.15A8,8,0,0,1,100,173.42Z"/>' +
   '</svg>';
 
+// A plain info-circle glyph for the generic `note` block -- deliberately not
+// tied to any brand (unlike COMUNICA_ICON_SVG), so it can be recolored via
+// CSS `currentColor` alone, no per-theme fill values to keep in sync.
+const NOTE_ICON_SVG =
+  '<svg viewBox="0 0 24 24" class="sparql-note-icon" aria-hidden="true">' +
+  '<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>' +
+  '<circle cx="12" cy="7.5" r="1.3" fill="currentColor"/>' +
+  '<rect x="10.8" y="10.5" width="2.4" height="7" rx="1" fill="currentColor"/>' +
+  '</svg>';
+
 function buildMarkdownRenderer() {
   const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
   const defaultFence = md.renderer.rules.fence;
@@ -177,6 +187,24 @@ function buildMarkdownRenderer() {
         COMUNICA_ICON_SVG +
         `<div class="comunica-note-body">` +
         `<p class="comunica-note-label">Comunica limitation</p>` +
+        md.renderInline(token.content.trim()) +
+        `</div>` +
+        `</div>`
+      );
+    }
+
+    // Every other `note` block (no `type=`, or any `type=` other than the
+    // specific `comunica-limitation` one above): a plain, generic aside --
+    // the one consistent way this site marks up a short side-remark, instead
+    // of each page inventing its own ad-hoc "One honest caveat:"/"Note:"/
+    // "Worth remembering:" lead-in with no visual distinction from the
+    // surrounding prose.
+    if (lang === 'note') {
+      return (
+        `<div class="sparql-note">` +
+        NOTE_ICON_SVG +
+        `<div class="sparql-note-body">` +
+        `<p class="sparql-note-label">Note</p>` +
         md.renderInline(token.content.trim()) +
         `</div>` +
         `</div>`

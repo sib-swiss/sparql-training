@@ -71,9 +71,13 @@ the full production dataset, or ones hitting a non-standard SPARQL extension
 doesn't reliably support. The `reference="..."` text is shown to the reader
 as a one-line explanation of what it is / where to run it for real.
 
+### `` ```note ``
+
+The one consistent way to mark up a short side-remark - a caveat, a "worth knowing", an aside that isn't part of the main flow of prose. Content is plain inline Markdown (links, `code`, `**bold**` all work). Don't write an unstyled lead-in instead ("Note:", "One honest caveat:", "Worth remembering:", ...) - every page uses this one block for that, so an aside looks the same everywhere.
+
 ### `` ```note type=comunica-limitation ``
 
-A short callout, styled distinctly (Comunica's brand color and icon) from ordinary prose, for the specific case where an example doesn't run in-page *because of a genuine limitation in this site's own Comunica engine* - not because the underlying query or service is somehow at fault. Content is plain inline Markdown (links, `code`, `**bold**` all work). Use this only for that specific "it's Comunica, not the query" case; the more common "this needs the full production dataset" or "this needs a live/federated service a toy fixture can't stand in for" case is a plain prose paragraph next to a `reference="..."` or `live="..."` block instead, same as everywhere else on this site.
+The same block, styled instead with Comunica's own brand color and icon, for the one specific case where an example doesn't run in-page *because of a genuine limitation in this site's own Comunica engine* - not because the underlying query or service is somehow at fault. Use this only for that specific "it's Comunica, not the query" case; the more common "this needs the full production dataset" or "this needs a live/federated service a toy fixture can't stand in for" case is a plain `` ```note `` (or just a prose paragraph next to a `reference="..."` or `live="..."` block), not this one.
 
 ### `` ```turtle shapes=<id> [title="..."] ``
 

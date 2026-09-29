@@ -38,7 +38,9 @@ Put together, with a period to end the statement (exactly the way a sentence end
 
 Read literally: *the thing identified by that ORCID* stands in *the relationship identified by that Wikidata item* to *the thing identified by that ROR ID*. In other words: "I ❤️ ELIXIR" - except every single part of it is a real, resolvable identifier, minted by three completely independent registries (a researcher-ID registry, a general-knowledge database, and an organisation registry) that don't know about each other and didn't have to agree on anything in advance.
 
-As a note RDF that looks like this is RDF in the ntriples format.
+```note
+RDF written out like this - full IRIs in angle brackets, one triple per line - is itself a real, named format: [N-Triples](formats.html#n-triples---turtle-with-no-shortcuts-at-all). The [next page](formats.html) covers it, and the other common ways to write RDF down, properly.
+```
 
 ## Prefixes: the same triple, easier to read and write
 
@@ -80,7 +82,9 @@ Everything above is a claim about what a real identifier lets you do. Here's the
 
 The button below makes your browser send two independent requests, straight to wikidata.org and orcid.org, asking for Turtle instead of a web page (an HTTP `Accept: text/turtle` header does that). Whatever comes back gets parsed and merged straight into the graph above: ORCID's own facts about the ORCID identifier (a name, a location, a link to a social profile), and Wikidata's own facts about the "love" item (its label, its description, an alternate name, and what kind of thing Wikidata classifies it as), all get added as new nodes and edges around the original triple. Each node is colored by where it came from, so you can tell at a glance what was already on this page and what your browser just fetched.
 
-One honest caveat: both records publish far more than what gets added here. Wikidata's page for "love" alone carries well over a thousand statements about that one item - identifiers in other library and reference databases, links to related items in dozens of languages, and more. Merging in everything either source returns would draw an unreadable tangle instead of a graph anyone could actually read, so this keeps only each record's own direct statements, filtered down further for Wikidata to just its label, description, alternate label, and its two most direct classification links (`instance of` and `subclass of`). Everything else really is there - follow the identifiers yourself, using the links earlier on this page, to see the rest.
+```note
+Both records publish far more than what gets added here. Wikidata's page for "love" alone carries well over a thousand statements about that one item - identifiers in other library and reference databases, links to related items in dozens of languages, and more. Merging in everything either source returns would draw an unreadable tangle instead of a graph anyone could actually read, so this keeps only each record's own direct statements, filtered down further for Wikidata to just its label, description, alternate label, and its two most direct classification links (`instance of` and `subclass of`). Everything else really is there - follow the identifiers yourself, using the links earlier on this page, to see the rest.
+```
 
 <!-- data-orcid-url intentionally points at pub.orcid.org's resolved RDF endpoint, not the
      pretty https://orcid.org/... identifier: content-negotiating that identifier goes through

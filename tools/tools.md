@@ -46,4 +46,6 @@ A few of these tools aren't abstract entries in a list - this site runs on them:
 - [N3.js](https://github.com/rdfjs/N3.js) parses every Turtle fixture you've clicked "Run query" on.
 - The SHACL shape in [`basic/shapes.ttl`](../basic/shapes.ttl) describes what valid data looks like for the basics tutorial's dataset, checked with Apache Jena's `shacl` command-line tool - the same kind of validator you'll find several of in the list above.
 
-Worth remembering: none of that is special-cased. They're ordinary members of the same ecosystem the query above is listing.
+```note
+None of that is special-cased. They're ordinary members of the same ecosystem the query above is listing.
+```
