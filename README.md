@@ -6,9 +6,9 @@ This repository contains training material for querying SIB (Swiss Institute of 
 
 Every worked example on the site runs directly in your browser, powered by the [Comunica](https://comunica.dev/) SPARQL engine &mdash; no server, no installation, no account.
 
-- [SPARQL basics](default/) &mdash; the classic introductory tutorial (people & pets)
-- [UniProt: SPARQL and RDF tutorials](uniprot/)
-- [Rhea: metabolism tutorial](rhea/)
+- [SPARQL basics](basic/) &mdash; the classic introductory tutorial (people & pets)
+- [UniProt: SPARQL and RDF tutorials](UniProt/)
+- [Rhea: metabolism tutorial](Rhea/)
 
 ## Developing this site
 
@@ -21,4 +21,4 @@ npm run build    # builds the site into _site/
 npm run serve    # serves _site/ locally
 ```
 
-See `site/build.mjs` for how Markdown is turned into pages, and any existing page for the `turtle fixture=...` / `sparql fixture=...` convention used to author a runnable example.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the Markdown/fence-block conventions and where to register a new page.
