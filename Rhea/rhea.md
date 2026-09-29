@@ -6,16 +6,15 @@ A hands-on introduction to querying metabolism-related data across multiple reso
 |--------|--------------|----------|------------------|
 | Rhea | chemical reactions | <https://www.rhea-db.org/> | <https://sparql.rhea-db.org/sparql> |
 | UniProt | protein sequences and annotations | <https://www.uniprot.org/> | <https://sparql.uniprot.org/sparql> |
-| Bgee | expression data | <https://bgee.org/> | hosted by <http://biosoda.expasy.org/> |
+| Bgee | expression data | <https://bgee.org/> | <https://www.bgee.org/sparql/> |
 | MetaNetX | reconciled metabolic networks | <https://www.metanetx.org/> | <https://rdf.metanetx.org/> |
-| bioSODA | federated template search over biological databases | | <http://biosoda.expasy.org/> |
 
 Several of the original queries in this tutorial combine two or three of these endpoints in a single query using SPARQL's `SERVICE` keyword &mdash; that's the whole point of a federated query: reach across databases without copying data around. That doesn't work against a single in-browser example dataset, though (there is nothing to federate with), so for each such query this page shows two versions:
 
 - A **runnable** version against a small combined example dataset, with the `SERVICE` wrapper removed (since everything already lives in one place, there's nothing left to federate).
 - A **reference** version, unmodified, showing the real query you can paste into the live endpoint listed above to run it for real, across the real databases.
 
-Queries that reach into a third, more specialized service (Bgee/bioSODA expression data, MetaNetX, or the IDSM/Sachem chemical substructure search) aren't things a small fixture can honestly stand in for, so those stay as reference-only queries with an explanation of why.
+Queries that reach into a third, more specialized service (Bgee expression data, MetaNetX, or the IDSM/Sachem chemical substructure search) aren't things a small fixture can honestly stand in for, so those stay as reference-only queries with an explanation of why.
 
 ## Q1: Retrieve all Rhea reactions (approved or preliminary) and their chemical equations
 
@@ -520,9 +519,9 @@ WHERE {
 
 Adapted from [sparql-examples UniProt/49](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/49_tissues_where_genes_metabolizing_cholestrol_are_expressed.ttl).
 
-This retrieves UniProt proteins, their catalyzed reactions, their encoding genes (Ensembl), and the anatomic entities where those genes are expressed &mdash; UBERON anatomic entities coming from the Bgee expression-data resource, reached through the bioSODA federation endpoint. This crosses *three* different resources (Rhea, UniProt, Bgee) in one query, and the original tutorial warns it can take a few minutes even on the real endpoints, so it isn't something a small in-page fixture can honestly stand in for. Run it yourself at [sparql.uniprot.org](https://sparql.uniprot.org/sparql):
+This retrieves UniProt proteins, their catalyzed reactions, their encoding genes (Ensembl), and the anatomic entities where those genes are expressed &mdash; UBERON anatomic entities coming directly from the Bgee expression-data resource's own SPARQL endpoint. This crosses *three* different resources (Rhea, UniProt, Bgee) in one query, and the original tutorial warns it can take a few minutes even on the real endpoints, so it isn't something a small in-page fixture can honestly stand in for. Run it yourself at [sparql.uniprot.org](https://sparql.uniprot.org/sparql):
 
-```sparql reference="Federates Rhea, UniProt and Bgee (via bioSODA) &mdash; run at https://sparql.uniprot.org/sparql"
+```sparql reference="Federates Rhea, UniProt and Bgee &mdash; run at https://sparql.uniprot.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rh: <http://rdf.rhea-db.org/>
 PREFIX ch: <http://purl.obolibrary.org/obo/>
@@ -557,7 +556,7 @@ WHERE {
   ?ca up:catalyzedReaction ?reaction .
   ?protein rdfs:seeAlso / up:transcribedFrom ?ensemblGene .
 
-  SERVICE <http://biosoda.expasy.org/rdf4j-server/repositories/bgeelight> {
+  SERVICE <https://www.bgee.org/sparql/> {
     ?gene genex:isExpressedIn ?anatomicEntity .
     ?gene lscr:xrefEnsemblGene ?ensemblGene .
     ?anatomicEntity rdfs:label ?anatomicEntityLabel .
