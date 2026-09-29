@@ -18,7 +18,7 @@
 [x] Add a watch command to npm run that builds and serves the site and watches for changes in the repository
 [x] Add a new introduction page introducing the different file formats for RDF (RDF/XML, Json-LD, TTL, NTriples)
    * But make clear that each of these formats contain the same triples and have the same information in them.
-[] Show more the linked open data use-cases.
+[x] Show more the linked open data use-cases.
    * Use the wikidata and orcid linked data capability to add their triples to the graph and visualize them.
    * If possible color the nodes from the page, wikidata and orcid differently
 [x] Make a page about schema.org and (bio)schema.org
@@ -26,3 +26,6 @@
 [x] Make one more page with tools and ecosytems.
    * Use wikidata to create this life and show the SPARQL query required to do so.
    * Note that if a tool is missing that they can add it to wikidata themselves
+[] Make a new Rhea tutorial about how citations in Rhea and cross-references to other databases.
+  * then make a single dropdown for Rhea metabolism and Rhea citations+xrefs
+
