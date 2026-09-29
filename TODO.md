@@ -21,7 +21,7 @@
 [] Show more the linked open data use-cases.
    * Use the wikidata and orcid linked data capability to add their triples to the graph and visualize them.
    * If possible color the nodes from the page, wikidata and orcid differently
-[] Make a page about schema.org and (bio)schema.org
+[x] Make a page about schema.org and (bio)schema.org
 [] Create a tip and tricks page for creating your own RDF resource in the life sciences
 [] Make one more page with tools and ecosytems.
    * Use wikidata to create this life and show the SPARQL query required to do so.
