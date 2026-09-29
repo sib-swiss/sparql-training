@@ -54,6 +54,23 @@ function slugify(text) {
     .replace(/\s+/g, '-');
 }
 
+// Comunica's own logo mark (just the icon glyph, not its "Comunica" wordmark
+// -- the note itself spells that out as real, styleable text), vendored
+// inline so a `note type=comunica-limitation` block never depends on an
+// external asset path or its build-time depth from the page.
+// Source: https://comunica.dev/img/comunica_red_no_fill.svg
+const COMUNICA_ICON_SVG =
+  '<svg viewBox="55 38 140 140" class="comunica-icon" aria-hidden="true">' +
+  '<rect x="60" y="105.27" width="47.97" height="47.97"/>' +
+  '<path d="M182,153.24H142v-48h48v40A8,8,0,0,1,182,153.24Z"/>' +
+  '<path d="M189.67,82.72H60v-40a8,8,0,0,1,8-8H181.67a8,8,0,0,1,8,8Z"/>' +
+  '<rect x="141.8" y="86.64" width="47.97" height="14.83"/>' +
+  '<rect x="60" y="86.64" width="47.97" height="14.83"/>' +
+  '<rect x="112.08" y="105.55" width="26.03" height="47.97"/>' +
+  '<path d="M181.77,173.42h-32a8,8,0,0,1-8-8v-8.15h48v8.15A8,8,0,0,1,181.77,173.42Z"/>' +
+  '<path d="M100,173.42H68a8,8,0,0,1-8-8v-8.15h48v8.15A8,8,0,0,1,100,173.42Z"/>' +
+  '</svg>';
+
 function buildMarkdownRenderer() {
   const md = new MarkdownIt({ html: true, linkify: true, typographer: true });
   const defaultFence = md.renderer.rules.fence;
@@ -139,6 +156,18 @@ function buildMarkdownRenderer() {
         `<button type="button" class="sparql-btn sparql-btn-secondary sparql-reset" data-reset-target="query">&#8630; Reset query</button>` +
         `</div>` +
         `<div class="sparql-results"></div>` +
+        `</div>`
+      );
+    }
+
+    if (lang === 'note' && attrs.type === 'comunica-limitation') {
+      return (
+        `<div class="comunica-note">` +
+        COMUNICA_ICON_SVG +
+        `<div class="comunica-note-body">` +
+        `<p class="comunica-note-label">Comunica limitation</p>` +
+        md.renderInline(token.content.trim()) +
+        `</div>` +
         `</div>`
       );
     }

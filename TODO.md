@@ -12,5 +12,6 @@
 [x] Make a contributing.md that explains the structure of the markdown and the special tags. Where you need to add a file to build.mjs etc.
 [] See if we can reduce the need to explicitly add files to build.mjs
 [x] Update BioSoda bgee example to use www.bgee.org/sparql
-[] Notes about comunica not working for a certain example should be styled explicitly as a comunica limitation using color and a comunica logo.
+[x] Notes about comunica not working for a certain example should be styled explicitly as a comunica limitation using color and a comunica logo.
 [x] The D3.js visualization does not show literal and prefixes. We should fix that.
+[] There should be a basic drop down with RDF & Linked Data and SPARQL for questions

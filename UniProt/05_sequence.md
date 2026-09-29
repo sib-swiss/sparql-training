@@ -83,7 +83,9 @@ Adapted from [sparql-examples UniProt/107](https://github.com/sib-swiss/sparql-e
 
 A UniProt entry can have several isoforms, but `up:sequence` always points at whichever one is *canonical*. This query marks each sequence as canonical or not: a `Simple_Sequence` is likely canonical, unless it's *also* an `External_Sequence` whose IRI doesn't correspond to the entry's own accession (an external isoform mapped in from elsewhere).
 
+```note type=comunica-limitation
 Both queries below use a `FILTER` *inside* an `OPTIONAL` block that depends on a value from a `BIND` &mdash; a combination [Comunica](https://comunica.dev/) (the engine running the examples on this site) can't plan when evaluating a query itself against a small local dataset, even though it's valid SPARQL. Sent whole to a real, conformant endpoint instead &mdash; which is exactly what happens below, since the query targets `sparql.uniprot.org` live, with no local fixture &mdash; that endpoint does its own native evaluation and there's no issue.
+```
 
 ```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX taxon: <http://purl.uniprot.org/taxonomy/>
