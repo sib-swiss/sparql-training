@@ -23,12 +23,14 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 5. [Taxonomy](UniProt/04_taxonomy.html) - organisms, taxonomic ranks, hierarchy and host organisms
 6. [Sequence & isoforms](UniProt/05_sequence.html) - sequences, isoforms, canonical sequence selection, processing (initiator methionine, chains, signal peptides), fragments and mass spectrometry measurements
 7. [Domains & topology](UniProt/06_domains_topology.html) - protein domains, zinc fingers, coiled-coils, transmembrane regions and membrane topology
-8. [Disease](UniProt/08_disease.html) - disease involvement annotations, linked disease resources, and cross-references to OMIM
-9. [Cross-references](UniProt/09_cross_references.html) - links to PDB, UniRef, UniParc and other external databases, including federated queries
-10. [Evidence & citations](UniProt/10_evidence_citation.html) - how annotations are backed by evidence tags, protein existence levels, and citation scope
-12. [Metabolism & Rhea](UniProt/12_metabolism.html) - catalytic activity, EC classification, and pathway cross-references, queried from the UniProt side
-13. [GO terms & keywords](UniProt/13_classification.html) - classifying proteins with Gene Ontology terms and UniProt keywords
-14. [Chemistry](UniProt/14_chemistry.html) - ligands, cofactors, PTMs, catalytic activity, and a reference example of an IDSM/Sachem chemical similarity search
+8. [Natural variants](UniProt/07_variants.html) - sequence variants, their position, evidence and longest descriptions
+9. [Disease](UniProt/08_disease.html) - disease involvement annotations, linked disease resources, and cross-references to OMIM
+10. [Cross-references](UniProt/09_cross_references.html) - links to PDB, UniRef, UniParc and other external databases, including federated queries
+11. [Evidence & citations](UniProt/10_evidence_citation.html) - how annotations are backed by evidence tags, protein existence levels, and citation scope
+12. [Transporters](UniProt/11_transporters.html) - transporter proteins via Rhea's transport annotations, lipid transport, and tissue-specific expression
+13. [Metabolism & Rhea](UniProt/12_metabolism.html) - catalytic activity, EC classification, and pathway cross-references, queried from the UniProt side
+14. [GO terms & keywords](UniProt/13_classification.html) - classifying proteins with Gene Ontology terms and UniProt keywords
+15. [Chemistry](UniProt/14_chemistry.html) - ligands, cofactors, PTMs, catalytic activity, and a reference example of an IDSM/Sachem chemical similarity search
 
 ## Rhea
 
