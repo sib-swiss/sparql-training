@@ -104,9 +104,9 @@ Once you've fetched the live data, look closely at `wd:Q316` in the graph. It sh
 
 That's not a special case or a coincidence: in RDF, a predicate is nothing more than an IRI, and an IRI is never permanently "a predicate" any more than a word is permanently "a verb" - it's whatever role it's playing in the sentence you're looking at right now. The very same `wd:Q316` is a predicate in the triple `orcid:... wd:Q316 ror:...`, and a subject in the triple `wd:Q316 rdfs:label "love"`. Nothing about the identifier itself changes between those two triples; only its position does. This is one of the things that makes RDF a genuine *graph* rather than a tree or a fixed schema: relationships are first-class resources too, capable of having their own facts, and there's no separate namespace or syntax keeping "things" and "relationships between things" apart.
 
-## Abuse your abbreviation power (a fun aside, with a catch)
+## Abuse your abbreviation power (a fun aside)
 
-A `@prefix` name is just a label you choose for yourself - nothing says it has to be a tidy abbreviation like `wd` or `orcid`. The original talk pushes this to its limit with a slide that binds each prefix straight to one of the three *whole* IRIs from the example above, rather than to a shared namespace stem:
+A `@prefix` name is just a label you choose for yourself - nothing says it has to be a tidy abbreviation like `wd` or `orcid`. Lets push this to its limit with a slide that binds each prefix straight to one of the three *whole* IRIs from the example above, rather than to a shared namespace stem:
 
 ```turtle
 @prefix jerven: <https://orcid.org/0000-0002-7449-1266> .
