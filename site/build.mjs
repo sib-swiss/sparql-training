@@ -23,6 +23,7 @@ function mdToHtml(src) {
 export const PAGES = [
   { src: 'index.md', title: 'Home' },
   { src: 'intro/tutorial.md', title: 'RDF & linked data', group: 'Basics' },
+  { src: 'intro/formats.md', title: 'RDF file formats', group: 'Basics' },
   { src: 'basic/tutorial.md', title: 'SPARQL basics', group: 'Basics' },
   { src: 'UniProt/00_introduction.md', title: 'Introduction', group: 'UniProt' },
   { src: 'UniProt/01_basic_information.md', title: 'Basic information', group: 'UniProt' },
