@@ -6,7 +6,7 @@ The queries on this page are adapted from the community-curated [sparql-examples
 
 ## Mapping UniProtKB entries to PDB
 
-Adapted from [sparql-examples UniProt/5](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/5_mapping_to_PDB.ttl).
+Adapted from [sparql-examples UniProt/5](https://sib-swiss.github.io/sparql-examples/examples/UniProt/5_mapping_to_PDB).
 
 Select a mapping of UniProtKB to PDB entries using the UniProtKB cross-references to the [PDB](https://www.uniprot.org/database/DB-0070) database.
 
@@ -39,7 +39,7 @@ WHERE
 
 ## Cross-references in a database category
 
-Adapted from [sparql-examples UniProt/6](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/6_cross_ref_in_category_3D.ttl).
+Adapted from [sparql-examples UniProt/6](https://sib-swiss.github.io/sparql-examples/examples/UniProt/6_cross_ref_in_category_3D).
 
 UniProt groups external databases into categories (`'3D structure databases'`, `'Sequence databases'`, `'Genome annotation databases'`, and so on - see the full list at [uniprot.org/database](https://www.uniprot.org/database)). This lets you pull every cross-reference in a whole category at once, rather than naming one database at a time. Here, every 3D-structure-database cross-reference of entries classified with the keyword [Acetoin biosynthesis (KW-0005)](https://www.uniprot.org/keywords/5):
 
@@ -77,7 +77,7 @@ WHERE
 
 ## Mapping PDB identifiers plus chains to UniProtKB
 
-Adapted from [sparql-examples UniProt/57](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/57_map_pdb_identifiers_plus_chains_to_uniprot.ttl).
+Adapted from [sparql-examples UniProt/57](https://sib-swiss.github.io/sparql-examples/examples/UniProt/57_map_pdb_identifiers_plus_chains_to_uniprot).
 
 Going the other way - from a PDB identifier and chain code back to UniProtKB - needs one extra piece of data: PDB cross-references carry a `chainSequenceMapping`, whose `chain` value is a compact text label like `"A/C=1-306"` (chain letters, an `=`, then the residue range). Splitting on `=` with `STRBEFORE` gets you the chain letters back out.
 
@@ -127,7 +127,7 @@ WHERE
 
 ## Similar proteins via UniRef clusters
 
-Adapted from [sparql-examples UniProt/35](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/35_similar_proteins_via_uniref_clusters.ttl).
+Adapted from [sparql-examples UniProt/35](https://sib-swiss.github.io/sparql-examples/examples/UniProt/35_similar_proteins_via_uniref_clusters).
 
 [UniRef](https://www.uniprot.org/help/uniref) groups UniProtKB entries into clusters of similar sequences. On the live endpoint, UniProtKB and UniRef data live in separate named graphs, so the real query restricts itself to those graphs with `FROM`. In one local example dataset there's only ever a single (default) graph, so the first runnable version below just drops the `FROM` clauses - everything needed is already in the one graph. The second version below is the real query with the `FROM` clauses, running live against `sparql.uniprot.org` itself (there's no local data to fake this one with, since it depends on two real named graphs).
 
@@ -186,7 +186,7 @@ LIMIT 5
 
 ## UniParc: the same sequence under different UniProtKB entries
 
-Adapted from [sparql-examples UniProt/88](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/88_uniparc_linked_to_active_uniprot.ttl).
+Adapted from [sparql-examples UniProt/88](https://sib-swiss.github.io/sparql-examples/examples/UniProt/88_uniparc_linked_to_active_uniprot).
 
 [UniParc](https://www.uniprot.org/help/uniparc) is UniProt's non-redundant archive of every protein sequence it has ever seen, independent of which database entry it came from. Given a UniParc accession, you can ask which *active* UniProtKB entries currently share that exact sequence. Just like UniRef above, the live query keeps UniParc and UniProtKB data apart with `GRAPH` blocks; locally, they're already merged into one graph, so the first runnable version below drops the `GRAPH` wrappers. The second version is the real query, running live against `sparql.uniprot.org`.
 
@@ -231,7 +231,7 @@ WHERE {
 
 ## Federated cross-references: reaching into another SPARQL endpoint
 
-Adapted from [sparql-examples UniProt/174](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/174_pdb_structures_via_pdbj_federation.ttl).
+Adapted from [sparql-examples UniProt/174](https://sib-swiss.github.io/sparql-examples/examples/UniProt/174_pdb_structures_via_pdbj_federation).
 
 UniProtKB's own PDB cross-references are locally stored (as seen above), but you can also federate live with another endpoint's *own* cross-reference data, rather than UniProt's copy of it, using `SERVICE`. This runs for real: the `BIND` below is evaluated locally (there's no other local data needed for that part), and the `SERVICE` block sends its part of the query straight to PDBj/RDF Portal over the network, so it's a little slower than the other examples on this page - a handful of seconds is normal.
 

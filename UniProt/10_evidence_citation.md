@@ -48,7 +48,7 @@ citations:12345678 a up:Journal_Citation .
 
 ### Find natural variant annotations linked to a PubMed article
 
-Adapted from [sparql-examples #19](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/19_natural_variants_associated_with_pubmed_id.ttl): find all natural variant annotations that are, via an evidence tag, associated with an article that has a PubMed identifier.
+Adapted from [sparql-examples #19](https://sib-swiss.github.io/sparql-examples/examples/UniProt/19_natural_variants_associated_with_pubmed_id): find all natural variant annotations that are, via an evidence tag, associated with an article that has a PubMed identifier.
 
 ```sparql fixture=evidence-tag
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -75,7 +75,7 @@ WHERE
 
 ### How often is a citation used across evidence tags?
 
-Adapted from [sparql-examples #20](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/20_how_often_citation_used_in_evidence_tag.ttl) (the original restricts to human proteins; that restriction is dropped here since this toy dataset only has one protein).
+Adapted from [sparql-examples #20](https://sib-swiss.github.io/sparql-examples/examples/UniProt/20_how_often_citation_used_in_evidence_tag) (the original restricts to human proteins; that restriction is dropped here since this toy dataset only has one protein).
 
 ```sparql fixture=evidence-tag
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -130,7 +130,7 @@ prefix up: <http://purl.uniprot.org/core/>
 
 ### Break down reviewed proteins by existence evidence level
 
-Adapted from [sparql-examples #216](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/216_human_proteins_by_existence_evidence.ttl) (the original restricts to human, `taxon:9606`; dropped here since our toy proteins have no organism).
+Adapted from [sparql-examples #216](https://sib-swiss.github.io/sparql-examples/examples/UniProt/216_human_proteins_by_existence_evidence) (the original restricts to human, `taxon:9606`; dropped here since our toy proteins have no organism).
 
 ```sparql fixture=existence
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -174,7 +174,7 @@ _:stmt2 a up:Citation_Statement ;
 
 ### Find what a citation was used for
 
-Adapted from [sparql-examples #158](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/158_citation_scope_via_citation_statement.ttl) (originally run against human insulin, P01308; here against the toy protein `P99999`).
+Adapted from [sparql-examples #158](https://sib-swiss.github.io/sparql-examples/examples/UniProt/158_citation_scope_via_citation_statement) (originally run against human insulin, P01308; here against the toy protein `P99999`).
 
 ```sparql fixture=citation-statement
 PREFIX up: <http://purl.uniprot.org/core/>

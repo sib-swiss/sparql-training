@@ -6,7 +6,7 @@ A UniProt entry points at its sequence(s) through the `up:sequence` property, an
 
 ## Retrieving sequences for an organism
 
-Adapted from [sparql-examples UniProt/3](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/3_entry_sequences_organism.ttl).
+Adapted from [sparql-examples UniProt/3](https://sib-swiss.github.io/sparql-examples/examples/UniProt/3_entry_sequences_organism).
 
 Select UniProtKB entries and their amino acid sequences (including isoforms) for *E. coli* K12 and all its strains.
 
@@ -48,7 +48,7 @@ WHERE
 
 ## Computationally mapped isoforms
 
-Adapted from [sparql-examples UniProt/101](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/101_uniprot_potential_isoforms.ttl).
+Adapted from [sparql-examples UniProt/101](https://sib-swiss.github.io/sparql-examples/examples/UniProt/101_uniprot_potential_isoforms).
 
 Some isoforms aren't asserted directly by UniProt curators, but computationally mapped instead, through `up:potentialSequence`. On the real endpoint, sequence queries are often scoped to the `http://sparql.uniprot.org/uniprot` named graph, so they don't also match data living in the separate UniParc graph. A single in-page example dataset has only one graph to begin with, so that wrapper can simply be dropped.
 
@@ -79,7 +79,7 @@ WHERE {
 
 ## Which sequence is canonical?
 
-Adapted from [sparql-examples UniProt/107](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/107_uniprot_sequences_and_mark_which_is_cannonical_for_human.ttl).
+Adapted from [sparql-examples UniProt/107](https://sib-swiss.github.io/sparql-examples/examples/UniProt/107_uniprot_sequences_and_mark_which_is_cannonical_for_human).
 
 A UniProt entry can have several isoforms, but `up:sequence` always points at whichever one is *canonical*. This query marks each sequence as canonical or not: a `Simple_Sequence` is likely canonical, unless it's *also* an `External_Sequence` whose IRI doesn't correspond to the entry's own accession (an external isoform mapped in from elsewhere).
 
@@ -121,7 +121,7 @@ LIMIT 5
 
 ### The canonical isoform doesn't have to end in "-1"
 
-Adapted from [sparql-examples UniProt/163](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/163_canonical_isoform_does_not_need_to_be_dash_1.ttl).
+Adapted from [sparql-examples UniProt/163](https://sib-swiss.github.io/sparql-examples/examples/UniProt/163_canonical_isoform_does_not_need_to_be_dash_1).
 
 `up:sequence` points at whichever isoform was chosen as canonical - usually `-1`, but not always. This query finds reviewed proteins where it isn't, ordered by the highest isoform number used as the canonical sequence. Like the query above, this one also mixes a `FILTER` inside an `OPTIONAL` with a `BIND`, so it runs live against `sparql.uniprot.org` rather than a local fixture.
 
@@ -302,7 +302,7 @@ WHERE {
 
 ## Fragmented sequences
 
-Adapted from [sparql-examples UniProt/41](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/41_fragmented_sequences.ttl).
+Adapted from [sparql-examples UniProt/41](https://sib-swiss.github.io/sparql-examples/examples/UniProt/41_fragmented_sequences).
 
 Not every sequence is complete: `up:fragment` marks a sequence as being composed of fragments.
 
@@ -335,7 +335,7 @@ WHERE {
 
 ## Mass spectrometry measurements
 
-Adapted from [sparql-examples UniProt/210](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/210_mass_spectrometry_measured_value.ttl).
+Adapted from [sparql-examples UniProt/210](https://sib-swiss.github.io/sparql-examples/examples/UniProt/210_mass_spectrometry_measured_value).
 
 Some entries carry an experimentally measured mass, recorded as a `up:Mass_Spectrometry_Annotation` with a `up:measuredValue` and, where known, a `up:measuredError` margin.
 

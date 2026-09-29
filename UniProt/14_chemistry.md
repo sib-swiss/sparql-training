@@ -4,7 +4,7 @@ UniProt annotates a lot of chemistry directly on a protein entry: the ligands an
 
 ## Catalytic activity
 
-Adapted from [sparql-examples UniProt/39](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/39_experimental_catalytic_activities_in_swissprot.ttl).
+Adapted from [sparql-examples UniProt/39](https://sib-swiss.github.io/sparql-examples/examples/UniProt/39_experimental_catalytic_activities_in_swissprot).
 
 A `up:Catalytic_Activity_Annotation` links a protein to the [Rhea](https://www.rhea-db.org/) reaction it catalyzes. Like most UniProt annotations, that link can itself be backed by evidence - here, using RDF reification to attach an ECO evidence code (`ECO:0000269` = experimental evidence) to the specific `up:catalyticActivity` triple.
 
@@ -60,7 +60,7 @@ WHERE {
 
 ## Cofactors & metal binding
 
-Adapted from [sparql-examples UniProt/55](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/55_metal_or_sulphur_cluster_binding_sites_experimental.ttl).
+Adapted from [sparql-examples UniProt/55](https://sib-swiss.github.io/sparql-examples/examples/UniProt/55_metal_or_sulphur_cluster_binding_sites_experimental).
 
 Binding sites are annotated with `up:ligand`, pointing at a ligand resource that is itself `rdfs:subClassOf` a ChEBI term - so you can search "binds a metal ion" by walking up the ChEBI hierarchy with a property path, rather than listing every possible metal individually. `CHEBI:25213` is the general "metal cation" class.
 
@@ -122,7 +122,7 @@ ORDER BY DESC(?entries)
 
 ## Post-translational modifications
 
-Adapted from [sparql-examples UniProt/220](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/220_phosphorylated_proteins_by_residue.ttl).
+Adapted from [sparql-examples UniProt/220](https://sib-swiss.github.io/sparql-examples/examples/UniProt/220_phosphorylated_proteins_by_residue).
 
 Modified residues are annotated with `up:Modified_Residue_Annotation`; which residue was modified and how is recorded as free text in `rdfs:comment` (e.g. `"Phosphoserine"`, sometimes followed by the responsible kinase, e.g. `"Phosphoserine; by PKA"`). This example buckets reviewed human proteins by which of the three phosphorylatable residues (serine, threonine, tyrosine) they have annotated.
 
@@ -182,7 +182,7 @@ ORDER BY DESC(?proteinCount)
 
 ## Chemical similarity search: ligands like heme
 
-Adapted from [sparql-examples UniProt/54](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/54_binding_sites_for_ligands_similar_to_heme_sachem.ttl).
+Adapted from [sparql-examples UniProt/54](https://sib-swiss.github.io/sparql-examples/examples/UniProt/54_binding_sites_for_ligands_similar_to_heme_sachem).
 
 [IDSM/Sachem](https://idsm.elixir-czech.cz/) is a specialized cheminformatics engine that indexes ChEBI by molecular structure. Given a query molecule as a SMILES string (here, heme), it returns every ChEBI compound structurally similar to it, ranked by similarity score - and because ChEBI compounds are exactly what UniProt's `up:ligand` links point at, the result plugs directly into "which proteins bind something like this molecule?".
 
@@ -229,7 +229,7 @@ The `sachem:cutoff`, `sachem:similarityRadius` and `sachem:tautomerMode` paramet
 
 ## Active site chemistry
 
-Adapted from [sparql-examples UniProt/77](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/77_enzymes_with_tyrosine_as_active_site.ttl).
+Adapted from [sparql-examples UniProt/77](https://sib-swiss.github.io/sparql-examples/examples/UniProt/77_enzymes_with_tyrosine_as_active_site).
 
 An active site's position is recorded with [FALDO](https://link.springer.com/article/10.1186/s13326-016-0067-z) (a small ontology for describing sequence positions/ranges), pointing at a specific position on the protein's sequence. Combined with the raw sequence string, you can check what residue is actually sitting there - here, filtering for active sites where that residue is tyrosine (Y).
 
@@ -275,7 +275,7 @@ WHERE {
 
 ## Allosteric ligands
 
-Adapted from [sparql-examples UniProt/56](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/56_enzymes_that_have_a_known_allosteric_effect.ttl).
+Adapted from [sparql-examples UniProt/56](https://sib-swiss.github.io/sparql-examples/examples/UniProt/56_enzymes_that_have_a_known_allosteric_effect).
 
 Not every ligand just sits in the active site - some regulate the enzyme from elsewhere on the protein. UniProt records this kind of detail as free text in `rdfs:comment` on the ligand resource itself, so it's searchable with a simple `REGEX`.
 
@@ -315,7 +315,7 @@ WHERE {
 
 ## Enzyme classification (EC)
 
-Adapted from [sparql-examples UniProt/18](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/18_top_level_ec_classification_group_by_count.ttl).
+Adapted from [sparql-examples UniProt/18](https://sib-swiss.github.io/sparql-examples/examples/UniProt/18_top_level_ec_classification_group_by_count).
 
 Finally, zooming out: every enzyme can be classified with an [EC (Enzyme Commission) number](https://en.wikipedia.org/wiki/Enzyme_Commission_number), which itself forms a small hierarchy down to `ec:1.-.-.-` .. `ec:7.-.-.-` at the top level. An enzyme number can be attached to a whole protein, or (for multi-functional proteins) to just one `up:domain` or `up:component` - the property path `(up:enzyme | up:domain/up:enzyme | up:component/up:enzyme)` catches all three cases in one go.
 

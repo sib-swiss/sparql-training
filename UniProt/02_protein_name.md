@@ -58,7 +58,7 @@ prefix enzyme: <http://purl.uniprot.org/enzyme/>
 
 ### Selecting a recommended full name
 
-Adapted from [sparql-examples UniProt/104](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/104_uniprot_recomended_protein_full_name.ttl).
+Adapted from [sparql-examples UniProt/104](https://sib-swiss.github.io/sparql-examples/examples/UniProt/104_uniprot_recomended_protein_full_name).
 
 ```sparql fixture=names
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -73,7 +73,7 @@ WHERE {
 
 ### Selecting a recommended short name
 
-Adapted from [sparql-examples UniProt/105](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/105_uniprot_recomended_protein_short_name.ttl).
+Adapted from [sparql-examples UniProt/105](https://sib-swiss.github.io/sparql-examples/examples/UniProt/105_uniprot_recomended_protein_short_name).
 
 ```sparql fixture=names
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -101,7 +101,7 @@ WHERE {
 
 ### Selecting alternative names
 
-Adapted from [sparql-examples UniProt/91](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/91_uniprot_alternative_protein_full_name.ttl).
+Adapted from [sparql-examples UniProt/91](https://sib-swiss.github.io/sparql-examples/examples/UniProt/91_uniprot_alternative_protein_full_name).
 
 ```sparql fixture=names
 PREFIX up: <http://purl.uniprot.org/core/>
