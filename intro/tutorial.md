@@ -82,7 +82,15 @@ The button below makes your browser send two independent requests, straight to w
 
 One honest caveat: both records publish far more than what gets added here. Wikidata's page for "love" alone carries well over a thousand statements about that one item - identifiers in other library and reference databases, links to related items in dozens of languages, and more. Merging in everything either source returns would draw an unreadable tangle instead of a graph anyone could actually read, so this keeps only each record's own direct statements, filtered down further for Wikidata to just its label, description, alternate label, and its two most direct classification links (`instance of` and `subclass of`). Everything else really is there - follow the identifiers yourself, using the links earlier on this page, to see the rest.
 
-<div class="sparql-live-fetch" data-fixture-id="ilovex" data-wikidata-url="https://www.wikidata.org/wiki/Special:EntityData/Q316.ttl" data-wikidata-subject="http://www.wikidata.org/entity/Q316" data-orcid-url="https://orcid.org/0000-0002-7449-1266" data-orcid-subject="https://orcid.org/0000-0002-7449-1266">
+<!-- data-orcid-url intentionally points at pub.orcid.org's resolved RDF endpoint, not the
+     pretty https://orcid.org/... identifier: content-negotiating that identifier goes through
+     two redirects (orcid.org -> pub.orcid.org -> pub.orcid.org/experimental_rdf_v1/...) and
+     the redirect responses themselves carry no Access-Control-Allow-Origin header, so a
+     browser fetch() fails with a CORS error partway through even though the final response
+     is CORS-open. Fetching the already-resolved URL directly skips the redirects entirely.
+     data-orcid-subject stays the real https://orcid.org/... identifier, since that's still
+     the subject IRI the fetched triples themselves use. -->
+<div class="sparql-live-fetch" data-fixture-id="ilovex" data-wikidata-url="https://www.wikidata.org/wiki/Special:EntityData/Q316.ttl" data-wikidata-subject="http://www.wikidata.org/entity/Q316" data-orcid-url="https://pub.orcid.org/experimental_rdf_v1/0000-0002-7449-1266" data-orcid-subject="https://orcid.org/0000-0002-7449-1266">
 <button type="button" class="sparql-btn sparql-live-fetch-btn">Fetch live data from Wikidata &amp; ORCID</button>
 <p class="sparql-live-fetch-legend"><span class="sparql-live-fetch-swatch sparql-live-fetch-swatch-wikidata"></span>added from Wikidata<span class="sparql-live-fetch-swatch sparql-live-fetch-swatch-orcid"></span>added from ORCID</p>
 <p class="sparql-live-fetch-status" aria-live="polite">Not fetched yet.</p>

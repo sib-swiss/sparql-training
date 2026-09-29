@@ -631,6 +631,11 @@
         limit: WIKIDATA_FETCH_LIMIT,
       },
       {
+        // `data-orcid-url` is pub.orcid.org's already-resolved RDF endpoint,
+        // not the pretty https://orcid.org/<id> identifier -- see the HTML
+        // comment above that attribute in intro/tutorial.md for why: the
+        // pretty URL's own redirect chain isn't CORS-enabled at every hop,
+        // only its final destination is.
         label: 'ORCID',
         id: 'orcid',
         url: block.getAttribute('data-orcid-url'),
