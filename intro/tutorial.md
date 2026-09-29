@@ -98,6 +98,12 @@ One honest caveat: both records publish far more than what gets added here. Wiki
 
 This is a real network call over the open internet, not a canned demo, so it can fail the same way any other request can: if wikidata.org or orcid.org is briefly rate-limiting, slow, or down, the status line above says so honestly instead of quietly showing nothing.
 
+### A predicate can also be a subject
+
+Once you've fetched the live data, look closely at `wd:Q316` in the graph. It shows up twice: once as the label on the arrow connecting Jerven to ELIXIR (where it's a **predicate**), and once as its own node with a label ("love"), a description and a couple of classification links (where it's a **subject**) - because that's exactly what Wikidata's own data about it looks like: a bunch of triples with `wd:Q316` as their subject. A faint dashed line ties the two together, since they're not two different things that happen to share a name - they're the exact same node, just seen playing two different roles.
+
+That's not a special case or a coincidence: in RDF, a predicate is nothing more than an IRI, and an IRI is never permanently "a predicate" any more than a word is permanently "a verb" - it's whatever role it's playing in the sentence you're looking at right now. The very same `wd:Q316` is a predicate in the triple `orcid:... wd:Q316 ror:...`, and a subject in the triple `wd:Q316 rdfs:label "love"`. Nothing about the identifier itself changes between those two triples; only its position does. This is one of the things that makes RDF a genuine *graph* rather than a tree or a fixed schema: relationships are first-class resources too, capable of having their own facts, and there's no separate namespace or syntax keeping "things" and "relationships between things" apart.
+
 ## Abuse your abbreviation power (a fun aside, with a catch)
 
 A `@prefix` name is just a label you choose for yourself - nothing says it has to be a tidy abbreviation like `wd` or `orcid`. The original talk pushes this to its limit with a slide that binds each prefix straight to one of the three *whole* IRIs from the example above, rather than to a shared namespace stem:

@@ -459,6 +459,12 @@ th { background: var(--code-bg); }
   stroke-opacity: 0.6;
   stroke-width: 1.5px;
 
+  &.sparql-graph-link-predicate {
+    stroke-dasharray: 2 3;
+    stroke-opacity: 0.45;
+    stroke-width: 1px;
+  }
+
   &.sparql-graph-link-source-wikidata {
     stroke: var(--wikidata-fg);
     stroke-opacity: 0.8;

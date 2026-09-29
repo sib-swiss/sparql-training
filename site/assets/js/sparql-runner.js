@@ -303,6 +303,7 @@
   function buildMergedGraphData(groups) {
     var nodesMap = new Map();
     var links = [];
+    var predicateUses = [];
 
     function ensureNode(id, kind, label, tooltip, source) {
       if (!nodesMap.has(id)) {
@@ -334,7 +335,29 @@
         // visually indistinguishable from a newly-fetched node's own edges
         // once enough of them fan out from the same shared node.
         links.push({ source: s.id, target: o.id, label: shortLabel(quad.predicate.value, group.prefixes), linkGroup: group.source });
+        // A predicate IRI is just an IRI -- nothing stops the exact same one
+        // from also being a subject or object elsewhere (this page's "I love
+        // ELIXIR" triple uses wd:Q316 as its predicate; Wikidata's own data
+        // about wd:Q316 uses it as a subject). Recorded here and resolved in
+        // a second pass below, once every quad has been seen, since the node
+        // this predicate might turn out to equal isn't necessarily built yet
+        // at this point -- it can just as well come from a later group.
+        predicateUses.push({ predicateId: quad.predicate.value, subjectId: s.id, objectId: o.id });
       });
+    });
+
+    // Second pass: for every predicate IRI that turned out to also be a node
+    // (used as a subject or object by some quad, in any group), draw an
+    // unlabeled, dashed link from that node to the subject and object of
+    // each triple it served as predicate for -- so the graph actually shows
+    // "this is the same resource", instead of leaving a same-looking IRI
+    // sitting in two disconnected places (an edge's text label, and an
+    // unrelated-looking node) with nothing tying them together.
+    predicateUses.forEach(function (use) {
+      if (!nodesMap.has(use.predicateId)) return;
+      nodesMap.get(use.predicateId).degree++;
+      links.push({ source: use.predicateId, target: use.subjectId, label: '', predicateLink: true });
+      links.push({ source: use.predicateId, target: use.objectId, label: '', predicateLink: true });
     });
 
     return { nodes: Array.from(nodesMap.values()), links: links };
@@ -452,15 +475,29 @@
       .data(data.links)
       .join('line')
       .attr('class', function (d) {
-        return d.linkGroup && d.linkGroup !== 'local' ? 'sparql-graph-link-source-' + d.linkGroup : null;
+        var cls = d.predicateLink ? 'sparql-graph-link-predicate' : null;
+        if (d.linkGroup && d.linkGroup !== 'local') {
+          cls = (cls ? cls + ' ' : '') + 'sparql-graph-link-source-' + d.linkGroup;
+        }
+        return cls;
       })
-      .attr('marker-end', 'url(#sparql-graph-arrow)');
+      // A predicate-identity link (see predicateUses above) isn't itself a
+      // triple, just a "these are the same thing" connector, so it gets no
+      // arrowhead -- only real subject-to-object edges do.
+      .attr('marker-end', function (d) {
+        return d.predicateLink ? null : 'url(#sparql-graph-arrow)';
+      });
 
+    // Predicate-identity links have no label of their own (the label would
+    // just repeat the node's own text right next to it); only real triples
+    // get a text label here.
     var linkLabel = zoomLayer
       .append('g')
       .attr('class', 'sparql-graph-link-labels')
       .selectAll('text')
-      .data(data.links)
+      .data(data.links.filter(function (d) {
+        return !d.predicateLink;
+      }))
       .join('text')
       .attr('class', function (d) {
         return d.linkGroup && d.linkGroup !== 'local' ? 'sparql-graph-link-source-' + d.linkGroup : null;
