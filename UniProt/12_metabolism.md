@@ -1,12 +1,12 @@
 # Metabolism & Rhea
 
-UniProt cross-references the chemical reactions an enzyme catalyzes to [Rhea](https://www.rhea-db.org/), and classifies enzymes with [EC (Enzyme Commission) numbers](https://iubmb.qmul.ac.uk/enzyme/index.html). This page shows how to query that from the UniProt side &mdash; starting at a protein and reaching into Rhea and the enzyme classification hierarchy &mdash; plus how UniProt links a protein to the biological pathway(s) it's part of.
+UniProt cross-references the chemical reactions an enzyme catalyzes to [Rhea](https://www.rhea-db.org/), and classifies enzymes with [EC (Enzyme Commission) numbers](https://iubmb.qmul.ac.uk/enzyme/index.html). This page shows how to query that from the UniProt side - starting at a protein and reaching into Rhea and the enzyme classification hierarchy - plus how UniProt links a protein to the biological pathway(s) it's part of.
 
 For queries that start on the *Rhea* side instead (reactions, chemical participants, cross-species comparisons), see the [Rhea metabolism tutorial](../Rhea/rhea.html).
 
 ## Catalytic activity, with its supporting evidence
 
-A `Catalytic_Activity_Annotation` links a protein to the Rhea reaction it catalyzes. UniProt also lets you trace *why* that link is asserted: the statement itself can be described with an [RDF reification](https://www.w3.org/TR/rdf-schema/#ch_reificationvocab) (a resource describing a `rdf:subject`/`rdf:predicate`/`rdf:object` triple), which is in turn attributed to evidence &mdash; here, [ECO:0000269](http://purl.obolibrary.org/obo/ECO_0000269), "experimental evidence".
+A `Catalytic_Activity_Annotation` links a protein to the Rhea reaction it catalyzes. UniProt also lets you trace *why* that link is asserted: the statement itself can be described with an [RDF reification](https://www.w3.org/TR/rdf-schema/#ch_reificationvocab) (a resource describing a `rdf:subject`/`rdf:predicate`/`rdf:object` triple), which is in turn attributed to evidence - here, [ECO:0000269](http://purl.obolibrary.org/obo/ECO_0000269), "experimental evidence".
 
 ```turtle fixture=catalytic-activity
 base <http://purl.uniprot.org/uniprot/>
@@ -31,6 +31,8 @@ prefix eco: <http://purl.obolibrary.org/obo/ECO_>
 
 <P00918#attribution1> up:evidence eco:0000269 .
 ```
+
+Adapted from [sparql-examples/UniProt 39](https://sib-swiss.github.io/sparql-examples/examples/UniProt/39_experimental_catalytic_activities_in_swissprot)
 
 ```sparql fixture=catalytic-activity
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -78,6 +80,8 @@ ec:3.1.3.1 rdfs:subClassOf ec:3.-.-.- .
 <P05067#domain1> up:enzyme ec:3.1.3.1 .
 ```
 
+Adapted from [sparql-examples/UniProt 18](https://sib-swiss.github.io/sparql-examples/examples/UniProt/18_top_level_ec_classification_group_by_count)
+
 ```sparql fixture=ec-classification
 PREFIX ec: <http://purl.uniprot.org/enzyme/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -96,7 +100,7 @@ GROUP BY ?ecClass ORDER BY ?ecClass
 
 ## Rhea reactions, with and without an EC number
 
-Not every Rhea reaction UniProt cites has an EC number attached &mdash; some catalytic activities are only described by their Rhea reaction. The `up:enzymeClass` property links a `Catalytic_Activity` directly to its EC number, when there is one.
+Not every Rhea reaction UniProt cites has an EC number attached, some catalytic activities are only described by their Rhea reaction. The `up:enzymeClass` property links a `Catalytic_Activity` directly to its EC number, when there is one.
 
 ```turtle fixture=rhea-ec-links
 base <http://purl.uniprot.org/uniprot/>
@@ -122,7 +126,9 @@ WHERE {
 }
 ```
 
-The `MINUS` version below finds the reactions with no `up:enzymeClass` at all &mdash; `?EC` in the `SELECT` stays unbound for every row, which is the point: it's the complement of the query above.
+The `MINUS` version below finds the reactions with no `up:enzymeClass` at all - `?EC` in the `SELECT` stays unbound for every row, which is the point: it's the complement of the query above.
+
+Adapted from [sparql-examples/UniProt 83](https://sib-swiss.github.io/sparql-examples/examples/UniProt/83_rhea_reactions_not_associated_with_ec_in_uniprotkb)
 
 ```sparql fixture=rhea-ec-links
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -161,6 +167,8 @@ prefix ensembl: <http://purl.uniprot.org/ensembl/>
 ensembl:ENST00000000233 up:database <http://purl.uniprot.org/database/Ensembl> ;
   up:transcribedFrom ensembl:ENSG00000000000 .
 ```
+
+Adapted from [sparql-examples/UniProt 61](https://sib-swiss.github.io/sparql-examples/examples/UniProt/61_Gene_Protein_Reaction_sets)
 
 ```sparql fixture=gene-protein-reaction
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -203,6 +211,8 @@ prefix reactome: <http://purl.uniprot.org/reactome/>
 reactome:R-HSA-0000001 up:database <http://purl.uniprot.org/database/Reactome> ;
   rdfs:comment "Signaling by FGFR in Cancer" .
 ```
+
+Adapted from [sparql-examples/UniProt 217](https://sib-swiss.github.io/sparql-examples/examples/UniProt/217_proteins_in_a_cancer_pathway)
 
 ```sparql fixture=cancer-pathway
 PREFIX up: <http://purl.uniprot.org/core/>
