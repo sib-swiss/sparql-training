@@ -9,7 +9,7 @@ Every example query on these pages runs **directly in your browser**, using the 
 1. [RDF and linked data](intro/tutorial.html) - start here if you've never seen a "triple" before: what RDF is, why it exists, and the "I ❤️ ELIXIR" example built up step by step
 2. [RDF file formats](intro/formats.html) - the same triple written four ways (Turtle, N-Triples, RDF/XML, JSON-LD), so you recognise them as the same data
 3. [SPARQL basics](basic/tutorial.html) - the classic introductory tutorial (a small people-and-pets dataset) covering triple patterns, property paths, `OPTIONAL`/`FILTER`, aggregation, and federated queries
-4. [schema.org & Bioschemas](schema-org/tutorial.html) - how the same RDF ideas show up as structured data embedded in ordinary web pages, and how Bioschemas applies that to life-science resources
+4. [schema.org & Bioschemas](intro/schema_org.html) - how the same RDF ideas show up as structured data embedded in ordinary web pages, and how Bioschemas applies that to life-science resources
 
 ## UniProt: SPARQL and RDF
 
@@ -25,7 +25,7 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 9. [Cross-references](UniProt/09_cross_references.html) - links to PDB, UniRef, UniParc and other external databases, including federated queries
 14. [Chemistry](UniProt/14_chemistry.html) - ligands, cofactors, PTMs, catalytic activity, and a reference example of an IDSM/Sachem chemical similarity search
 
-## Rhea: metabolic reactions
+## Rhea
 
 [Rhea](https://www.rhea-db.org/) is an expert-curated resource of biochemical reactions, cross-referenced with UniProt, ChEBI, and other resources, queryable at [sparql.rhea-db.org/sparql](https://sparql.rhea-db.org/sparql).
 
@@ -38,8 +38,8 @@ The [Universal Protein Resource (UniProt)](https://www.uniprot.org/) is a compre
 
 ## Publishing your own data
 
-- [Tips and tricks: publishing your own RDF](tips-and-tricks/tutorial.html) - a practical checklist for turning your own life science dataset into RDF: identifiers, reusing vocabulary, content negotiation, SHACL shapes and common pitfalls
+- [Tips and tricks: publishing your own RDF](intro/tips-and-tricks.html) - a practical checklist for turning your own life science dataset into RDF: identifiers, reusing vocabulary, content negotiation, SHACL shapes and common pitfalls
 
 ## Source
 
-The material is developed in the open at [github.com/sib-swiss/sparql-training](https://github.com/sib-swiss/sparql-training).
+The material is developed in the open at [github.com/sib-swiss/sparql-training](https://github.com/sib-swiss/sparql-training). We used AI (specifically Claude by Anthropic) to build this site, but only to convert prior existing material into this page, adding the visualizations and comunica tools.
