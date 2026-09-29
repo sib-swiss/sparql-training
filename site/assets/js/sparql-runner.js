@@ -120,10 +120,14 @@
     return { sources: sources, lenient: true };
   }
 
-  function parseFixtureText(turtle) {
+  // `baseIRI` defaults to a fixed placeholder for this site's own fixtures
+  // (which never contain relative IRIs); the live-fetch feature below passes
+  // the real fetch URL instead, since that's what a relative IRI in fetched
+  // Turtle would actually be resolved against.
+  function parseFixtureText(turtle, baseIRI) {
     var runner = window.SparqlRunner;
     var store = new runner.Store();
-    var parser = new runner.Parser({ baseIRI: 'https://sparql-training.example/' });
+    var parser = new runner.Parser({ baseIRI: baseIRI || 'https://sparql-training.example/' });
     store.addQuads(parser.parse(turtle));
     return store;
   }
@@ -133,11 +137,11 @@
   // stripping down to a bare local name. N3's Parser.parse() still runs (and
   // returns) synchronously when only the prefix callback is given, so this is
   // a second, cheap pass over the same (small) fixture text, not a real cost.
-  function extractPrefixes(turtle) {
+  function extractPrefixes(turtle, baseIRI) {
     var prefixes = {};
     try {
       var runner = window.SparqlRunner;
-      var parser = new runner.Parser({ baseIRI: 'https://sparql-training.example/' });
+      var parser = new runner.Parser({ baseIRI: baseIRI || 'https://sparql-training.example/' });
       parser.parse(turtle, undefined, function (prefix, iri) {
         prefixes[prefix] = iri.value;
       });
@@ -290,6 +294,44 @@
     return { nodes: Array.from(nodesMap.values()), links: links };
   }
 
+  // Same shape as buildGraphData(), but for the live-fetch feature: merges
+  // several quad lists (the local fixture, plus whatever got fetched from
+  // Wikidata/ORCID) into one graph, tagging every node with a `source` --
+  // `'local'`, `'wikidata'`, `'orcid'` -- taken from whichever group first
+  // introduces that node. Each group keeps its own `prefixes` map, since the
+  // fetched turtle declares its own `@prefix` names, unrelated to this page's.
+  function buildMergedGraphData(groups) {
+    var nodesMap = new Map();
+    var links = [];
+
+    function ensureNode(id, kind, label, tooltip, source) {
+      if (!nodesMap.has(id)) {
+        nodesMap.set(id, { id: id, label: label, tooltip: tooltip, degree: 0, kind: kind, source: source });
+      }
+      return nodesMap.get(id);
+    }
+
+    groups.forEach(function (group) {
+      var literalCount = 0;
+      group.quads.forEach(function (quad) {
+        var s = ensureNode(quad.subject.value, 'resource', shortLabel(quad.subject.value, group.prefixes), quad.subject.value, group.source);
+        var o;
+        if (quad.object.termType === 'Literal') {
+          var label = literalLabel(quad.object, group.prefixes);
+          var literalId = 'literal:' + group.source + ':' + literalCount++ + ':' + quad.subject.value;
+          o = ensureNode(literalId, 'literal', label, label, group.source);
+        } else {
+          o = ensureNode(quad.object.value, 'resource', shortLabel(quad.object.value, group.prefixes), quad.object.value, group.source);
+        }
+        s.degree++;
+        o.degree++;
+        links.push({ source: s.id, target: o.id, label: shortLabel(quad.predicate.value, group.prefixes) });
+      });
+    });
+
+    return { nodes: Array.from(nodesMap.values()), links: links };
+  }
+
   function nodeRadius(d) {
     if (d.kind === 'literal') return 7;
     return 9 + Math.min(14, Math.sqrt(d.degree) * 4);
@@ -321,7 +363,15 @@
     container.appendChild(p);
   }
 
+  // The ordinary path: one fixture's own store, all nodes implicitly `local`.
   function renderGraph(container, store, prefixes) {
+    renderGraphData(container, buildGraphData(store, prefixes));
+  }
+
+  // The shared drawing code, taking already-built `{ nodes, links }` data --
+  // used both by renderGraph() above and by the live-fetch feature below,
+  // which builds its data with buildMergedGraphData() instead.
+  function renderGraphData(container, data) {
     var G = window.SparqlGraph;
     container.innerHTML = '';
 
@@ -330,7 +380,6 @@
       return;
     }
 
-    var data = buildGraphData(store, prefixes);
     if (data.links.length === 0) {
       renderGraphError(container, 'No triples in this example to draw yet.');
       return;
@@ -413,7 +462,14 @@
       .data(data.nodes)
       .join('g')
       .attr('class', function (d) {
-        return 'sparql-graph-node-' + d.kind;
+        // Ordinary fixtures never set `source`, so every graph elsewhere on
+        // this site keeps exactly its current class list. Only the
+        // live-fetch feature (buildMergedGraphData()) tags nodes with a
+        // fetched `source`, which adds a second class style.css uses to
+        // color that node by where it came from.
+        var cls = 'sparql-graph-node-' + d.kind;
+        if (d.source && d.source !== 'local') cls += ' sparql-graph-node-source-' + d.source;
+        return cls;
       })
       .call(dragBehavior(G, simulation));
 
@@ -426,9 +482,14 @@
         g.append('text').attr('dy', 4).text(d.label);
       } else {
         var r = nodeRadius(d);
-        g.append('circle')
-          .attr('r', r)
-          .attr('fill', PALETTE[i % PALETTE.length]);
+        var circle = g.append('circle').attr('r', r);
+        // A `local` (or untagged) node keeps the existing round-robin
+        // palette; a node tagged with a fetched source gets its fill from
+        // that source's CSS class instead (see .sparql-graph-node-source-*
+        // in style.css), so the fill logic doesn't fight the CSS class.
+        if (!d.source || d.source === 'local') {
+          circle.attr('fill', PALETTE[i % PALETTE.length]);
+        }
         g.append('text')
           .attr('dy', -(r + 6))
           .text(d.label);
@@ -464,6 +525,177 @@
 
       node.attr('transform', function (d) {
         return 'translate(' + d.x + ',' + d.y + ')';
+      });
+    });
+  }
+
+  // --- live linked-data fetch (Wikidata + ORCID) ----------------------------
+  //
+  // A one-off feature for the "I love ELIXIR" example on the RDF & linked
+  // data intro page: fetches the real Turtle Wikidata and ORCID publish for
+  // the two identifiers used in that triple, filters each down to a legible
+  // slice, and merges it into the same graph the fixture's own "Visualize as
+  // graph" button draws -- tagging every node with where it came from
+  // (`local`, `wikidata`, `orcid`) so style.css can color it accordingly.
+
+  // Wikidata's own page for a single item can carry well over a thousand
+  // statements about it (external-database identifiers, sitelinks in dozens
+  // of languages, and more) -- merging in everything would draw an
+  // unreadable tangle. This keeps only the handful of predicates that
+  // actually explain what the item is; everything else Wikidata knows about
+  // it is still there for a reader who follows the identifier themselves.
+  var WIKIDATA_KEEP_PREDICATES = [
+    'http://www.w3.org/2000/01/rdf-schema#label',
+    'http://schema.org/description',
+    'http://www.w3.org/2004/02/skos/core#altLabel',
+    'http://www.wikidata.org/prop/direct/P31', // instance of
+    'http://www.wikidata.org/prop/direct/P279', // subclass of
+    'http://www.w3.org/2002/07/owl#sameAs',
+  ];
+  var WIKIDATA_FETCH_LIMIT = 20;
+
+  // ORCID's own record isn't nearly as sprawling, so a plain cap (rather
+  // than a predicate allow-list) already keeps it legible.
+  var ORCID_FETCH_LIMIT = 25;
+
+  // Keeps only quads whose subject IS the fetched identifier itself (not
+  // every triple the response happens to mention), optionally restricted to
+  // an allow-listed set of predicates, and drops literals tagged with a
+  // language other than English (both Wikidata and ORCID can carry labels in
+  // dozens of languages) -- then caps the result so the merged graph stays
+  // readable.
+  function filterFetchedQuads(quads, subjectIri, predicateAllowlist, limit) {
+    var allow = predicateAllowlist ? new Set(predicateAllowlist) : null;
+    var kept = [];
+    for (var i = 0; i < quads.length && kept.length < limit; i++) {
+      var q = quads[i];
+      if (q.subject.value !== subjectIri) continue;
+      if (allow && !allow.has(q.predicate.value)) continue;
+      if (q.object.termType === 'Literal' && q.object.language && q.object.language !== 'en') continue;
+      kept.push(q);
+    }
+    return kept;
+  }
+
+  // Fetches Turtle for one identifier and returns its filtered quads plus its
+  // own `@prefix` map (a fetched document declares its own prefixes,
+  // unrelated to this page's). Left to reject on a network/HTTP/parse
+  // failure -- the caller (runLiveFetch) decides how to show that honestly.
+  async function fetchLinkedDataGroup(url, subjectIri, predicateAllowlist, limit) {
+    var res = await fetch(url, { headers: { Accept: 'text/turtle' } });
+    if (!res.ok) {
+      throw new Error('HTTP ' + res.status + ' from ' + url);
+    }
+    var text = await res.text();
+    var runner = window.SparqlRunner;
+    var quads = new runner.Parser({ baseIRI: url }).parse(text);
+    var prefixes = extractPrefixes(text, url);
+    return { quads: filterFetchedQuads(quads, subjectIri, predicateAllowlist, limit), prefixes: prefixes };
+  }
+
+  function setLiveFetchStatus(statusEl, text, isError) {
+    statusEl.textContent = text;
+    statusEl.classList.toggle('is-error', !!isError);
+  }
+
+  async function runLiveFetch(block, button, statusEl) {
+    var fixtureId = block.getAttribute('data-fixture-id');
+    var fixture = document.querySelector('.sparql-fixture[data-fixture-id="' + cssEscape(fixtureId) + '"]');
+    var graphContainer = fixture && fixture.querySelector('.sparql-graph');
+    var graphToggle = fixture && fixture.querySelector('.sparql-graph-toggle');
+    var dataEl = fixture && fixture.querySelector('.sparql-fixture-data');
+    if (!fixture || !graphContainer || !dataEl) {
+      setLiveFetchStatus(statusEl, 'Could not find the example graph to merge this into.', true);
+      return;
+    }
+
+    button.disabled = true;
+    setLiveFetchStatus(statusEl, 'Fetching live data from wikidata.org and orcid.org...', false);
+
+    var localTurtle = dataEl.textContent;
+    var groups = [
+      {
+        quads: parseFixtureText(localTurtle).getQuads(null, null, null, null),
+        prefixes: extractPrefixes(localTurtle),
+        source: 'local',
+      },
+    ];
+
+    var sources = [
+      {
+        label: 'Wikidata',
+        id: 'wikidata',
+        url: block.getAttribute('data-wikidata-url'),
+        subject: block.getAttribute('data-wikidata-subject'),
+        predicates: WIKIDATA_KEEP_PREDICATES,
+        limit: WIKIDATA_FETCH_LIMIT,
+      },
+      {
+        label: 'ORCID',
+        id: 'orcid',
+        url: block.getAttribute('data-orcid-url'),
+        subject: block.getAttribute('data-orcid-subject'),
+        predicates: null,
+        limit: ORCID_FETCH_LIMIT,
+      },
+    ];
+
+    var results = await Promise.allSettled(
+      sources.map(function (source) {
+        return fetchLinkedDataGroup(source.url, source.subject, source.predicates, source.limit);
+      })
+    );
+
+    var counts = [];
+    var problems = [];
+    results.forEach(function (result, i) {
+      var source = sources[i];
+      if (result.status === 'fulfilled') {
+        groups.push({ quads: result.value.quads, prefixes: result.value.prefixes, source: source.id });
+        counts.push(result.value.quads.length + ' triples from ' + source.label);
+      } else {
+        var message = result.reason && result.reason.message ? result.reason.message : String(result.reason);
+        problems.push(source.label + ' (' + message + ')');
+      }
+    });
+
+    if (graphContainer.hasAttribute('hidden')) {
+      graphContainer.removeAttribute('hidden');
+      if (graphToggle) graphToggle.innerHTML = '&#9679; Hide graph';
+    }
+
+    try {
+      renderGraphData(graphContainer, buildMergedGraphData(groups));
+    } catch (err) {
+      renderGraphError(graphContainer, 'Could not draw the merged graph: ' + (err && err.message ? err.message : String(err)));
+    }
+
+    button.disabled = false;
+    button.textContent = 'Re-fetch live data from Wikidata & ORCID';
+
+    if (problems.length === 0) {
+      setLiveFetchStatus(statusEl, 'Loaded ' + counts.join(' and ') + ', merged into the graph above.', false);
+    } else if (counts.length === 0) {
+      setLiveFetchStatus(statusEl, 'Both fetches failed: ' + problems.join('; ') + '. Nothing was added.', true);
+    } else {
+      setLiveFetchStatus(
+        statusEl,
+        'Loaded ' + counts.join(' and ') + '. This failed, so it is not shown: ' + problems.join('; ') + '.',
+        true
+      );
+    }
+  }
+
+  function initLiveFetchBlocks() {
+    document.querySelectorAll('.sparql-live-fetch').forEach(function (block) {
+      var button = block.querySelector('.sparql-live-fetch-btn');
+      var statusEl = block.querySelector('.sparql-live-fetch-status');
+      if (!button || !statusEl) return;
+      button.addEventListener('click', function () {
+        runLiveFetch(block, button, statusEl).catch(function (err) {
+          button.disabled = false;
+          setLiveFetchStatus(statusEl, 'Fetch failed: ' + (err && err.message ? err.message : String(err)), true);
+        });
       });
     });
   }
@@ -934,6 +1166,7 @@
     initFixtures();
     initExamples();
     initShaclFixtures();
+    initLiveFetchBlocks();
   }
 
   if (document.readyState === 'loading') {

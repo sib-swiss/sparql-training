@@ -74,6 +74,22 @@ It would have been much simpler to write the predicate as the plain word `"love"
 
 That's also the whole idea behind the phrase **linked data**: whenever a concept, an organisation, a gene, a disease, a chemical, or anything else you want to talk about already has a published, resolvable identifier somewhere, reuse *that* one instead of inventing your own string. Do it enough, across enough independent resources, and everyone's data starts pointing at the same shared set of identifiers - which means it's already linked together, without anyone having agreed on it in a meeting first.
 
+## Prove it: pull in the real data
+
+Everything above is a claim about what a real identifier lets you do. Here's the claim actually happening, live, in your own browser, right now: `<http://www.wikidata.org/entity/Q316>` and `<https://orcid.org/0000-0002-7449-1266>` are both ordinary web addresses, and both Wikidata and ORCID will answer a plain request for one with real Turtle - no API key, no special client, and nothing on this site's own server involved.
+
+The button below makes your browser send two independent requests, straight to wikidata.org and orcid.org, asking for Turtle instead of a web page (an HTTP `Accept: text/turtle` header does that). Whatever comes back gets parsed and merged straight into the graph above: ORCID's own facts about the ORCID identifier (a name, a location, a link to a social profile), and Wikidata's own facts about the "love" item (its label, its description, an alternate name, and what kind of thing Wikidata classifies it as), all get added as new nodes and edges around the original triple. Each node is colored by where it came from, so you can tell at a glance what was already on this page and what your browser just fetched.
+
+One honest caveat: both records publish far more than what gets added here. Wikidata's page for "love" alone carries well over a thousand statements about that one item - identifiers in other library and reference databases, links to related items in dozens of languages, and more. Merging in everything either source returns would draw an unreadable tangle instead of a graph anyone could actually read, so this keeps only each record's own direct statements, filtered down further for Wikidata to just its label, description, alternate label, and its two most direct classification links (`instance of` and `subclass of`). Everything else really is there - follow the identifiers yourself, using the links earlier on this page, to see the rest.
+
+<div class="sparql-live-fetch" data-fixture-id="ilovex" data-wikidata-url="https://www.wikidata.org/wiki/Special:EntityData/Q316.ttl" data-wikidata-subject="http://www.wikidata.org/entity/Q316" data-orcid-url="https://orcid.org/0000-0002-7449-1266" data-orcid-subject="https://orcid.org/0000-0002-7449-1266">
+<button type="button" class="sparql-btn sparql-live-fetch-btn">Fetch live data from Wikidata &amp; ORCID</button>
+<p class="sparql-live-fetch-legend"><span class="sparql-live-fetch-swatch sparql-live-fetch-swatch-wikidata"></span>added from Wikidata<span class="sparql-live-fetch-swatch sparql-live-fetch-swatch-orcid"></span>added from ORCID</p>
+<p class="sparql-live-fetch-status" aria-live="polite">Not fetched yet.</p>
+</div>
+
+This is a real network call over the open internet, not a canned demo, so it can fail the same way any other request can: if wikidata.org or orcid.org is briefly rate-limiting, slow, or down, the status line above says so honestly instead of quietly showing nothing.
+
 ## Abuse your abbreviation power (a fun aside, with a catch)
 
 A `@prefix` name is just a label you choose for yourself - nothing says it has to be a tidy abbreviation like `wd` or `orcid`. The original talk pushes this to its limit with a slide that binds each prefix straight to one of the three *whole* IRIs from the example above, rather than to a shared namespace stem:

@@ -17,6 +17,8 @@
   --syn-variable: #953800;
   --comunica-fg: #9c0510;
   --comunica-bg: #fdeceb;
+  --wikidata-fg: #0b7285;
+  --orcid-fg: #5a7d1a;
   max-width: 100%;
 }
 
@@ -34,6 +36,8 @@
     --err-fg: #ff8182;
     --comunica-fg: #ff8b93;
     --comunica-bg: #2d1214;
+    --wikidata-fg: #39c5cf;
+    --orcid-fg: #a6ce39;
     --syn-keyword: #ff7b72;
     --syn-string: #a5d6ff;
     --syn-function: #d2a8ff;
@@ -502,6 +506,28 @@ th { background: var(--code-bg); }
   }
 }
 
+.sparql-graph-node-source-wikidata {
+  circle {
+    fill: var(--wikidata-fg);
+  }
+
+  rect {
+    stroke: var(--wikidata-fg);
+    stroke-width: 2px;
+  }
+}
+
+.sparql-graph-node-source-orcid {
+  circle {
+    fill: var(--orcid-fg);
+  }
+
+  rect {
+    stroke: var(--orcid-fg);
+    stroke-width: 2px;
+  }
+}
+
 .sparql-graph-empty {
   color: var(--muted);
   font-style: italic;
@@ -567,6 +593,51 @@ th { background: var(--code-bg); }
   border-radius: 6px;
   padding: 0.9rem 1rem;
   margin: 1rem 0 1.75rem;
+}
+
+.sparql-live-fetch {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  margin: 1rem 0 1.75rem;
+
+  .sparql-live-fetch-legend {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .sparql-live-fetch-swatch {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    margin: 0 0.3em 0 0.9em;
+    vertical-align: middle;
+
+    &.sparql-live-fetch-swatch-wikidata {
+      background: var(--wikidata-fg);
+      margin-left: 0;
+    }
+
+    &.sparql-live-fetch-swatch-orcid {
+      background: var(--orcid-fg);
+    }
+  }
+
+  .sparql-live-fetch-status {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+
+    &.is-error {
+      color: var(--err-fg);
+    }
+  }
 }
 
 .comunica-note {
