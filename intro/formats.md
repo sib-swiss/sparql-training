@@ -10,6 +10,8 @@ Below is the same "I love ELIXIR" triple from the previous page, written out fou
 
 ## Turtle - what you already know
 
+Specification: [RDF 1.1 Turtle](https://www.w3.org/TR/turtle/) (W3C Recommendation).
+
 You've seen this one already. Prefixes declared once with `@prefix`, then `subject predicate object .`:
 
 ```turtle fixture=ilovex title="I love ELIXIR, in Turtle"
@@ -34,6 +36,8 @@ SELECT ?person ?organisation WHERE {
 
 ## N-Triples - Turtle with no shortcuts at all
 
+Specification: [RDF 1.1 N-Triples](https://www.w3.org/TR/n-triples/) (W3C Recommendation).
+
 N-Triples is what you get if you take Turtle and ban every convenience: no `@prefix`, no grouping several predicates under one subject, nothing. Every triple is spelled out with full IRIs in angle brackets, one triple per line, each ending in a period. This is in fact exactly the form the previous page's triple started in, before prefixes were introduced:
 
 ```turtle
@@ -43,6 +47,8 @@ N-Triples is what you get if you take Turtle and ban every convenience: no `@pre
 Compare it line by line with the Turtle block above: `orcid:0000-0002-7449-1266` is just `<https://orcid.org/0000-0002-7449-1266>` with the `https://orcid.org/` part hidden behind the `orcid:` prefix, and the same goes for the other two terms. A prefix declaration is a promise to a parser - "wherever you see `wd:`, mentally substitute `http://www.wikidata.org/entity/`" - and N-Triples is what's left once every such promise has already been kept. It's tedious to write by hand on anything bigger than one triple, but that same bluntness makes it trivial for software to generate, stream line by line, and diff.
 
 ## RDF/XML - the original, and still everywhere
+
+Specification: [RDF 1.1 XML Syntax](https://www.w3.org/TR/rdf-syntax-grammar/) (W3C Recommendation).
 
 RDF/XML was the first standard RDF serialization, wrapping the same triple in XML. It's verbose and nobody enjoys writing it by hand, but a lot of established life-science resources still serve it as their default format - UniProt is one of them - so you'll run into it whether you choose to or not:
 
@@ -60,6 +66,8 @@ RDF/XML was the first standard RDF serialization, wrapping the same triple in XM
 The pieces map onto the Turtle version directly, just spelled with XML instead of Turtle's own punctuation: `rdf:about` on the `<rdf:Description>` element is the subject, the nested `<wd:Q316>` element is the predicate (using an XML namespace, `xmlns:wd`, to play exactly the role `@prefix wd:` played in Turtle), and its `rdf:resource` attribute is the object. Same three IRIs, same one triple.
 
 ## JSON-LD - RDF as JSON
+
+Specification: [JSON-LD 1.1](https://www.w3.org/TR/json-ld/) (W3C Recommendation).
 
 JSON-LD is RDF written as ordinary JSON, with one extra key, `@context`, doing the same job as Turtle's `@prefix` block: mapping short names to full IRIs so the rest of the document can stay readable.
 
