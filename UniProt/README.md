@@ -16,7 +16,7 @@ Users can query UniProt RDF data using SPARQL at the [UniProt SPARQL endpoint](h
 # Tutorial
 
 
-The following pages introduce the major concepts. Every worked example runs directly in your browser &mdash; read them on the [published site](https://sib-swiss.github.io/sparql-training/) for the interactive version, or as plain Markdown here:
+The following pages introduce the major concepts. Every worked example runs directly in your browser - read them on the [published site](https://sib-swiss.github.io/sparql-training/) for the interactive version, or as plain Markdown here:
 
  1. [introduction](00_introduction.md)
  2. [basic information](01_basic_information.md)

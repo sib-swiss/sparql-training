@@ -9,7 +9,7 @@ A hands-on introduction to querying metabolism-related data across multiple reso
 | Bgee | expression data | <https://bgee.org/> | <https://www.bgee.org/sparql/> |
 | MetaNetX | reconciled metabolic networks | <https://www.metanetx.org/> | <https://rdf.metanetx.org/> |
 
-Several of the original queries in this tutorial combine two or three of these endpoints in a single query using SPARQL's `SERVICE` keyword &mdash; that's the whole point of a federated query: reach across databases without copying data around. That doesn't work against a single in-browser example dataset, though (there is nothing to federate with), so for each such query this page shows two versions:
+Several of the original queries in this tutorial combine two or three of these endpoints in a single query using SPARQL's `SERVICE` keyword - that's the whole point of a federated query: reach across databases without copying data around. That doesn't work against a single in-browser example dataset, though (there is nothing to federate with), so for each such query this page shows two versions:
 
 - A **runnable** version against a small combined example dataset, with the `SERVICE` wrapper removed (since everything already lives in one place, there's nothing left to federate).
 - A **reference** version, unmodified, showing the real query you can paste into the live endpoint listed above to run it for real, across the real databases.
@@ -519,9 +519,9 @@ WHERE {
 
 Adapted from [sparql-examples UniProt/49](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/49_tissues_where_genes_metabolizing_cholestrol_are_expressed.ttl).
 
-This retrieves UniProt proteins, their catalyzed reactions, their encoding genes (Ensembl), and the anatomic entities where those genes are expressed &mdash; UBERON anatomic entities coming directly from the Bgee expression-data resource's own SPARQL endpoint. This crosses *three* different resources (Rhea, UniProt, Bgee) in one query, and the original tutorial warns it can take a few minutes even on the real endpoints, so it isn't something a small in-page fixture can honestly stand in for. Run it yourself at [sparql.uniprot.org](https://sparql.uniprot.org/sparql):
+This retrieves UniProt proteins, their catalyzed reactions, their encoding genes (Ensembl), and the anatomic entities where those genes are expressed - UBERON anatomic entities coming directly from the Bgee expression-data resource's own SPARQL endpoint. This crosses *three* different resources (Rhea, UniProt, Bgee) in one query, and the original tutorial warns it can take a few minutes even on the real endpoints, so it isn't something a small in-page fixture can honestly stand in for. Run it yourself at [sparql.uniprot.org](https://sparql.uniprot.org/sparql):
 
-```sparql reference="Federates Rhea, UniProt and Bgee &mdash; run at https://sparql.uniprot.org/sparql"
+```sparql reference="Federates Rhea, UniProt and Bgee - run at https://sparql.uniprot.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX rh: <http://rdf.rhea-db.org/>
 PREFIX ch: <http://purl.obolibrary.org/obo/>
@@ -589,7 +589,7 @@ rh:Compound_58613 rh:chebi ch:CHEBI_58613 .
 rh:24945_L_2 rh:compound rh:Compound_unspecified .
 ```
 
-The last participant (`rh:Compound_unspecified`) deliberately has no `rh:chebi` triple, to show why the `chebi` binding is wrapped in `OPTIONAL` &mdash; not every compound in Rhea is cross-referenced to ChEBI.
+The last participant (`rh:Compound_unspecified`) deliberately has no `rh:chebi` triple, to show why the `chebi` binding is wrapped in `OPTIONAL` - not every compound in Rhea is cross-referenced to ChEBI.
 
 ```sparql fixture=q10-hpylori-network
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -700,9 +700,9 @@ ORDER BY ?upPathway
 
 The `mnx:gpr`/`mnx:cata`/`mnx:cplx` traversal is adapted from [sparql-examples MetaNetX/11](https://github.com/sib-swiss/sparql-examples/blob/master/examples/MetaNetX/11.ttl).
 
-This extends Q11 with a `SERVICE` call to [MetaNetX](https://rdf.metanetx.org/) to resolve the enzyme complexes behind a reaction. MetaNetX is a third, specialized resource with its own reconciled-network data model, not something a toy fixture can usefully stand in for &mdash; run this one directly against the live endpoint.
+This extends Q11 with a `SERVICE` call to [MetaNetX](https://rdf.metanetx.org/) to resolve the enzyme complexes behind a reaction. MetaNetX is a third, specialized resource with its own reconciled-network data model, not something a toy fixture can usefully stand in for - run this one directly against the live endpoint.
 
-```sparql reference="Federates UniProt with MetaNetX &mdash; run at https://sparql.uniprot.org/sparql"
+```sparql reference="Federates UniProt with MetaNetX - run at https://sparql.uniprot.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX up: <http://purl.uniprot.org/core/>
 PREFIX rh: <http://rdf.rhea-db.org/>
@@ -752,9 +752,9 @@ ORDER BY ?upPathway
 
 ### Q20: Retrieve UniProtKB/Swiss-Prot proteins, their taxonomic domain and their catalyzed Rhea reactions
 
-The original tutorial feeds this query's results into a Venn diagram (via matplotlib) showing how many Rhea reactions are annotated in each taxonomic domain, and how much they overlap &mdash; a visualization over the *entire* UniProtKB/Swiss-Prot dataset. That's neither a single runnable query result nor something a toy fixture can meaningfully visualize, so this one is reference-only; the original also warns it can take a few minutes even on the live endpoint.
+The original tutorial feeds this query's results into a Venn diagram (via matplotlib) showing how many Rhea reactions are annotated in each taxonomic domain, and how much they overlap - a visualization over the *entire* UniProtKB/Swiss-Prot dataset. That's neither a single runnable query result nor something a toy fixture can meaningfully visualize, so this one is reference-only; the original also warns it can take a few minutes even on the live endpoint.
 
-```sparql reference="Feeds a Venn diagram over the full dataset &mdash; run at https://sparql.uniprot.org/sparql"
+```sparql reference="Feeds a Venn diagram over the full dataset - run at https://sparql.uniprot.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX up: <http://purl.uniprot.org/core/>
 PREFIX keywords: <http://purl.uniprot.org/keywords/>
@@ -780,9 +780,9 @@ WHERE {
 
 ### Q30: Retrieve the Rhea reactions that involve cholesterol or cholesterol derivatives
 
-This performs a *chemical substructure search*: given a molecule as a [SMILES](https://en.wikipedia.org/wiki/Simplified_Molecular_Input_Line_Entry_System) string, the [IDSM/Sachem](https://idsm.elixir-czech.cz/) service finds every ChEBI compound that contains it as a substructure. That's a specialized cheminformatics engine reached over `SERVICE`, not something an in-browser example dataset can reproduce &mdash; run this one directly against the live endpoint.
+This performs a *chemical substructure search*: given a molecule as a [SMILES](https://en.wikipedia.org/wiki/Simplified_Molecular_Input_Line_Entry_System) string, the [IDSM/Sachem](https://idsm.elixir-czech.cz/) service finds every ChEBI compound that contains it as a substructure. That's a specialized cheminformatics engine reached over `SERVICE`, not something an in-browser example dataset can reproduce - run this one directly against the live endpoint.
 
-```sparql reference="Chemical substructure search via IDSM/Sachem &mdash; run at https://sparql.rhea-db.org/sparql"
+```sparql reference="Chemical substructure search via IDSM/Sachem - run at https://sparql.rhea-db.org/sparql"
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX sachem: <http://bioinfo.uochb.cas.cz/rdf/v1.0/sachem#>
 PREFIX idsm: <https://idsm.elixir-czech.cz/sparql/endpoint/>

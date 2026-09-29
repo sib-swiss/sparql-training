@@ -30,13 +30,13 @@ Documentation about the data model is available [here](https://sparql.uniprot.or
 
 The UniProt SPARQL endpoint [sparql.uniprot.org](https://sparql.uniprot.org) is free to use. It is updated in sync with the www.uniprot.org and FTP releases.
 
-**SPARQL** is a W3C-standardized query language for the Semantic Web. If you know SQL, it will look familiar, and you can do similar kinds of queries with it. SPARQL also lets you combine data from a variety of SPARQL endpoints, providing a low-cost alternative to building your own data warehouse &mdash; you can combine UniProt data from [sparql.uniprot.org](https://sparql.uniprot.org) with data from other SPARQL endpoints (Rhea, Bgee, OMA, OrthoDB, neXtProt, etc.).
+**SPARQL** is a W3C-standardized query language for the Semantic Web. If you know SQL, it will look familiar, and you can do similar kinds of queries with it. SPARQL also lets you combine data from a variety of SPARQL endpoints, providing a low-cost alternative to building your own data warehouse - you can combine UniProt data from [sparql.uniprot.org](https://sparql.uniprot.org) with data from other SPARQL endpoints (Rhea, Bgee, OMA, OrthoDB, neXtProt, etc.).
 
 You can also fetch a single UniProtKB entry directly in RDF/XML or Turtle format, without going through the SPARQL endpoint at all, e.g. [P0A877.rdf](https://rest.uniprot.org/uniprotkb/P0A877.rdf) or [P0A877.ttl](https://rest.uniprot.org/uniprotkb/P0A877.ttl).
 
 ## How these pages work
 
-Every runnable example on this site is a small Turtle snippet (a tiny, self-contained excerpt of what a real UniProt entry looks like in RDF) paired with a SPARQL query. Click **Run query** and the query runs immediately, in your browser, against that snippet &mdash; powered by [Comunica](https://comunica.dev/), a SPARQL engine written in JavaScript. Nothing is sent to a server. Both the data and the query are editable, so feel free to change either one and run it again. Click **Visualize as graph** on the data box to see it drawn out as a graph of resources and relationships. Try it all below.
+Every runnable example on this site is a small Turtle snippet (a tiny, self-contained excerpt of what a real UniProt entry looks like in RDF) paired with a SPARQL query. Click **Run query** and the query runs immediately, in your browser, against that snippet - powered by [Comunica](https://comunica.dev/), a SPARQL engine written in JavaScript. Nothing is sent to a server. Both the data and the query are editable, so feel free to change either one and run it again. Click **Visualize as graph** on the data box to see it drawn out as a graph of resources and relationships. Try it all below.
 
 ```turtle fixture=intro-example
 base <http://purl.uniprot.org/uniprot/>

@@ -6,13 +6,13 @@ This is the classic introductory SPARQL tutorial from [SPARQL playground](https:
 
 This example contains a very simple dataset about persons and their pets.
 
-The diagram below shows the main resources it contains (a simplified view &mdash; every triple can be seen in the example data box further down, and in the diagrams below).
+The diagram below shows the main resources it contains (a simplified view - every triple can be seen in the example data box further down, and in the diagrams below).
 
 <a href="assets/model.png" target="_blank"><img width="90%" src="assets/model.png" alt="Diagram of the people, pets and classes in the example dataset"></a>
 
 ## Ontology
 
-A quick look at how the classes and properties in this example are modeled &mdash; useful background before diving into the queries, and a reasonable pattern to follow in your own data.
+A quick look at how the classes and properties in this example are modeled - useful background before diving into the queries, and a reasonable pattern to follow in your own data.
 
 ### Classes
 
@@ -26,15 +26,15 @@ Here is the `tto:Animal` class in detail:
 
 ### Properties
 
-Properties are attached to their domain with `rdfs:domain` &mdash; it's also good practice to attach them to their `rdfs:range`.
+Properties are attached to their domain with `rdfs:domain` - it's also good practice to attach them to their `rdfs:range`.
 
 <a href="assets/ontology-properties.png" target="_blank"><img width="90%" src="assets/ontology-properties.png" alt="tto:sex, tto:weight, tto:color and tto:pet properties and their domain/range"></a>
 
 ## The example data
 
-Every query on this page runs against the dataset below &mdash; the same ontology and data shown in the diagrams above, combined into one file. It's editable: change it, then re-run (or re-open the graph view for) any query further down the page. A couple of the exercises below will specifically ask you to do that.
+Every query on this page runs against the dataset below - the same ontology and data shown in the diagrams above, combined into one file. It's editable: change it, then re-run (or re-open the graph view for) any query further down the page. A couple of the exercises below will specifically ask you to do that.
 
-The `tto:`/`ttr:` terms used here have real, dereferenceable identifiers under `https://purl.expasy.org/sparql-examples/training/` &mdash; fetch `.../ontology` or `.../resource` with an `Accept: text/turtle` header (or just open [`default/ontology.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/ontology.ttl) / [`default/resource.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/resource.ttl) in this repository) to get the same two files as plain Turtle, split the way the original [SPARQL playground](https://github.com/calipho-sib/sparql-playground) source had them.
+The `tto:`/`ttr:` terms used here have real, dereferenceable identifiers under `https://purl.expasy.org/sparql-examples/training/` - fetch `.../ontology` or `.../resource` with an `Accept: text/turtle` header (or just open [`default/ontology.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/ontology.ttl) / [`default/resource.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/default/resource.ttl) in this repository) to get the same two files as plain Turtle, split the way the original [SPARQL playground](https://github.com/calipho-sib/sparql-playground) source had them.
 
 ```turtle fixture=family
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -170,7 +170,7 @@ ttr:SnuffMonkey
 	tto:weight "3.6"^^xsd:decimal .
 ```
 
-Click **&#9679; Visualize as graph** above to see this dataset drawn out as a graph &mdash; every other example dataset on this site has the same option.
+Click **&#9679; Visualize as graph** above to see this dataset drawn out as a graph - every other example dataset on this site has the same option.
 
 ## Basic patterns
 
@@ -267,7 +267,7 @@ select ?thing where {
 
 ### Select things that have a sex
 
-Selects subjects connected to any literal `?sex` via the predicate `tto:sex`. Two variables are used, `?sex` and `?thing` &mdash; we could also use `*` in the select clause instead of naming both variables.
+Selects subjects connected to any literal `?sex` via the predicate `tto:sex`. Two variables are used, `?sex` and `?thing` - we could also use `*` in the select clause instead of naming both variables.
 
 ```sparql fixture=family
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -399,7 +399,7 @@ select ?pet where {
 
 ## Exercises: relationships
 
-These queries have blanks (`***`) &mdash; edit the query box below each one to fill them in, then click **Run query** to check your answer.
+These queries have blanks (`***`) - edit the query box below each one to fill them in, then click **Run query** to check your answer.
 
 ### Exercise: select Eve's grandfather
 
@@ -602,7 +602,7 @@ Now try this: edit the **example data** box further up this page and add this tr
 dbpedia:Harrison_Ford tto:pet ttr:SnuffMonkey .
 ```
 
-Then run the query above again &mdash; `ttr:SnuffMonkey` should now show up with an owner. Click **Reset data** on the data box to undo the change.
+Then run the query above again - `ttr:SnuffMonkey` should now show up with an owner. Click **Reset data** on the data box to undo the change.
 
 ## Federated queries with DBpedia
 
@@ -776,7 +776,7 @@ SELECT ?owner (count(?pet) as ?cnt) {
 
 Create a graph pattern using `rdf:type` to connect any subject (`?thing`) to the object `tto:Dog`. Add two more graph patterns to get the subject's color and sex.
 
-*(As given in the original tutorial, the query below actually matches `tto:Cat` rather than `tto:Dog` &mdash; kept as-is; try changing it to `tto:Dog` yourself.)*
+*(As given in the original tutorial, the query below actually matches `tto:Cat` rather than `tto:Dog` - kept as-is; try changing it to `tto:Dog` yourself.)*
 
 ```sparql fixture=family
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -910,9 +910,9 @@ HAVING (COUNT(?member) > 1)
 
 ## Data shape (SHACL)
 
-A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means for this dataset &mdash; which classes exist, which properties they're expected to have, and what those properties' values should look like. It's a useful reference alongside the ontology diagrams at the top of this page, and it's exactly the kind of thing a real data provider publishes so consumers know what to expect.
+A [SHACL](https://www.w3.org/TR/shacl/) shape describes what "valid data" means for this dataset - which classes exist, which properties they're expected to have, and what those properties' values should look like. It's a useful reference alongside the ontology diagrams at the top of this page, and it's exactly the kind of thing a real data provider publishes so consumers know what to expect.
 
-[`basic/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/basic/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn &mdash; SHACL's version of the "inheritance" those classes show in the ontology diagram.
+[`basic/shapes.ttl`](https://github.com/sib-swiss/sparql-training/blob/markdown/basic/shapes.ttl) in this repository validates cleanly against the dataset above (checked with Apache Jena's `shacl` CLI). It mirrors the class hierarchy from the diagrams: a base `CreatureShape` requiring `tto:sex`, reused by both `PersonShape` and an `AnimalShape` that `CatShape`/`DogShape`/`MonkeyShape` each build on in turn - SHACL's version of the "inheritance" those classes show in the ontology diagram.
 
 ```turtle shapes=basic-shapes title="basic/shapes.ttl"
 @prefix sh: <http://www.w3.org/ns/shacl#> .
@@ -981,4 +981,4 @@ ex:DogShape a sh:NodeShape ; sh:targetClass tto:Dog ; sh:node ex:AnimalShape .
 ex:MonkeyShape a sh:NodeShape ; sh:targetClass tto:Monkey ; sh:node ex:AnimalShape .
 ```
 
-This is shown as reference material rather than a runnable example &mdash; SHACL validation is a different kind of engine from the SPARQL queries this site runs in your browser, so there's no **Run** button here. Click **Visualize shape diagram** above, though: it draws the shapes graph itself (shapes, target classes, datatypes, and how `sh:node`/`sh:property` connect them), reusing the same in-browser graph renderer as the "Visualize as graph" button on the data fixtures further up this page. A full client-side SHACL *validator* is still on the roadmap.
+This is shown as reference material rather than a runnable example - SHACL validation is a different kind of engine from the SPARQL queries this site runs in your browser, so there's no **Run** button here. Click **Visualize shape diagram** above, though: it draws the shapes graph itself (shapes, target classes, datatypes, and how `sh:node`/`sh:property` connect them), reusing the same in-browser graph renderer as the "Visualize as graph" button on the data fixtures further up this page. A full client-side SHACL *validator* is still on the roadmap.

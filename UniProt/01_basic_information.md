@@ -4,7 +4,7 @@ This page shows you basic information stored on every UniProtKB entry: identifie
 
 ## Entry identifier
 
-Each UniProt entry is identified by a [primary accession](https://www.uniprot.org/help/accession_numbers) &mdash; the best way to access an entry. In the RDF format, the primary accession is part of the IRI that identifies the entry.
+Each UniProt entry is identified by a [primary accession](https://www.uniprot.org/help/accession_numbers) - the best way to access an entry. In the RDF format, the primary accession is part of the IRI that identifies the entry.
 
 ```turtle fixture=entry
 base <http://purl.uniprot.org/uniprot/>
@@ -41,7 +41,7 @@ WHERE {
 
 Adapted from [sparql-examples UniProt/102](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/102_uniprot_primary_accession.ttl).
 
-This is easy enough with some string manipulation. While UniProt primary accessions are unique within UniProtKB, they may be reused by accident or intentionally by other data sources. If you provide them as plain strings (not IRIs) in a query, you might accidentally retrieve completely wrong records &mdash; so prefer matching on the full IRI, and only extract the accession as a string for display.
+This is easy enough with some string manipulation. While UniProt primary accessions are unique within UniProtKB, they may be reused by accident or intentionally by other data sources. If you provide them as plain strings (not IRIs) in a query, you might accidentally retrieve completely wrong records - so prefer matching on the full IRI, and only extract the accession as a string for display.
 
 ```sparql fixture=entry
 PREFIX up: <http://purl.uniprot.org/core/>

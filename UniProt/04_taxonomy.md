@@ -2,7 +2,7 @@
 
 This page shows you how taxonomy data is represented in UniProt.
 
-UniProtKB taxonomy data is manually curated (see details [here](https://www.uniprot.org/taxonomy/)). The organism that is the source of a protein sequence is identified by a unique identifier (often called *taxon* or *taxid*) from the [NCBI taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) database. This is the only taxonomy information stored directly on a UniProtKB entry &mdash; the full NCBI taxonomy is modeled and available separately.
+UniProtKB taxonomy data is manually curated (see details [here](https://www.uniprot.org/taxonomy/)). The organism that is the source of a protein sequence is identified by a unique identifier (often called *taxon* or *taxid*) from the [NCBI taxonomy](https://www.ncbi.nlm.nih.gov/taxonomy) database. This is the only taxonomy information stored directly on a UniProtKB entry - the full NCBI taxonomy is modeled and available separately.
 
 ## Organism identifier
 
@@ -135,7 +135,7 @@ WHERE {
 
 ## Try it yourself: whole-database questions
 
-The following question needs to be answered against the full UniProtKB dataset (counting reviewed entries across every domain of life), so it isn't something a small in-page fixture can meaningfully demonstrate. It's also, we found by actually testing it, too expensive to offer as a live "Run query" button here: joining every reviewed entry's organism against `rdfs:subClassOf` for all four taxonomic domains is a genuinely heavy query over the full dataset, and it timed out (30s+) both through this site's engine and with a raw request straight to the endpoint itself &mdash; a real performance limit of the query at this scale, not a client-side or federation issue. Try running it yourself, patiently, against the live endpoint at [sparql.uniprot.org](https://sparql.uniprot.org/sparql).
+The following question needs to be answered against the full UniProtKB dataset (counting reviewed entries across every domain of life), so it isn't something a small in-page fixture can meaningfully demonstrate. It's also, we found by actually testing it, too expensive to offer as a live "Run query" button here: joining every reviewed entry's organism against `rdfs:subClassOf` for all four taxonomic domains is a genuinely heavy query over the full dataset, and it timed out (30s+) both through this site's engine and with a raw request straight to the endpoint itself - a real performance limit of the query at this scale, not a client-side or federation issue. Try running it yourself, patiently, against the live endpoint at [sparql.uniprot.org](https://sparql.uniprot.org/sparql).
 
 Adapted from [sparql-examples UniProt/87](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/87_taxonomy_with_at_least_one_swissprot.ttl).
 

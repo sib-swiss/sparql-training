@@ -1,6 +1,6 @@
 # Cross-references to external databases
 
-UniProtKB entries link out to dozens of other databases &mdash; structure archives, sequence archives, other protein-clustering resources, and more. Every cross-reference uses the same basic shape: the protein has an `rdfs:seeAlso` link to a resource representing the cross-reference, and that resource is typed with `up:database` to say which external database it points into. Some databases attach extra structured detail on top of that basic link, as you'll see below with PDB's chain mapping.
+UniProtKB entries link out to dozens of other databases - structure archives, sequence archives, other protein-clustering resources, and more. Every cross-reference uses the same basic shape: the protein has an `rdfs:seeAlso` link to a resource representing the cross-reference, and that resource is typed with `up:database` to say which external database it points into. Some databases attach extra structured detail on top of that basic link, as you'll see below with PDB's chain mapping.
 
 The queries on this page are adapted from the community-curated [sparql-examples](https://github.com/sib-swiss/sparql-examples) query collection.
 
@@ -41,7 +41,7 @@ WHERE
 
 Adapted from [sparql-examples UniProt/6](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/6_cross_ref_in_category_3D.ttl).
 
-UniProt groups external databases into categories (`'3D structure databases'`, `'Sequence databases'`, `'Genome annotation databases'`, and so on &mdash; see the full list at [uniprot.org/database](https://www.uniprot.org/database)). This lets you pull every cross-reference in a whole category at once, rather than naming one database at a time. Here, every 3D-structure-database cross-reference of entries classified with the keyword [Acetoin biosynthesis (KW-0005)](https://www.uniprot.org/keywords/5):
+UniProt groups external databases into categories (`'3D structure databases'`, `'Sequence databases'`, `'Genome annotation databases'`, and so on - see the full list at [uniprot.org/database](https://www.uniprot.org/database)). This lets you pull every cross-reference in a whole category at once, rather than naming one database at a time. Here, every 3D-structure-database cross-reference of entries classified with the keyword [Acetoin biosynthesis (KW-0005)](https://www.uniprot.org/keywords/5):
 
 ```turtle fixture=xref-category
 base <http://purl.uniprot.org/uniprot/>
@@ -79,7 +79,7 @@ WHERE
 
 Adapted from [sparql-examples UniProt/57](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/57_map_pdb_identifiers_plus_chains_to_uniprot.ttl).
 
-Going the other way &mdash; from a PDB identifier and chain code back to UniProtKB &mdash; needs one extra piece of data: PDB cross-references carry a `chainSequenceMapping`, whose `chain` value is a compact text label like `"A/C=1-306"` (chain letters, an `=`, then the residue range). Splitting on `=` with `STRBEFORE` gets you the chain letters back out.
+Going the other way - from a PDB identifier and chain code back to UniProtKB - needs one extra piece of data: PDB cross-references carry a `chainSequenceMapping`, whose `chain` value is a compact text label like `"A/C=1-306"` (chain letters, an `=`, then the residue range). Splitting on `=` with `STRBEFORE` gets you the chain letters back out.
 
 ```turtle fixture=pdb-chain-mapping
 base <http://purl.uniprot.org/uniprot/>
@@ -129,7 +129,7 @@ WHERE
 
 Adapted from [sparql-examples UniProt/35](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/35_similar_proteins_via_uniref_clusters.ttl).
 
-[UniRef](https://www.uniprot.org/help/uniref) groups UniProtKB entries into clusters of similar sequences. On the live endpoint, UniProtKB and UniRef data live in separate named graphs, so the real query restricts itself to those graphs with `FROM`. In one local example dataset there's only ever a single (default) graph, so the first runnable version below just drops the `FROM` clauses &mdash; everything needed is already in the one graph. The second version below is the real query with the `FROM` clauses, running live against `sparql.uniprot.org` itself (there's no local data to fake this one with, since it depends on two real named graphs).
+[UniRef](https://www.uniprot.org/help/uniref) groups UniProtKB entries into clusters of similar sequences. On the live endpoint, UniProtKB and UniRef data live in separate named graphs, so the real query restricts itself to those graphs with `FROM`. In one local example dataset there's only ever a single (default) graph, so the first runnable version below just drops the `FROM` clauses - everything needed is already in the one graph. The second version below is the real query with the `FROM` clauses, running live against `sparql.uniprot.org` itself (there's no local data to fake this one with, since it depends on two real named graphs).
 
 ```turtle fixture=uniref-similarity
 base <http://purl.uniprot.org/uniprot/>
@@ -233,7 +233,7 @@ WHERE {
 
 Adapted from [sparql-examples UniProt/174](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/174_pdb_structures_via_pdbj_federation.ttl).
 
-UniProtKB's own PDB cross-references are locally stored (as seen above), but you can also federate live with another endpoint's *own* cross-reference data, rather than UniProt's copy of it, using `SERVICE`. This runs for real: the `BIND` below is evaluated locally (there's no other local data needed for that part), and the `SERVICE` block sends its part of the query straight to PDBj/RDF Portal over the network, so it's a little slower than the other examples on this page &mdash; a handful of seconds is normal.
+UniProtKB's own PDB cross-references are locally stored (as seen above), but you can also federate live with another endpoint's *own* cross-reference data, rather than UniProt's copy of it, using `SERVICE`. This runs for real: the `BIND` below is evaluated locally (there's no other local data needed for that part), and the `SERVICE` block sends its part of the query straight to PDBj/RDF Portal over the network, so it's a little slower than the other examples on this page - a handful of seconds is normal.
 
 ```turtle fixture=pdbj-federated
 # Intentionally empty: this example needs no local data. `?protein` is bound

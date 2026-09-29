@@ -2,7 +2,7 @@
 
 This page shows you how UniProtKB stores **protein sequences** and their **isoforms**. These queries are adapted from the [SIB SPARQL examples](https://github.com/sib-swiss/sparql-examples) collection for UniProt.
 
-A UniProt entry points at its sequence(s) through the `up:sequence` property, and, when a computational mapping exists, through `up:potentialSequence` as well. Each sequence is its own resource &mdash; typically an isoform, identified by an IRI like `http://purl.uniprot.org/isoforms/P05067-1` &mdash; carrying the residues themselves in `rdf:value`. A sequence resource is typed `up:Simple_Sequence` when UniProt maintains it directly, or `up:External_Sequence` when it comes from an external isoform mapping.
+A UniProt entry points at its sequence(s) through the `up:sequence` property, and, when a computational mapping exists, through `up:potentialSequence` as well. Each sequence is its own resource - typically an isoform, identified by an IRI like `http://purl.uniprot.org/isoforms/P05067-1` - carrying the residues themselves in `rdf:value`. A sequence resource is typed `up:Simple_Sequence` when UniProt maintains it directly, or `up:External_Sequence` when it comes from an external isoform mapping.
 
 ## Retrieving sequences for an organism
 
@@ -84,7 +84,7 @@ Adapted from [sparql-examples UniProt/107](https://github.com/sib-swiss/sparql-e
 A UniProt entry can have several isoforms, but `up:sequence` always points at whichever one is *canonical*. This query marks each sequence as canonical or not: a `Simple_Sequence` is likely canonical, unless it's *also* an `External_Sequence` whose IRI doesn't correspond to the entry's own accession (an external isoform mapped in from elsewhere).
 
 ```note type=comunica-limitation
-Both queries below use a `FILTER` *inside* an `OPTIONAL` block that depends on a value from a `BIND` &mdash; a combination [Comunica](https://comunica.dev/) (the engine running the examples on this site) can't plan when evaluating a query itself against a small local dataset, even though it's valid SPARQL. Sent whole to a real, conformant endpoint instead &mdash; which is exactly what happens below, since the query targets `sparql.uniprot.org` live, with no local fixture &mdash; that endpoint does its own native evaluation and there's no issue.
+Both queries below use a `FILTER` *inside* an `OPTIONAL` block that depends on a value from a `BIND` - a combination [Comunica](https://comunica.dev/) (the engine running the examples on this site) can't plan when evaluating a query itself against a small local dataset, even though it's valid SPARQL. Sent whole to a real, conformant endpoint instead - which is exactly what happens below, since the query targets `sparql.uniprot.org` live, with no local fixture - that endpoint does its own native evaluation and there's no issue.
 ```
 
 ```sparql live="https://sparql.uniprot.org/sparql"
@@ -123,7 +123,7 @@ LIMIT 5
 
 Adapted from [sparql-examples UniProt/163](https://github.com/sib-swiss/sparql-examples/blob/master/examples/UniProt/163_canonical_isoform_does_not_need_to_be_dash_1.ttl).
 
-`up:sequence` points at whichever isoform was chosen as canonical &mdash; usually `-1`, but not always. This query finds reviewed proteins where it isn't, ordered by the highest isoform number used as the canonical sequence. Like the query above, this one also mixes a `FILTER` inside an `OPTIONAL` with a `BIND`, so it runs live against `sparql.uniprot.org` rather than a local fixture.
+`up:sequence` points at whichever isoform was chosen as canonical - usually `-1`, but not always. This query finds reviewed proteins where it isn't, ordered by the highest isoform number used as the canonical sequence. Like the query above, this one also mixes a `FILTER` inside an `OPTIONAL` with a `BIND`, so it runs live against `sparql.uniprot.org` rather than a local fixture.
 
 ```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX up: <http://purl.uniprot.org/core/>
@@ -153,7 +153,7 @@ LIMIT 5
 
 ## Initiator methionine
 
-Translation always starts with a methionine, but that residue is often enzymatically removed afterwards. When UniProt has evidence for this, it's recorded as a `up:Initiator_Methionine_Annotation` &mdash; a single-residue [FALDO](https://link.springer.com/article/10.1186/s13326-016-0067-z) position (`faldo:begin` and `faldo:end` both point at the same spot) at the very start of the sequence. Below, human hemoglobin subunit alpha ([P69905](https://www.uniprot.org/uniprotkb/P69905)): the query looks up that position in the full (unprocessed) sequence to double-check it really is an "M".
+Translation always starts with a methionine, but that residue is often enzymatically removed afterwards. When UniProt has evidence for this, it's recorded as a `up:Initiator_Methionine_Annotation` - a single-residue [FALDO](https://link.springer.com/article/10.1186/s13326-016-0067-z) position (`faldo:begin` and `faldo:end` both point at the same spot) at the very start of the sequence. Below, human hemoglobin subunit alpha ([P69905](https://www.uniprot.org/uniprotkb/P69905)): the query looks up that position in the full (unprocessed) sequence to double-check it really is an "M".
 
 ```turtle fixture=seq-initiator-met
 base <http://purl.uniprot.org/uniprot/>
@@ -200,7 +200,7 @@ WHERE {
 
 ## Chains: the mature, processed protein
 
-Once initiator methionines, signal peptides and other processing steps are accounted for, what's left is the *mature* protein &mdash; recorded as a `up:Chain_Annotation` with a `rdfs:comment` naming it and a range covering the residues it spans. Continuing the hemoglobin example: after the initiator methionine above is removed, the mature chain covers residues 2&ndash;142 of the same 142-residue sequence.
+Once initiator methionines, signal peptides and other processing steps are accounted for, what's left is the *mature* protein - recorded as a `up:Chain_Annotation` with a `rdfs:comment` naming it and a range covering the residues it spans. Continuing the hemoglobin example: after the initiator methionine above is removed, the mature chain covers residues 2&ndash;142 of the same 142-residue sequence.
 
 ```turtle fixture=seq-chain
 base <http://purl.uniprot.org/uniprot/>
@@ -252,7 +252,7 @@ WHERE {
 
 ## Signal peptides
 
-Secreted and membrane proteins carry a `up:Signal_Peptide_Annotation` at their N-terminus &mdash; a short stretch that targets the protein for translocation and is cleaved off before the mature chain begins, so it's never part of the functional protein. Below, the amyloid precursor protein ([P05067](https://www.uniprot.org/uniprotkb/P05067)) again, this time extracting the actual signal peptide sequence (residues 1&ndash;17) with `SUBSTR`.
+Secreted and membrane proteins carry a `up:Signal_Peptide_Annotation` at their N-terminus - a short stretch that targets the protein for translocation and is cleaved off before the mature chain begins, so it's never part of the functional protein. Below, the amyloid precursor protein ([P05067](https://www.uniprot.org/uniprotkb/P05067)) again, this time extracting the actual signal peptide sequence (residues 1&ndash;17) with `SUBSTR`.
 
 ```turtle fixture=seq-signal-peptide
 base <http://purl.uniprot.org/uniprot/>

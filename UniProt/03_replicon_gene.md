@@ -120,7 +120,7 @@ WHERE {
 
 ## Replicons
 
-A protein's gene sits on a *replicon* &mdash; a chromosome, plasmid, or other replicating DNA molecule. UniProt links a protein to a proteome component through the `proteome` property; the replicon name is encoded after the `#` in that IRI.
+A protein's gene sits on a *replicon* - a chromosome, plasmid, or other replicating DNA molecule. UniProt links a protein to a proteome component through the `proteome` property; the replicon name is encoded after the `#` in that IRI.
 
 ```turtle fixture=replicon
 base <http://purl.uniprot.org/uniprot/>
@@ -148,7 +148,7 @@ WHERE {
 }
 ```
 
-The query above works against any small example dataset, but "reference proteome" and "reviewed" are real UniProtKB-wide classifications a local fixture can't meaningfully stand in for &mdash; so here's the real version, restricted to human, running live against `sparql.uniprot.org`:
+The query above works against any small example dataset, but "reference proteome" and "reviewed" are real UniProtKB-wide classifications a local fixture can't meaningfully stand in for - so here's the real version, restricted to human, running live against `sparql.uniprot.org`:
 
 ```sparql live="https://sparql.uniprot.org/sparql"
 PREFIX up: <http://purl.uniprot.org/core/>
