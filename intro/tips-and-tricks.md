@@ -98,6 +98,7 @@ You don't need to build this yourself from nothing:
 
 - A triple store (for example [Apache Jena Fuseki](https://jena.apache.org/documentation/fuseki2/), [Virtuoso](https://virtuoso.openlinksw.com/), or [QLever](https://github.com/ad-freiburg/qlever)) will load your Turtle files and give you a SPARQL endpoint with comparatively little setup.
 - If running a server isn't realistic for your project, publishing a downloadable RDF dump (Turtle, N-Triples, or a compressed version of either) is a legitimate minimum - it's still far more reusable than a CSV, because anyone can load it straight into whatever triple store they already run, with no format conversion.
+- If your data is very small and does not change often a free option may be [Oxigraph in a CloudFlare webworker](https://github.com/JervenBolleman/oxigraph-cloudflare-webworker).
 
 Running and tuning a production SPARQL endpoint is its own topic, well outside a tips page - the point here is just: know that "queryable" and "downloadable" are two different, both worthwhile, levels of publishing, and pick at least the second.
 
