@@ -15,6 +15,7 @@ const OUT = path.join(ROOT, '_site');
 // into one dropdown in the header nav, in the order they first appear.
 export const PAGES = [
   { src: 'index.md', out: 'index.html', title: 'Home' },
+  { src: 'intro/tutorial.md', out: 'intro/tutorial.html', title: 'RDF & linked data' },
   { src: 'basic/tutorial.md', out: 'basic/tutorial.html', title: 'SPARQL basics' },
   { src: 'UniProt/00_introduction.md', out: 'UniProt/00_introduction.html', title: 'Introduction', group: 'UniProt' },
   { src: 'UniProt/01_basic_information.md', out: 'UniProt/01_basic_information.html', title: 'Basic information', group: 'UniProt' },

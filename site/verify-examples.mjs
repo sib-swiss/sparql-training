@@ -19,6 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const FILES = [
+  'intro/tutorial.md',
   'basic/tutorial.md',
   'UniProt/00_introduction.md',
   'UniProt/01_basic_information.md',

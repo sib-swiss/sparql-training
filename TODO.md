@@ -7,7 +7,7 @@
 [x] Generate a SHACL shape for the basic tutorial data. 
 [x] Search for a SHACL shape client side diagram renderer and propose on a different branch each visualization
 [x] Make an export to Jupyther notebooks. As that was usefull functionality
-[] Add a basic RDF and linked data tutorial
+[x] Add a basic RDF and linked data tutorial
    * Build on the "I Love X" example in the downloaded presentation given to Elixir at ECCB 4_Tuesday_1145_Bolleman.pdf
 [x] Make a contributing.md that explains the structure of the markdown and the special tags. Where you need to add a file to build.mjs etc.
 [] See if we can reduce the need to explicitly add files to build.mjs
