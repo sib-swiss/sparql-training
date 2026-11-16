@@ -4,7 +4,7 @@ This repo is plain Markdown, built into a static site by `site/build.mjs`. This
 page explains that structure: how a page's Markdown turns into an interactive,
 in-browser-runnable tutorial, and every place you need to register a new page
 or a new kind of example so the build, the query verifier, and the Jupyter
-notebook export all agree on it.
+notebook / Quarto document exports all agree on it.
 
 ## Repository layout
 
@@ -100,13 +100,14 @@ means for the dataset shown alongside it.
    automatically (swap `.md` for `.html`); only set it explicitly if a page
    genuinely needs a different one. **`PAGES` order is nav order** -
    put a prerequisite page before the pages that assume it.
-3. That's it - `site/verify-examples.mjs` and `site/export-notebooks.mjs`
-   both run automatically over this same `PAGES` list (via `import { PAGES }
-   from './build.mjs'`), so there's no second list to keep in sync. A page
-   with no `fixture=`/`live=` blocks (a pure-prose intro, or one with only
-   `reference=` blocks) is harmless to include in both: the verifier finds
-   nothing to run, and the notebook exporter silently gives it no notebook
-   link, which is correct, not a bug to fix.
+3. That's it - `site/verify-examples.mjs`, `site/export-notebooks.mjs` and
+   `site/export-quarto.mjs` all run automatically over this same `PAGES`
+   list (via `import { PAGES } from './build.mjs'`), so there's no second
+   list to keep in sync. A page with no `fixture=`/`live=` blocks (a
+   pure-prose intro, or one with only `reference=` blocks) is harmless to
+   include in all three: the verifier finds nothing to run, and the
+   notebook/Quarto exporters silently give it no download link, which is
+   correct, not a bug to fix.
 4. A page can ship a sibling `assets/` folder (images etc.) referenced with a
    relative path from its Markdown (see `basic/assets/`) - the build
    copies it next to the built page automatically; no registration needed.
@@ -127,10 +128,11 @@ the existing ones), you're extending the renderer itself:
    for `shapes=`).
 3. Decide whether **`site/verify-examples.mjs`** should execute it (only
    makes sense for something that produces a checkable SPARQL result) and
-   whether **`site/export-notebooks.mjs`** should render it into a notebook
-   cell (its default for an unrecognized fence type is to fall through to an
-   inert Markdown code block, which is a safe, correct default if the new
-   block type isn't something a static notebook can meaningfully reproduce).
+   whether **`site/export-notebooks.mjs`** and **`site/export-quarto.mjs`**
+   should render it into a notebook cell / Quarto code chunk (their default
+   for an unrecognized fence type is to fall through to an inert Markdown
+   code block, which is a safe, correct default if the new block type isn't
+   something a static notebook or document can meaningfully reproduce).
 
 ## Building and checking your changes
 

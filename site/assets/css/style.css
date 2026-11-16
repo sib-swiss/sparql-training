@@ -258,6 +258,10 @@ main {
   border-radius: 999px;
 }
 
+.notebook-download a + a {
+  margin-left: 0.5rem;
+}
+
 .notebook-download a:hover {
   color: var(--accent);
   border-color: var(--accent);

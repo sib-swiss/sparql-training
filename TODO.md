@@ -30,3 +30,4 @@
   * then make a single dropdown for Rhea metabolism and Rhea citations+xrefs
 [x] Orcid website do not have CORS headers. We can't seem to access them in JS, is there a way we can circumvent this?
    * Not actually missing on the final response - orcid.org's content-negotiation redirect chain (orcid.org -> pub.orcid.org -> pub.orcid.org/experimental_rdf_v1/...) has no Access-Control-Allow-Origin on the intermediate redirects, only the final response, which is what a browser fetch() checks at every hop. Fixed by fetching the already-resolved pub.orcid.org/experimental_rdf_v1/<id> URL directly, skipping the redirects.
+[x] Also generate Quarto (.qmd) documents alongside the Jupyter notebook export, for people who want a renderable report instead of a notebook.

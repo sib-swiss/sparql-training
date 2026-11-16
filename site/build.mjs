@@ -5,6 +5,7 @@ import esbuild from 'esbuild';
 import MarkdownIt from 'markdown-it';
 import { parseFenceAttrs } from './lib/blocks.mjs';
 import { exportNotebooks } from './export-notebooks.mjs';
+import { exportQuarto } from './export-quarto.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -328,15 +329,15 @@ function renderPageToc(headings) {
   );
 }
 
-function renderNotebookLink(base, notebookPath) {
-  if (!notebookPath) return '';
-  return (
-    `<p class="notebook-download"><a href="${base}${notebookPath}" download>` +
-    `&#128211; Download this page as a Jupyter notebook</a></p>`
-  );
+function renderDownloadLinks(base, notebookPath, quartoPath) {
+  const links = [];
+  if (notebookPath) links.push(`<a href="${base}${notebookPath}" download>&#128211; Download as Jupyter notebook</a>`);
+  if (quartoPath) links.push(`<a href="${base}${quartoPath}" download>&#128211; Download as Quarto document</a>`);
+  if (links.length === 0) return '';
+  return `<p class="notebook-download">${links.join(' ')}</p>`;
 }
 
-function buildPages(md, layout, notebookFor) {
+function buildPages(md, layout, notebookFor, quartoFor) {
   for (const page of PAGES) {
     const srcPath = path.join(ROOT, page.src);
     const markdown = readFileSync(srcPath, 'utf8');
@@ -349,7 +350,7 @@ function buildPages(md, layout, notebookFor) {
       .replaceAll('{{TITLE}}', escapeHtml(title))
       .replaceAll('{{BASE}}', base)
       .replace('{{NAV}}', renderNav(page.out))
-      .replace('{{NOTEBOOK}}', renderNotebookLink(base, notebookFor.get(page.out)))
+      .replace('{{NOTEBOOK}}', renderDownloadLinks(base, notebookFor.get(page.out), quartoFor.get(page.out)))
       .replace('{{TOC}}', renderPageToc(env.headings))
       .replace('{{CONTENT}}', contentHtml);
 
@@ -374,10 +375,11 @@ function main() {
   buildClientBundles();
   copyStaticAssets();
   const notebookFor = exportNotebooks(PAGES, ROOT, OUT);
+  const quartoFor = exportQuarto(PAGES, ROOT, OUT);
 
   const md = buildMarkdownRenderer();
   const layout = readFileSync(path.join(__dirname, 'templates/layout.html'), 'utf8');
-  buildPages(md, layout, notebookFor);
+  buildPages(md, layout, notebookFor, quartoFor);
 
   console.log(`\nBuilt site into ${path.relative(ROOT, OUT)}/`);
 }
