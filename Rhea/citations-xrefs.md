@@ -1,3 +1,41 @@
+---
+description: >-
+  Retrieve PubMed citations and cross-references to other databases (KEGG,
+  MetaCyc, MACiE) attached directly to Rhea reactions with SPARQL, no
+  federation required.
+keywords: "Rhea, SPARQL, citations, PubMed, cross-references, KEGG, MACiE, MetaCyc"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-1216-2969
+    name: Anne Morgat
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Retrieve the PubMed citations attached to a Rhea reaction
+  - Count and average citations per reaction with SPARQL aggregation
+  - Find reactions missing a citation using a negation pattern
+  - Retrieve and count Rhea's cross-references to KEGG, MetaCyc and MACiE
+timeRequired: PT25M
+---
+
 # Rhea citations and cross-references
 
 Every Rhea reaction can point outward in two different ways: a **citation**, a PubMed reference backing the reaction, and a **cross-reference**, a link to the equivalent reaction in another database such as KEGG, MetaCyc or MACiE. This page covers both.

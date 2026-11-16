@@ -1,3 +1,42 @@
+---
+description: >-
+  Query biochemical reaction data in Rhea with SPARQL, and federate across
+  Rhea, UniProt, Bgee and MetaNetX with SERVICE to connect reactions to the
+  enzymes that catalyze them, where those enzymes are expressed, and the
+  metabolic networks they form.
+keywords: "Rhea, SPARQL, federated queries, SERVICE, biochemical reactions, UniProt, enzyme classification, cholesterol metabolism, metabolic network"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-1216-2969
+    name: Anne Morgat
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Query Rhea reactions and their chemical equations by status and participant compounds
+  - Federate SPARQL queries across Rhea, UniProt, Bgee and MetaNetX with the SERVICE keyword
+  - Classify reactions by IUBMB enzyme class and summarize their taxonomic distribution
+  - Build a proteome-scale metabolic network from combined UniProt and Rhea data
+timeRequired: PT45M
+---
+
 # Rhea metabolism tutorial
 
 A hands-on introduction to querying metabolism-related data across multiple resources with SPARQL.
