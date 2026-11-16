@@ -44,6 +44,7 @@ export const PAGES = [
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
   { src: 'Rhea/rhea.md', title: 'Metabolism', group: 'Rhea' },
   { src: 'Rhea/citations-xrefs.md', title: 'Citations & cross-references', group: 'Rhea' },
+  { src: 'MetaNetX/metabolites.md', title: 'MetaNetX: metabolite identification' },
   { src: 'tools/tools.md', title: 'Tools & ecosystem', group: 'Basics' },
   { src: 'intro/tips-and-tricks.md', title: 'Tips and tricks: publishing your own RDF', group: 'Basics' },
 ].map((def) => ({ out: mdToHtml(def.src), ...def }));
