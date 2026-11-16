@@ -112,6 +112,32 @@ means for the dataset shown alongside it.
    relative path from its Markdown (see `basic/assets/`) - the build
    copies it next to the built page automatically; no registration needed.
 
+## Adding a translation of an existing page
+
+A page can exist in more than one language - see the `MetaNetX/*.md` /
+`MetaNetX/*.fr.md` pairs for the first example.
+
+1. Name the file the same as the original with a `.<lang>.md` suffix before
+   the extension (e.g. `01_id_mapping.fr.md`), in the same directory.
+2. Register it in `site/build.mjs`'s `PAGES` array like any other page, but
+   add `lang: '<code>'` (an ISO 639-1 code; omit on the original, which
+   defaults to `en`) and a `translationKey` string shared with the page(s)
+   it translates - that's what pairs them up, not the filename. Add the
+   language's display name to `LANG_NAMES` the first time a new one is used.
+3. That's the whole registration - a shared `translationKey` is what makes
+   `renderLangSwitch()` print the small "English · Français" pill linking
+   the two on both pages. A translation does **not** get its own main-nav
+   entry (only `lang: 'en'` pages do) - it's reachable from that pill on its
+   `en` counterpart, or by a direct link, so the nav doesn't grow a whole
+   extra copy of itself per language.
+4. Everything else - `fixture=`/`live=` blocks, the verifier, the
+   notebook/Quarto exports - works exactly the same on a translated page as
+   on any other; SPARQL/Turtle fences don't need translating, just the
+   prose around them (and any in-query `#` comments, for full polish).
+   The notebook/Quarto disclaimer text they get wrapped in stays in English
+   regardless of the page's language - translating that boilerplate too is
+   a reasonable follow-up, just not done yet.
+
 ## Adding a new *kind* of fence block
 
 The conventions above are all you need for an ordinary tutorial page.

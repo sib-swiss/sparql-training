@@ -267,6 +267,25 @@ main {
   border-color: var(--accent);
 }
 
+.lang-switch {
+  margin: 0 0 0.5rem;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.lang-switch a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.lang-switch a:hover {
+  color: var(--accent);
+}
+
+.lang-current {
+  font-weight: 600;
+}
+
 h1, h2, h3, h4 { line-height: 1.25; }
 h1 { font-size: 1.9rem; }
 h2 { font-size: 1.4rem; margin-top: 2.2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
