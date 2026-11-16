@@ -10,6 +10,13 @@ We provide a SPARQL endpoint at: [rdf.metanetx.org/sparql](https://rdf.metanetx.
 
 # Tutorial
 
-Read it on the [published site](https://sib-swiss.github.io/sparql-training/MetaNetX/metabolites.html), or as plain Markdown in [metabolites.md](./metabolites.md). Every query runs in your browser against a small, real extract of MetaNetX's production data embedded in the page - the same alanine, glucose 6-phosphate and carnitine families the original workshop used, pulled straight from [rdf.metanetx.org/sparql](https://rdf.metanetx.org/sparql).
+Read it on the [published site](https://sib-swiss.github.io/sparql-training/), or as plain Markdown here, one file per topic - following the same structure as the [original tutorial](https://github.com/sib-swiss/MetaNetX_metabolites_tutorial) it's adapted from:
 
-This tutorial is adapted from a fuller R/Quarto workshop by Florence Mehl (SIB): [MetaNetX_metabolites_tutorial](https://github.com/sib-swiss/MetaNetX_metabolites_tutorial), which also walks through applying this to a real metabolomics feature file.
+1. [Introduction](00_introduction.md)
+2. [ID mapper](01_id_mapping.md)
+3. [Isomer relationships](02_isomer_relationships.md)
+4. [Application to real data](03_application_to_real_data.md)
+
+Every query runs in your browser against a small, real extract of MetaNetX's production data embedded in the page - the same alanine, glucose 6-phosphate and carnitine families the original workshop used, pulled straight from [rdf.metanetx.org/sparql](https://rdf.metanetx.org/sparql).
+
+The prose stays as close to the original wording as this format allows; it's adapted from a fuller R/Quarto workshop by Florence Mehl (SIB): [MetaNetX_metabolites_tutorial](https://github.com/sib-swiss/MetaNetX_metabolites_tutorial), which also walks through applying this to a real metabolomics feature file.
