@@ -44,10 +44,17 @@ export const PAGES = [
   { src: 'UniProt/14_chemistry.md', title: 'Chemistry', group: 'UniProt' },
   { src: 'Rhea/rhea.md', title: 'Metabolism', group: 'Rhea' },
   { src: 'Rhea/citations-xrefs.md', title: 'Citations & cross-references', group: 'Rhea' },
-  { src: 'MetaNetX/metabolites.md', title: 'MetaNetX: metabolite identification' },
+  { src: 'MetaNetX/metabolites.md', title: 'MetaNetX: metabolite identification', translationKey: 'metanetx-metabolites' },
+  { src: 'MetaNetX/metabolites.fr.md', title: 'MetaNetX : identification des métabolites', lang: 'fr', translationKey: 'metanetx-metabolites' },
   { src: 'tools/tools.md', title: 'Tools & ecosystem', group: 'Basics' },
   { src: 'intro/tips-and-tricks.md', title: 'Tips and tricks: publishing your own RDF', group: 'Basics' },
-].map((def) => ({ out: mdToHtml(def.src), ...def }));
+].map((def) => ({ out: mdToHtml(def.src), lang: 'en', ...def }));
+
+// Human-readable name for each language a page can be written in, used by
+// the language-switch pill -- see renderLangSwitch(). Add a line here (and
+// a `lang: '<code>'` on the page def) when a new translation is added; no
+// other registration needed.
+const LANG_NAMES = { en: 'English', fr: 'Français' };
 
 function depthPrefix(outRelPath) {
   const depth = outRelPath.split('/').length - 1;
@@ -236,11 +243,16 @@ function extractTitle(markdown, fallback) {
   return match ? match[1].trim() : fallback;
 }
 
+// Only default-language (`en`) pages get their own nav entry -- a
+// translation (e.g. `lang: 'fr'`) is reachable from its `en` counterpart's
+// language-switch pill instead, see renderLangSwitch(). Otherwise every
+// added language would double up the whole nav, dropdowns included.
 function renderNav(currentOut) {
   const base = depthPrefix(currentOut);
+  const navPages = PAGES.filter((p) => p.lang === 'en');
 
   const groupPages = new Map();
-  for (const page of PAGES) {
+  for (const page of navPages) {
     if (!page.group) continue;
     if (!groupPages.has(page.group)) groupPages.set(page.group, []);
     groupPages.get(page.group).push(page);
@@ -249,7 +261,7 @@ function renderNav(currentOut) {
   const renderedGroups = new Set();
   const items = [];
 
-  for (const page of PAGES) {
+  for (const page of navPages) {
     if (page.group) {
       if (renderedGroups.has(page.group)) continue;
       renderedGroups.add(page.group);
@@ -338,6 +350,26 @@ function renderDownloadLinks(base, notebookPath, quartoPath) {
   return `<p class="notebook-download">${links.join(' ')}</p>`;
 }
 
+// A page with a `translationKey` shared by other PAGES entries gets a pill
+// per language in that group (current language shown plain, the others as
+// links to their own page) -- pages with no translation get no switch at
+// all, same opt-in shape as renderDownloadLinks() above.
+function renderLangSwitch(page) {
+  if (!page.translationKey) return '';
+  const group = PAGES.filter((p) => p.translationKey === page.translationKey);
+  if (group.length < 2) return '';
+
+  const base = depthPrefix(page.out);
+  const items = group
+    .map((p) => {
+      const name = LANG_NAMES[p.lang] || p.lang;
+      if (p.out === page.out) return `<span class="lang-current">${escapeHtml(name)}</span>`;
+      return `<a href="${base}${p.out}">${escapeHtml(name)}</a>`;
+    })
+    .join(' · ');
+  return `<p class="lang-switch">${items}</p>`;
+}
+
 function buildPages(md, layout, notebookFor, quartoFor) {
   for (const page of PAGES) {
     const srcPath = path.join(ROOT, page.src);
@@ -350,7 +382,9 @@ function buildPages(md, layout, notebookFor, quartoFor) {
     const html = layout
       .replaceAll('{{TITLE}}', escapeHtml(title))
       .replaceAll('{{BASE}}', base)
+      .replace('{{HTMLLANG}}', page.lang)
       .replace('{{NAV}}', renderNav(page.out))
+      .replace('{{LANGSWITCH}}', renderLangSwitch(page))
       .replace('{{NOTEBOOK}}', renderDownloadLinks(base, notebookFor.get(page.out), quartoFor.get(page.out)))
       .replace('{{TOC}}', renderPageToc(env.headings))
       .replace('{{CONTENT}}', contentHtml);
