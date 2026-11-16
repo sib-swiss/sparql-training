@@ -248,23 +248,75 @@ main {
   text-align: right;
 }
 
-.notebook-download a {
+.download-dropdown {
   display: inline-block;
+  position: relative;
+  text-align: left;
+}
+
+.download-dropdown summary {
+  list-style: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   font-size: 0.85rem;
   color: var(--muted);
-  text-decoration: none;
   padding: 0.3rem 0.7rem;
   border: 1px solid var(--border);
   border-radius: 999px;
 }
 
-.notebook-download a + a {
-  margin-left: 0.5rem;
+.download-dropdown summary::-webkit-details-marker {
+  display: none;
 }
 
-.notebook-download a:hover {
+.download-dropdown summary::marker {
+  content: '';
+}
+
+.download-dropdown summary::after {
+  content: '\25BE';
+  font-size: 0.7em;
+  position: relative;
+  top: 1px;
+}
+
+.download-dropdown summary:hover,
+.download-dropdown[open] summary {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.download-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.35rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  z-index: 30;
+}
+
+.download-dropdown-menu a {
+  display: block;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.download-dropdown-menu a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
 }
 
 .lang-switch {

@@ -348,12 +348,21 @@ function renderPageToc(headings) {
   );
 }
 
+// A `<details>` disclosure, same mechanics as the header's `.nav-dropdown`
+// (plain HTML/CSS, no JS) -- one "Download" control instead of a separate
+// pill per format, so a third export format later is one more <a> in the
+// menu, not a wider row of pills.
 function renderDownloadLinks(base, notebookPath, quartoPath) {
   const links = [];
-  if (notebookPath) links.push(`<a href="${base}${notebookPath}" download>&#128211; Download as Jupyter notebook</a>`);
-  if (quartoPath) links.push(`<a href="${base}${quartoPath}" download>&#128211; Download as Quarto document</a>`);
+  if (notebookPath) links.push(`<a href="${base}${notebookPath}" download>Jupyter notebook (.ipynb)</a>`);
+  if (quartoPath) links.push(`<a href="${base}${quartoPath}" download>Quarto document (.qmd)</a>`);
   if (links.length === 0) return '';
-  return `<p class="notebook-download">${links.join(' ')}</p>`;
+  return (
+    `<div class="notebook-download"><details class="download-dropdown">` +
+    `<summary>&#128229; Download</summary>` +
+    `<div class="download-dropdown-menu">${links.join('')}</div>` +
+    `</details></div>`
+  );
 }
 
 // A page with a `translationKey` shared by other PAGES entries gets a pill
