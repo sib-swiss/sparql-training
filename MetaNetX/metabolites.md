@@ -2,10 +2,147 @@
 
 Metabolic databases describe metabolites as substrates and products of biochemical reactions, but the same real-world chemical can turn up under dozens of different identifiers depending on which database produced them. [MetaNetX](https://www.metanetx.org/) reconciles that mess: it groups identifiers from KEGG, ChEBI, HMDB, BiGG, SEED, VMH, MetaCyc, Rhea and SABIO-RK into **sets** of equivalent chemical entities, based on structure, reaction context, cross-references and names. Each set gets an `MNXM` identifier.
 
-This page uses MetaNetX's own public SPARQL endpoint, [rdf.metanetx.org/sparql](https://rdf.metanetx.org/sparql), so every query below runs live against the real production data - there's no small toy fixture standing in for it.
-
 ```note
 `MNXM` identifiers are useful for curation, but they are **not stable** across MetaNetX releases - don't use them as a persistent identifier in your own data. Keep the original source identifier (ChEBI, HMDB, ...) as the thing you actually store, and use MetaNetX to reconcile on demand.
+```
+
+## The example data
+
+Every query on this page runs against the dataset below - a small, real extract of three families pulled straight out of MetaNetX's production graph: alanine, glucose 6-phosphate, and carnitine, each with just enough of their cross-references and `mnx:chemIsom` relationships to make every query below return exactly what it would against the live data. It's editable: change it, then re-run any query further down the page. If you'd rather run these against MetaNetX's real, full dataset instead, its public SPARQL endpoint is [rdf.metanetx.org/sparql](https://rdf.metanetx.org/sparql).
+
+```turtle fixture=metanetx title="Alanine, glucose 6-phosphate and carnitine (MetaNetX, real data extract)"
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mnx: <https://rdf.metanetx.org/schema/> .
+@prefix chem: <https://rdf.metanetx.org/chem/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix bigg: <http://bigg.ucsd.edu/universal/metabolites/> .
+@prefix hmdb: <https://identifiers.org/hmdb:> .
+@prefix vmh: <https://vmh.life/#metabolite/> .
+@prefix keggc: <https://www.genome.jp/kegg/> .
+@prefix keggd: <https://www.genome.jp/kegg/drug/> .
+@prefix seed: <https://modelseed.org/biochem/compounds/> .
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Alanine: one generic set, two stereospecific isomers
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+chem:MNXM733981
+	rdfs:label "MNXM733981" ;
+	rdfs:comment "alanine" ;
+	mnx:inchikey "QNAYBMKLOCPYGJ-UHFFFAOYSA-N" ;
+	mnx:chemXref obo:CHEBI_16449, obo:CHEBI_32439, obo:CHEBI_32440, obo:CHEBI_66916,
+		obo:CHEBI_132498, obo:CHEBI_143534, hmdb:HMDB0062251, keggc:C01401 ;
+	mnx:chemIsom chem:MNXM1105731, chem:MNXM1105732 .
+
+chem:MNXM1105731
+	rdfs:label "MNXM1105731" ;
+	rdfs:comment "D-alanine" ;
+	mnx:inchikey "QNAYBMKLOCPYGJ-UWTATZPHSA-N" ;
+	mnx:chemXref obo:CHEBI_15570, obo:CHEBI_32435, obo:CHEBI_32436, obo:CHEBI_57416,
+		bigg:ala__D, vmh:ala_D, hmdb:HMDB0001310, keggc:C00133, seed:cpd00117,
+		<https://biocyc.org/compound?id=D-ALANINE>, <https://sabiork.h-its.org/newSearch?q=1940> .
+
+chem:MNXM1105732
+	rdfs:label "MNXM1105732" ;
+	rdfs:comment "L-alanine" ;
+	mnx:inchikey "QNAYBMKLOCPYGJ-REOHCLBHSA-N" ;
+	mnx:chemXref obo:CHEBI_16977, obo:CHEBI_32431, obo:CHEBI_32432, obo:CHEBI_57972,
+		obo:CHEBI_76050, obo:CHEBI_229589, bigg:ala__L, vmh:ala_L, hmdb:HMDB0000161,
+		keggc:C00041, keggd:D00012, seed:cpd00035,
+		<https://biocyc.org/compound?id=L-ALPHA-ALANINE>, <https://sabiork.h-its.org/newSearch?q=67> .
+
+obo:CHEBI_15570 rdfs:label "chebi:15570" .
+obo:CHEBI_16449 rdfs:label "chebi:16449" .
+obo:CHEBI_16977 rdfs:label "chebi:16977" .
+obo:CHEBI_32431 rdfs:label "chebi:32431" .
+obo:CHEBI_32432 rdfs:label "chebi:32432" .
+obo:CHEBI_32435 rdfs:label "chebi:32435" .
+obo:CHEBI_32436 rdfs:label "chebi:32436" .
+obo:CHEBI_32439 rdfs:label "chebi:32439" .
+obo:CHEBI_32440 rdfs:label "chebi:32440" .
+obo:CHEBI_57416 rdfs:label "chebi:57416" .
+obo:CHEBI_57972 rdfs:label "chebi:57972" .
+obo:CHEBI_66916 rdfs:label "chebi:66916" .
+obo:CHEBI_76050 rdfs:label "chebi:76050" .
+obo:CHEBI_132498 rdfs:label "chebi:132498" .
+obo:CHEBI_143534 rdfs:label "chebi:143534" .
+obo:CHEBI_229589 rdfs:label "chebi:229589" .
+bigg:ala__D rdfs:label "biggM:ala__D" .
+bigg:ala__L rdfs:label "biggM:ala__L" .
+vmh:ala_D rdfs:label "vmhM:ala_D" .
+vmh:ala_L rdfs:label "vmhM:ala_L" .
+hmdb:HMDB0000161 rdfs:label "hmdb:HMDB0000161" .
+hmdb:HMDB0001310 rdfs:label "hmdb:HMDB0001310" .
+hmdb:HMDB0062251 rdfs:label "hmdb:HMDB0062251" .
+keggc:C00041 rdfs:label "keggC:C00041" .
+keggc:C00133 rdfs:label "keggC:C00133" .
+keggc:C01401 rdfs:label "keggC:C01401" .
+keggd:D00012 rdfs:label "keggD:D00012" .
+seed:cpd00035 rdfs:label "seedM:cpd00035" .
+seed:cpd00117 rdfs:label "seedM:cpd00117" .
+<https://biocyc.org/compound?id=D-ALANINE> rdfs:label "metacycM:D-ALANINE" .
+<https://biocyc.org/compound?id=L-ALPHA-ALANINE> rdfs:label "metacycM:L-ALPHA-ALANINE" .
+<https://sabiork.h-its.org/newSearch?q=67> rdfs:label "sabiorkM:67" .
+<https://sabiork.h-its.org/newSearch?q=1940> rdfs:label "sabiorkM:1940" .
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Glucose 6-phosphate: a denser family - anomers and
+# protonation states both, not a simple generic/specific pair
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+chem:MNXM10656
+	rdfs:label "MNXM10656" ;
+	rdfs:comment "alpha-D-Hexose 6-phosphate" ;
+	mnx:chemXref obo:CHEBI_178383 ;
+	mnx:chemIsom chem:MNXM1103987, chem:MNXM1105855, chem:MNXM1364108 .
+
+chem:MNXM729664
+	rdfs:label "MNXM729664" ;
+	rdfs:comment "D-hexopyranose 6-phosphate" ;
+	mnx:chemXref obo:CHEBI_61567 ;
+	mnx:chemIsom chem:MNXM1103551, chem:MNXM1103987, chem:MNXM1364108, chem:MNXM1364111,
+		chem:MNXM16292, chem:MNXM729665 .
+
+chem:MNXM1364111
+	rdfs:label "MNXM1364111" ;
+	rdfs:comment "D-glucose 6-phosphate" ;
+	mnx:chemXref obo:CHEBI_61548 ;
+	mnx:chemIsom chem:MNXM1105855, chem:MNXM1105856 .
+
+chem:MNXM1103987 rdfs:label "MNXM1103987" ; rdfs:comment "alpha-D-galactose 6-phosphate" ; mnx:chemXref obo:CHEBI_47944 .
+chem:MNXM1105855 rdfs:label "MNXM1105855" ; rdfs:comment "alpha-D-glucose 6-phosphate" ; mnx:chemXref obo:CHEBI_58225 .
+chem:MNXM1105856 rdfs:label "MNXM1105856" ; rdfs:comment "beta-D-glucose 6-phosphate" ; mnx:chemXref obo:CHEBI_58247 .
+chem:MNXM1364108 rdfs:label "MNXM1364108" ; rdfs:comment "alpha-D-mannose 6-phosphate" ; mnx:chemXref obo:CHEBI_60332 .
+chem:MNXM1103551 rdfs:label "MNXM1103551" ; rdfs:comment "beta-D-mannose 6-phosphate" ; mnx:chemXref obo:CHEBI_49728 .
+chem:MNXM16292 rdfs:label "MNXM16292" ; rdfs:comment "beta-D-galactose 6-phosphate" ; mnx:chemXref obo:CHEBI_41076 .
+chem:MNXM729665 rdfs:label "MNXM729665" ; rdfs:comment "D-Allose 6-phosphate" ; mnx:chemXref keggc:C02962 .
+
+obo:CHEBI_41076 rdfs:label "chebi:41076" .
+obo:CHEBI_47944 rdfs:label "chebi:47944" .
+obo:CHEBI_49728 rdfs:label "chebi:49728" .
+obo:CHEBI_58225 rdfs:label "chebi:58225" .
+obo:CHEBI_58247 rdfs:label "chebi:58247" .
+obo:CHEBI_60332 rdfs:label "chebi:60332" .
+obo:CHEBI_61548 rdfs:label "chebi:61548" .
+obo:CHEBI_61567 rdfs:label "chebi:61567" .
+obo:CHEBI_178383 rdfs:label "chebi:178383" .
+keggc:C02962 rdfs:label "keggC:C02962" .
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Carnitine: a generic/specific pair, used below to show
+# how that pattern shows up as a collision in a feature list
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+chem:MNXM731667
+	rdfs:label "MNXM731667" ;
+	rdfs:comment "carnitine" ;
+	mnx:chemXref obo:CHEBI_17126 ;
+	mnx:chemIsom chem:MNXM1105737 .
+
+chem:MNXM1105737 rdfs:label "MNXM1105737" ; rdfs:comment "(R)-carnitine" ; mnx:chemXref obo:CHEBI_16347 .
+
+obo:CHEBI_16347 rdfs:label "chebi:16347" .
+obo:CHEBI_17126 rdfs:label "chebi:17126" .
 ```
 
 ## Mapping identifiers across databases
@@ -14,7 +151,7 @@ Within a set, chemical entities related by `mnx:chemXref` are considered equival
 
 Say you're handed a list of identifiers from different databases that are all supposed to be *alanine* in one form or another. A single query with a `VALUES` block can submit all of them at once and show how MetaNetX actually groups them - the same thing the [MetaNetX ID mapper](https://www.metanetx.org/map/ids) does through a web form.
 
-```sparql live="https://rdf.metanetx.org/sparql"
+```sparql fixture=metanetx
 PREFIX mnx:  <https://rdf.metanetx.org/schema/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -49,7 +186,7 @@ MetaNetX distinguishes **generic** entities (plain *alanine*, with no stereochem
 
 This matters for data quality: if a dataset contains both generic *alanine* and *L-alanine* as separate features, that's not a duplicate exactly - they're related, but not identical - and it matters which one was actually measured. Extending the identifier list above to the full alanine family (generic, L- and D-) and following `mnx:chemIsom` alongside `mnx:chemXref` shows the relationship directly:
 
-```sparql live="https://rdf.metanetx.org/sparql"
+```sparql fixture=metanetx
 PREFIX mnx:  <https://rdf.metanetx.org/schema/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -97,7 +234,7 @@ Glucose 6-phosphate (G6P) is a good example of why this isn't always a simple ge
 
 Following `mnx:chemIsom` in both directions with a property path pulls out that whole connected component in one query, starting from just the identifiers you have in hand:
 
-```sparql live="https://rdf.metanetx.org/sparql"
+```sparql fixture=metanetx
 PREFIX mnx:  <https://rdf.metanetx.org/schema/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -145,7 +282,7 @@ The result is a small graph, not a line: `D-glucose 6-phosphate` sits between a 
 
 The same `mnx:chemIsom` relationship is also how you catch a specific data quality problem in your own identifier lists: a dataset that lists both a generic entity and one of its own specific isomers as if they were two independent metabolites. `mnx:chemIsom+` (one or more steps, so it also catches multi-level relationships) finds exactly those pairs when given the identifiers actually present in a dataset:
 
-```sparql live="https://rdf.metanetx.org/sparql"
+```sparql fixture=metanetx
 PREFIX mnx:  <https://rdf.metanetx.org/schema/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
