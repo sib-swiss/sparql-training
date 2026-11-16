@@ -241,6 +241,21 @@ main {
     padding: 0.75rem 1rem;
     margin-bottom: 0.5rem;
   }
+
+  /* An active page's nav dropdown opens by default (see renderNav() in
+     build.mjs) to show its sibling pages, which is harmless on desktop --
+     the header has room and the menu floats clear of the page below. Below
+     this breakpoint the nav wraps and `main` starts right under it, so an
+     absolutely-positioned open menu covers the page's own content (and
+     everything under it stops receiving clicks) instead of floating past
+     it. Laying the menu out in normal flow instead grows the header by
+     exactly its height and pushes `main` down, so nothing overlaps. */
+  .nav-dropdown-menu {
+    position: static;
+    width: 100%;
+    margin-top: 0.35rem;
+    box-shadow: none;
+  }
 }
 
 .notebook-download {
