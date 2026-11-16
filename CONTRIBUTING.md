@@ -138,6 +138,42 @@ A page can exist in more than one language - see `MetaNetX/metabolites.md`
    regardless of the page's language - translating that boilerplate too is
    a reasonable follow-up, just not done yet.
 
+## Adding Bioschemas markup to a page
+
+A page can carry a [Bioschemas TrainingMaterial](https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE)
+JSON-LD block - **not** "CourseMaterial", which isn't a real Bioschemas
+type; TrainingMaterial (a schema.org `LearningResource` under the hood) is
+the profile for an individual tutorial like these pages, as opposed to
+`Course`/`CourseInstance` (an actual taught course with a schedule). See
+`MetaNetX/metabolites.md` / `metabolites.fr.md` for the first example.
+
+1. Add a `---\n...\n---\n` YAML frontmatter block at the very top of the
+   Markdown file (same convention Jekyll/Quarto use, parsed by
+   `parseFrontmatter()` in `site/lib/blocks.mjs`) - it's stripped before
+   rendering, so none of this shows up in the page itself.
+2. Its keys map straight onto Bioschemas/schema.org property names, since
+   the build passes the parsed object through almost verbatim: `description`
+   and `keywords` are the profile's two properties this site can't infer on
+   its own (and its only two Minimum-marginality properties besides what's
+   auto-filled - see step 3), so a page needs at least those two to make
+   adding this worthwhile. Beyond that, add whatever Recommended/Optional
+   properties actually apply - `audience`, `author`, `competencyRequired`,
+   `educationalLevel`, `learningResourceType`, `teaches`, `timeRequired`,
+   etc. - already schema.org-shaped (e.g. `author` as a list of `Person`/
+   `Organization` objects), since the build does no reshaping of its own.
+3. Don't set `name`, `url`, `@id`, `inLanguage` or `workTranslation` in the
+   frontmatter - `renderBioschemas()` in `site/build.mjs` computes all five
+   itself (from the page's title, its `out` path, and its `lang`/
+   `translationKey`, the same fields the language-switch feature above
+   uses), so there's one source of truth for them instead of two that could
+   drift apart. A page with a `translationKey` automatically gets a
+   `workTranslation` link to its sibling page(s) - that's the main reason
+   `metabolites.md` and `metabolites.fr.md` both got frontmatter together,
+   not just one of them.
+4. A page with no frontmatter block is completely unaffected - no `<script
+   type="application/ld+json">` gets added, same opt-in shape as the
+   notebook/Quarto download links above.
+
 ## Adding a new *kind* of fence block
 
 The conventions above are all you need for an ordinary tutorial page.

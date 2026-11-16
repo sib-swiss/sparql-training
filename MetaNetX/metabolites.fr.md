@@ -1,3 +1,32 @@
+---
+description: >-
+  Faire correspondre des identifiants de métabolites externes (ChEBI, HMDB,
+  KEGG, ...) aux ensembles MNXM réconciliés de MetaNetX avec SPARQL, et
+  utiliser mnx:chemIsom pour distinguer une entité générique de ses isomères
+  stéréospécifiques.
+keywords: "MetaNetX, SPARQL, métabolomique, identification des métabolites, ChEBI, HMDB, KEGG, RDF"
+audience:
+  "@type": Audience
+  audienceType: bioinformaticiens et analystes de données en métabolomique
+author:
+  - "@type": Person
+    name: Florence Mehl
+    affiliation:
+      "@type": Organization
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutoriel
+teaches:
+  - Faire correspondre un identifiant externe (ChEBI, HMDB, KEGG, ...) à son ensemble MNXM dans MetaNetX avec une requête SPARQL VALUES
+  - Distinguer une entité métabolite générique de ses isomères stéréospécifiques via mnx:chemIsom
+  - Utiliser un chemin de propriété SPARQL pour parcourir un graphe de relations chemIsom dans les deux sens
+  - Détecter une collision générique/spécifique dans une liste d'identifiants de métabolomique
+timeRequired: PT30M
+---
+
 # Identification des métabolites avec MetaNetX
 
 Les bases de données métaboliques décrivent les métabolites comme des substrats et des produits de réactions biochimiques, mais une même molécule réelle peut se retrouver sous des dizaines d'identifiants différents selon la base de données qui l'a produite. [MetaNetX](https://www.metanetx.org/) remet de l'ordre dans tout ça : il regroupe les identifiants de KEGG, ChEBI, HMDB, BiGG, SEED, VMH, MetaCyc, Rhea et SABIO-RK en **ensembles** d'entités chimiques équivalentes, sur la base de la structure, du contexte réactionnel, des références croisées et des noms. Chaque ensemble reçoit un identifiant `MNXM`.

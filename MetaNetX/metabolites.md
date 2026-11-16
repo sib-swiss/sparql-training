@@ -1,3 +1,31 @@
+---
+description: >-
+  Map external metabolite identifiers (ChEBI, HMDB, KEGG, ...) to MetaNetX's
+  reconciled MNXM sets with SPARQL, and use mnx:chemIsom to tell a generic
+  entity apart from its stereospecific isomers.
+keywords: "MetaNetX, SPARQL, metabolomics, metabolite identification, ChEBI, HMDB, KEGG, RDF"
+audience:
+  "@type": Audience
+  audienceType: bioinformaticians and metabolomics data analysts
+author:
+  - "@type": Person
+    name: Florence Mehl
+    affiliation:
+      "@type": Organization
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Map an external identifier (ChEBI, HMDB, KEGG, ...) to its MetaNetX MNXM set with a SPARQL VALUES query
+  - Distinguish a generic metabolite entity from its stereospecific isomers using mnx:chemIsom
+  - Use a SPARQL property path to walk a chemIsom relationship graph in both directions
+  - Detect a generic/specific identifier collision in a metabolomics feature list
+timeRequired: PT30M
+---
+
 # Metabolite identification with MetaNetX
 
 Metabolic databases describe metabolites as substrates and products of biochemical reactions, but the same real-world chemical can turn up under dozens of different identifiers depending on which database produced them. [MetaNetX](https://www.metanetx.org/) reconciles that mess: it groups identifiers from KEGG, ChEBI, HMDB, BiGG, SEED, VMH, MetaCyc, Rhea and SABIO-RK into **sets** of equivalent chemical entities, based on structure, reaction context, cross-references and names. Each set gets an `MNXM` identifier.

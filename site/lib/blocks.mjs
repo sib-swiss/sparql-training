@@ -2,6 +2,24 @@
 // verifier, and the Jupyter notebook exporter, so all three agree on exactly
 // one syntax for `turtle fixture=...` / `sparql fixture=...` / `sparql
 // reference="..."` blocks.
+import { load as loadYaml } from 'js-yaml';
+
+/**
+ * Splits a page's optional leading `---\n...\n---\n` YAML block (the same
+ * convention Jekyll and Quarto use) from the rest of the Markdown -- e.g.
+ * the fields site/build.mjs's Bioschemas JSON-LD block needs (description,
+ * keywords, teaches, ...), which don't belong in the rendered page prose.
+ * A page with no such block gets `data: null` and `content` unchanged.
+ */
+export function parseFrontmatter(markdown) {
+  if (!markdown.startsWith('---\n')) return { data: null, content: markdown };
+
+  const end = markdown.indexOf('\n---\n', 4);
+  if (end === -1) return { data: null, content: markdown };
+
+  const data = loadYaml(markdown.slice(4, end + 1)) ?? {};
+  return { data, content: markdown.slice(end + 5) };
+}
 
 /** Parses a fence info string like: sparql fixture=basic-entry title="A title" */
 export function parseFenceAttrs(info) {
@@ -23,7 +41,8 @@ export function parseFenceAttrs(info) {
  * with the surrounding prose split around it.
  */
 export function parseMarkdownSegments(markdown) {
-  const lines = markdown.split('\n');
+  const { content } = parseFrontmatter(markdown);
+  const lines = content.split('\n');
   const segments = [];
   let proseBuf = [];
   let i = 0;

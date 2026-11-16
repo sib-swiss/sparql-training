@@ -3,13 +3,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import esbuild from 'esbuild';
 import MarkdownIt from 'markdown-it';
-import { parseFenceAttrs } from './lib/blocks.mjs';
+import { parseFenceAttrs, parseFrontmatter } from './lib/blocks.mjs';
 import { exportNotebooks } from './export-notebooks.mjs';
 import { exportQuarto } from './export-quarto.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const OUT = path.join(ROOT, '_site');
+const SITE_URL = 'https://sib-swiss.github.io/sparql-training/';
 
 function mdToHtml(src) {
   return src.replace(/\.md$/, '.html');
@@ -370,10 +371,46 @@ function renderLangSwitch(page) {
   return `<p class="lang-switch">${items}</p>`;
 }
 
+// Bioschemas' TrainingMaterial profile (schema.org LearningResource under
+// the hood) -- https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE
+// -- not "CourseMaterial", which isn't a real Bioschemas type; this is the
+// one meant for an individual tutorial/training resource like these pages,
+// as opposed to Course/CourseInstance (an actual taught course). A page
+// opts in with a `---\n...\n---\n` frontmatter block (see parseFrontmatter())
+// carrying the fields that can't be inferred from the page itself --
+// description and keywords are the profile's two Minimum properties this
+// site can't derive on its own. Everything else here (name, @id, url,
+// inLanguage, workTranslation) is computed, not author-set, so there's one
+// source of truth for it instead of two that could drift apart.
+const BIOSCHEMAS_TRAININGMATERIAL_PROFILE = 'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE';
+
+function renderBioschemas(page, data, title) {
+  if (!data) return '';
+
+  const url = `${SITE_URL}${page.out}`;
+  const translations = page.translationKey
+    ? PAGES.filter((p) => p.translationKey === page.translationKey && p.out !== page.out)
+    : [];
+
+  const jsonld = {
+    '@context': 'https://schema.org/',
+    '@type': 'LearningResource',
+    '@id': url,
+    'http://purl.org/dc/terms/conformsTo': { '@id': BIOSCHEMAS_TRAININGMATERIAL_PROFILE, '@type': 'CreativeWork' },
+    name: title,
+    url,
+    inLanguage: page.lang,
+    ...data,
+    ...(translations.length ? { workTranslation: translations.map((p) => ({ '@id': `${SITE_URL}${p.out}` })) } : {}),
+  };
+
+  return `<script type="application/ld+json">\n${JSON.stringify(jsonld, null, 2)}\n</script>`;
+}
+
 function buildPages(md, layout, notebookFor, quartoFor) {
   for (const page of PAGES) {
     const srcPath = path.join(ROOT, page.src);
-    const markdown = readFileSync(srcPath, 'utf8');
+    const { data: bioschemas, content: markdown } = parseFrontmatter(readFileSync(srcPath, 'utf8'));
     const title = extractTitle(markdown, page.title);
     const env = {};
     const contentHtml = md.render(markdown, env);
@@ -383,6 +420,7 @@ function buildPages(md, layout, notebookFor, quartoFor) {
       .replaceAll('{{TITLE}}', escapeHtml(title))
       .replaceAll('{{BASE}}', base)
       .replace('{{HTMLLANG}}', page.lang)
+      .replace('{{BIOSCHEMAS}}', renderBioschemas(page, bioschemas, title))
       .replace('{{NAV}}', renderNav(page.out))
       .replace('{{LANGSWITCH}}', renderLangSwitch(page))
       .replace('{{NOTEBOOK}}', renderDownloadLinks(base, notebookFor.get(page.out), quartoFor.get(page.out)))
