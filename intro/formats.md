@@ -1,3 +1,32 @@
+---
+description: >-
+  The same RDF triple written four different ways - Turtle, N-Triples,
+  RDF/XML and JSON-LD - so you recognize them as exactly the same
+  underlying data the next time you meet one in the wild.
+keywords: "RDF, Turtle, N-Triples, RDF/XML, JSON-LD, serialization"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Recognize Turtle, N-Triples, RDF/XML and JSON-LD as different serializations of the same RDF graph
+  - Read a triple written with full angle-bracketed IRIs and no prefixes (N-Triples)
+  - Explain why the choice of serialization never changes the underlying triples
+timeRequired: PT10M
+---
+
 # RDF file formats: same triples, different clothes
 
 The [previous page](tutorial.html) built one triple - "I love ELIXIR" - out of three IRIs, then wrote it out in Turtle with `@prefix` shortcuts. That was one way of writing that triple down on disk or over the network. It's not the only way, and it's worth seeing the others before you go any further, so that when you meet an RDF/XML file in the wild (UniProt hands you one of these by default if you don't ask otherwise) you recognise it for what it is, instead of mistaking it for something unrelated to what you just learned.

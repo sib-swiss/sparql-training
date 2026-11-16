@@ -1,3 +1,34 @@
+---
+description: >-
+  Shows how UniProt records natural sequence variants: free-text
+  descriptions, exact sequence position and amino-acid substitution via
+  FALDO, and literature evidence attached through RDF reification.
+keywords: "UniProt, SPARQL, natural variants, sequence variation, FALDO, RDF reification, literature evidence"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Query natural variant annotations by keyword in their free-text description
+  - Find variants at a specific sequence position with FALDO and a specific amino-acid substitution
+  - Trace a variant annotation back to its supporting literature reference via RDF reification
+  - Sort variant annotations by the length of their description
+timeRequired: PT20M
+---
+
 # Natural variants
 
 UniProt records naturally occurring sequence variation &mdash; differences between individuals, disease-associated mutations, polymorphisms &mdash; as `up:Natural_Variant_Annotation` resources attached to a protein via `up:annotation`. Each one carries a free-text `rdfs:comment` describing the variant, and, where known, the exact sequence position and amino acid substitution involved.

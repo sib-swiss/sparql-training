@@ -1,3 +1,32 @@
+---
+description: >-
+  What schema.org is, what Bioschemas adds on top of it for life-science
+  resources, and a worked JSON-LD example describing a real UniProt entry
+  as structured data.
+keywords: "schema.org, Bioschemas, JSON-LD, structured data, linked data, metadata"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Explain what schema.org is and why search engines parse its markup
+  - Explain what a Bioschemas profile adds on top of schema.org for a life-science resource
+  - Read a worked JSON-LD example describing a real UniProt entry as a schema.org Dataset
+timeRequired: PT15M
+---
+
 # schema.org and Bioschemas
 
 The [RDF and linked data](../intro/tutorial.html) page mentioned in passing that [schema.org](https://schema.org/) markup on ordinary web pages is RDF-shaped data, in its section [RDF is more common than it looks](../intro/tutorial.html#rdf-is-more-common-than-it-looks). This page picks that thread up properly: what schema.org actually is, what Bioschemas adds for life sciences, and a worked example you can run right here.

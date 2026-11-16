@@ -1,3 +1,35 @@
+---
+description: >-
+  Query the chemistry UniProtKB annotates on a protein with SPARQL: ligands
+  and metal cofactors via ChEBI, phosphorylation sites, active-site residue
+  chemistry via FALDO, allosteric ligands, EC classification, and a
+  federated ChEBI substructure similarity search via IDSM/Sachem.
+keywords: "UniProtKB, SPARQL, ChEBI, ligands, cofactors, post-translational modification, FALDO, EC number, IDSM, Sachem"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Advanced
+learningResourceType: tutorial
+teaches:
+  - Find metal-binding proteins by walking up the ChEBI hierarchy from a ligand with a property path
+  - Bucket phosphorylated proteins by residue type from free-text annotation comments
+  - Use FALDO sequence positions to check which residue sits at an annotated active site
+  - Recognize a non-standard SPARQL extension (IDSM/Sachem chemical similarity search) called via SERVICE
+timeRequired: PT40M
+---
+
 # Chemistry: ligands, cofactors, PTMs & catalytic activity
 
 UniProt annotates a lot of chemistry directly on a protein entry: the ligands and cofactors bound at specific sites (cross-referenced to [ChEBI](https://www.ebi.ac.uk/chebi/)), post-translational modifications (PTMs) like phosphorylation, and the catalytic activity of enzymes (linked to [Rhea](https://www.rhea-db.org/) reactions and EC numbers). For some questions, UniProt also federates out with a live SPARQL `SERVICE` call to other public endpoints - this page ends with a chemical substructure similarity search against [IDSM/Sachem](https://idsm.elixir-czech.cz/), finding proteins that bind something structurally similar to a given molecule (kept as a reference example rather than runnable, for reasons explained there).

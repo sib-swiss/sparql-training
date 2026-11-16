@@ -1,3 +1,35 @@
+---
+description: >-
+  Query UniProtKB's links to metabolism from the protein side with SPARQL:
+  catalytic activity and its RDF-reified evidence, the EC enzyme
+  classification hierarchy, Rhea reactions with and without an EC number,
+  gene-protein-reaction sets, and pathway cross-references.
+keywords: "UniProtKB, SPARQL, Rhea, EC number, enzyme classification, RDF reification, Ensembl, Reactome, pathways"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Advanced
+learningResourceType: tutorial
+teaches:
+  - Trace a protein's catalytic activity to its Rhea reaction and its reified experimental evidence
+  - Group enzymes by their top-level EC classification using materialized rdfs:subClassOf
+  - Use MINUS to find Rhea reactions UniProt cites with no EC number attached
+  - Connect a gene to its protein and every reaction that protein catalyzes via Ensembl cross-references
+timeRequired: PT35M
+---
+
 # Metabolism & Rhea
 
 UniProt cross-references the chemical reactions an enzyme catalyzes to [Rhea](https://www.rhea-db.org/), and classifies enzymes with [EC (Enzyme Commission) numbers](https://iubmb.qmul.ac.uk/enzyme/index.html). This page shows how to query that from the UniProt side - starting at a protein and reaching into Rhea and the enzyme classification hierarchy - plus how UniProt links a protein to the biological pathway(s) it's part of.

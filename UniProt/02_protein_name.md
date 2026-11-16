@@ -1,3 +1,33 @@
+---
+description: >-
+  Shows how UniProt models protein names in RDF: recommended, submitted and
+  alternative names, full names and short names, and the specialized name
+  categories such as allergen, CD antigen and EC names.
+keywords: "UniProt, SPARQL, protein names, recommendedName, alternativeName, EC number"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Query a protein's recommended full name and short name
+  - Retrieve EC numbers attached to a recommended name
+  - Query alternative protein names distinct from the recommended one
+timeRequired: PT15M
+---
+
 # UniProt protein names
 
 This page shows you basic information about **protein names**.

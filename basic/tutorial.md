@@ -1,3 +1,35 @@
+---
+description: >-
+  The classic introductory SPARQL tutorial, built around a small
+  people-and-pets dataset: triple patterns, OPTIONAL/FILTER, property
+  paths, aggregation, a federated query against DBpedia, and a SHACL shape
+  describing the dataset.
+keywords: "SPARQL, triple patterns, OPTIONAL, FILTER, property paths, aggregation, federated query, SHACL"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Write basic SPARQL triple patterns and SELECT queries against an RDF dataset
+  - Use OPTIONAL, FILTER and property paths to express richer graph patterns
+  - Federate a query against a live external endpoint (DBpedia) with SERVICE
+  - Aggregate and order results with GROUP BY, COUNT and ORDER BY
+  - Validate a dataset's shape with SHACL
+timeRequired: PT1H
+---
+
 # SPARQL basics
 
 This is the classic introductory SPARQL tutorial from [SPARQL playground](https://github.com/calipho-sib/sparql-playground), SIB's original standalone training tool, brought over here so it runs the same way as the rest of this site: every query below runs directly in your browser, against one small example dataset you can see (and edit) right in the page.

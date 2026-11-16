@@ -1,3 +1,34 @@
+---
+description: >-
+  Covers how UniProt links a protein to the gene(s) that encode it (primary
+  name, synonyms, locus names, ORF names), and to the replicon (chromosome,
+  plasmid, organelle) those genes sit on, including unnamed plasmids.
+keywords: "UniProt, SPARQL, gene names, replicon, chromosome, plasmid, organelle, reference proteome"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Query the gene(s) encoding a protein and their primary, synonym, locus and ORF names
+  - Extract the replicon (chromosome or plasmid) a gene sits on from a proteome IRI
+  - Query genes located in an organelle or on a named or unnamed plasmid
+  - Run a live, reference-proteome-restricted query against the real UniProt endpoint
+timeRequired: PT20M
+---
+
 # Replicon and genes
 
 This page shows you basic information about **genes** that encode a protein, and the **replicon** (chromosome, plasmid, etc.) those genes sit on.

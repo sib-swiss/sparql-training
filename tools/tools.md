@@ -1,3 +1,33 @@
+---
+description: >-
+  A live, self-updating catalog of SPARQL/RDF/semantic-web software,
+  queried directly from Wikidata rather than hand-maintained, plus how to
+  add a missing tool yourself.
+keywords: "SPARQL tools, RDF tools, triplestores, Wikidata, semantic web ecosystem"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: reference
+teaches:
+  - Query Wikidata for a live, self-updating catalog of semantic web software
+  - Use Wikidata's label service inside a SPARQL query to pull in multilingual labels
+  - Add a missing tool to Wikidata so this page picks it up automatically
+timeRequired: PT10M
+---
+
 # SPARQL and RDF tools
 
 Every other page on this site teaches you to write queries. This one asks a different question: what software actually implements all this - the triple stores, query engines, RDF libraries, validators and visualizers you'd reach for once you're building something real?

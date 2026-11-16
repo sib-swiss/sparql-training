@@ -1,3 +1,35 @@
+---
+description: >-
+  Shows how UniProt annotates protein domains, sequence regions (zinc
+  fingers, coiled-coils, transmembrane segments) with FALDO positions, and
+  membrane topology, including a property-path plus aggregation query for
+  multi-pass transmembrane enzymes.
+keywords: "UniProt, SPARQL, protein domains, FALDO, zinc finger, coiled-coil, transmembrane, membrane topology"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Query annotated domain, zinc finger and coiled-coil extents with FALDO begin/end positions
+  - Extract sequence residues around a transmembrane region with SUBSTR and FILTER
+  - Combine a property path with GROUP BY/HAVING to find enzymes with multiple transmembrane regions
+  - Query a protein's subcellular location together with its membrane topology
+timeRequired: PT25M
+---
+
 # Domains and topology
 
 This page shows you how UniProt records **protein domains**, sequence **regions** (zinc fingers, coiled-coils, transmembrane segments), and **membrane topology**.

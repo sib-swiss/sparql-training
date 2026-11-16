@@ -1,3 +1,34 @@
+---
+description: >-
+  Shows how UniProtKB stores the organism (taxon) a protein comes from, and
+  how taxonomy data models rank, scientific/common names, hierarchy via
+  rdfs:subClassOf, and host-organism relationships.
+keywords: "UniProt, SPARQL, taxonomy, NCBI taxonomy, organism, taxonomic hierarchy, host organism"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Retrieve the taxon identifier for a protein's source organism
+  - Query a taxon's rank, scientific name and other names
+  - Walk the taxonomic hierarchy with rdfs:subClassOf from species to genus and beyond
+  - Query host-organism relationships for viruses and other hosted taxa
+timeRequired: PT20M
+---
+
 # Taxonomy
 
 This page shows you how taxonomy data is represented in UniProt.

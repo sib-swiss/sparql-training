@@ -1,3 +1,35 @@
+---
+description: >-
+  Query UniProtKB's up:classifiedWith annotations with SPARQL, covering
+  both GO terms and UniProt keywords: grouping GO terms by their top-level
+  branch, finding proteins for a GO term, batch lookup by mnemonic, and
+  counting proteins by keyword.
+keywords: "UniProtKB, SPARQL, Gene Ontology, GO terms, keywords, classification, batch lookup, VALUES"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Distinguish GO terms from UniProt keywords sharing the same up:classifiedWith predicate
+  - Group a protein's GO terms into biological_process/cellular_component/molecular_function
+  - Look up GO annotations for a batch of proteins by mnemonic with VALUES, the SPARQL equivalent of a biomaRt batch call
+  - Count reviewed proteins classified with a specific UniProt keyword
+timeRequired: PT25M
+---
+
 # GO terms & keywords
 
 UniProt classifies proteins two ways with the same predicate, `up:classifiedWith`: against [Gene Ontology (GO)](https://geneontology.org/) terms, and against UniProt's own controlled-vocabulary [keywords](https://www.uniprot.org/keywords/). Both kinds of term end up as objects of the very same triple pattern, so queries that only want one or the other need to filter by which namespace the term's IRI belongs to &mdash; GO terms live under `http://purl.obolibrary.org/obo/GO_`, UniProt keywords under `http://purl.uniprot.org/keywords/`. Or that GO terms are [owl classes](http://www.w3.org/2002/07/owl#Class) and Keywords a `up:Concept`.

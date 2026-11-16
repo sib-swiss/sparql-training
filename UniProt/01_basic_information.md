@@ -1,3 +1,34 @@
+---
+description: >-
+  Covers the basic metadata every UniProtKB entry carries in RDF: primary
+  accession, entry name (mnemonic) and old mnemonics, reviewed status
+  (Swiss-Prot vs TrEMBL), and creation/modification dates and versions.
+keywords: "UniProt, SPARQL, accession, mnemonic, Swiss-Prot, TrEMBL, entry status, dates, versions"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Extract a UniProtKB primary accession from its entry IRI
+  - Query an entry's mnemonic and any obsolete mnemonics it has had
+  - Distinguish Swiss-Prot (reviewed) from TrEMBL (unreviewed) entries with up:reviewed
+  - Retrieve an entry's creation date, modification date and version
+timeRequired: PT15M
+---
+
 # Basic information
 
 This page shows you basic information stored on every UniProtKB entry: identifier, entry name, status, dates and versions.

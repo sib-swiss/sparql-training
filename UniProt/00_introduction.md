@@ -1,3 +1,34 @@
+---
+description: >-
+  Introduces UniProt's RDF data model and how this site's interactive SPARQL
+  examples work: a tiny Turtle fixture paired with a runnable query, powered
+  by Comunica directly in your browser.
+keywords: "UniProt, SPARQL, RDF, Turtle, Comunica, tutorial introduction"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Locate the UniProt SPARQL endpoint and its RDF data distribution
+  - Run a simple SPARQL query against a Turtle fixture directly in the browser
+  - Recognize up:Protein as the basic UniProt RDF resource type
+  - Visualize example RDF data as a graph of resources and relationships
+timeRequired: PT10M
+---
+
 # Introduction
 
 This series of pages shows you how UniProt's RDF data model works and how to query it with SPARQL.

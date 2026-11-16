@@ -1,3 +1,34 @@
+---
+description: >-
+  An introduction to RDF triples and linked data, building a real triple
+  ("I love ELIXIR") out of three independent identifier registries
+  (ORCID, Wikidata, ROR), then fetching and merging live RDF data about it
+  straight from Wikidata and ORCID in the browser.
+keywords: "RDF, linked data, triples, IRI, Turtle, prefixes, Wikidata, ORCID, FAIR data"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+educationalLevel: Beginner
+learningResourceType: tutorial
+teaches:
+  - Explain what an RDF triple is and why bioinformatics resources publish data this way
+  - Build a real RDF triple out of three independent identifier registries (ORCID, Wikidata, ROR)
+  - Use Turtle prefixes to abbreviate a repeated IRI namespace
+  - Fetch and merge live RDF data from Wikidata and ORCID directly in the browser
+timeRequired: PT20M
+---
+
 # What is RDF and linked data?
 
 Before you write a single SPARQL query, it helps to know what you're actually querying. This page is the missing first step before the [SPARQL basics](../basic/tutorial.html) tutorial - it doesn't teach any query syntax at all, just what RDF is, what a "triple" is, and why bioinformatics resources like UniProt and Rhea publish their data this way in the first place. If you already know what a triple is, skip straight to [SPARQL basics](../basic/tutorial.html).

@@ -1,3 +1,36 @@
+---
+description: >-
+  A practical checklist for publishing your own life-science dataset as
+  RDF: choosing stable identifiers, reusing existing vocabulary, serving
+  both a human page and machine-readable RDF at the same URI, publishing a
+  SHACL shape, and making the data queryable, plus common pitfalls.
+keywords: "RDF publishing, identifiers, PURL, vocabulary reuse, content negotiation, SHACL, linked data"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Choose stable, reusable IRIs for your own data instead of inventing new ones unnecessarily
+  - Reuse existing vocabulary (schema.org, OBO Foundry) before minting your own terms
+  - Serve both a human-readable page and machine-readable RDF at the same URI via content negotiation
+  - Publish a SHACL shape describing what valid data looks like
+  - Make your data queryable through a SPARQL endpoint, not just downloadable
+timeRequired: PT20M
+---
+
 # Tips and tricks: publishing your own RDF resource
 
 So you've read [what RDF is](../intro/tutorial.html) and worked through [SPARQL basics](../basic/tutorial.html), and now you have a dataset of your own - proteins, samples, variants, whatever your lab produces - that you want to publish as RDF instead of (or alongside) a CSV file or a bespoke database. This page is the practical checklist for that: the decisions to make, in a sensible order, and the mistakes people commonly make along the way.

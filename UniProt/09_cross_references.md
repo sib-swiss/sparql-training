@@ -1,3 +1,35 @@
+---
+description: >-
+  Query UniProtKB's cross-references to external databases with SPARQL:
+  mapping to PDB (including chain ranges), pulling a whole database
+  category at once, UniRef/UniParc links, and federating live to another
+  endpoint's own cross-reference data with SERVICE.
+keywords: "UniProtKB, SPARQL, cross-references, PDB, UniRef, UniParc, federation, SERVICE, named graphs"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Map UniProtKB entries to PDB structures and to a whole database category at once
+  - Recover a PDB chain letter from a packed chainSequenceMapping string with STRBEFORE
+  - Find similar proteins via UniRef clusters and shared sequences via UniParc
+  - Federate a SPARQL query live to another public endpoint with SERVICE
+timeRequired: PT30M
+---
+
 # Cross-references to external databases
 
 UniProtKB entries link out to dozens of other databases - structure archives, sequence archives, other protein-clustering resources, and more. Every cross-reference uses the same basic shape: the protein has an `rdfs:seeAlso` link to a resource representing the cross-reference, and that resource is typed with `up:database` to say which external database it points into. Some databases attach extra structured detail on top of that basic link, as you'll see below with PDB's chain mapping.

@@ -1,3 +1,34 @@
+---
+description: >-
+  Query UniProtKB disease annotations with SPARQL: linking proteins to
+  diseases, combining disease data with gene names and subcellular location,
+  and following disease-enzyme-location joins up to OMIM cross-references.
+keywords: "UniProtKB, SPARQL, disease annotation, OMIM, MIM, enzyme, subcellular location, property paths"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Retrieve the diseases a UniProtKB protein is annotated as being involved in
+  - Combine disease annotations with gene names and subcellular location on the same protein
+  - Use property path alternation and partOf* to reach enzymes by indirect routes
+  - Follow a disease's rdfs:seeAlso cross-reference to its OMIM/MIM identifier
+timeRequired: PT25M
+---
+
 # Disease
 
 This page shows you how UniProtKB annotates the diseases a protein is known or thought to be involved in.

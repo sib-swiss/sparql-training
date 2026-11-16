@@ -1,3 +1,35 @@
+---
+description: >-
+  Covers how UniProtKB represents protein sequences and isoforms in RDF:
+  canonical vs computationally mapped isoforms, initiator methionine
+  removal, mature chains, signal peptides, fragments, and mass spectrometry
+  measurements.
+keywords: "UniProt, SPARQL, protein sequence, isoforms, FALDO, signal peptide, chain annotation, mass spectrometry"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Intermediate
+learningResourceType: tutorial
+teaches:
+  - Retrieve a protein's sequence and isoforms, scoped to a given organism
+  - Distinguish directly asserted isoforms from computationally mapped ones
+  - Use FALDO positions to extract a sequence feature's residues with SUBSTR
+  - Determine whether a sequence is canonical, and query mass spectrometry measurements
+timeRequired: PT30M
+---
+
 # Sequences & isoforms
 
 This page shows you how UniProtKB stores **protein sequences** and their **isoforms**. These queries are adapted from the [SIB SPARQL examples](https://github.com/sib-swiss/sparql-examples) collection for UniProt.

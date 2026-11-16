@@ -1,3 +1,35 @@
+---
+description: >-
+  Find transporter proteins by joining UniProtKB's catalytic activity
+  annotations to Rhea's rh:isTransport reactions with SPARQL, filter them
+  by compound class via property-path alternation, and federate with Bgee
+  expression data to ask where a transporter is actually expressed.
+keywords: "UniProtKB, SPARQL, Rhea, transport reactions, CHEBI, Bgee, federation, SERVICE, property paths"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Advanced
+learningResourceType: tutorial
+teaches:
+  - Identify transporter proteins by joining UniProtKB catalytic activity to Rhea's rh:isTransport flag
+  - Reach a reaction participant's ChEBI term through three alternative property paths at once
+  - Restrict a transport reaction's compound to a ChEBI class and its descendants with subClassOf*
+  - Recognize when a federated SERVICE query is fragile against a real endpoint's bot protection
+timeRequired: PT30M
+---
+
 # Transporter proteins
 
 This page shows you how to find **transporter proteins** &mdash; enzymes that move a compound across a membrane rather than converting it into something else &mdash; using the Rhea reaction data cross-referenced from UniProt.

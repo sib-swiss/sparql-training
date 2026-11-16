@@ -1,3 +1,34 @@
+---
+description: >-
+  Query UniProtKB's evidence and citation model with SPARQL: the RDF
+  reification pattern behind evidence tags and ECO codes, protein existence
+  confidence levels, and citation-statement scopes.
+keywords: "UniProtKB, SPARQL, evidence, RDF reification, ECO, PubMed, citations, protein existence"
+audience:
+  "@type": Audience
+  audienceType: Biologists and Computer Scientists
+author:
+  - "@type": Person
+    "@id": https://orcid.org/0000-0002-7449-1266
+    name: Jerven Bolleman
+    affiliation:
+      "@type": Organization
+      "@id": https://ror.org/002n09z45
+      name: SIB Swiss Institute of Bioinformatics
+  - "@type": Organization
+    "@id": https://ror.org/002n09z45
+    name: SIB Swiss Institute of Bioinformatics
+competencyRequired: SPARQL
+educationalLevel: Advanced
+learningResourceType: tutorial
+teaches:
+  - Recognize UniProt's rdf:Statement reification pattern for attaching evidence to a triple
+  - Find annotations backed by a specific PubMed citation, and count citation re-use
+  - Read an entry's overall up:existence confidence level and its ECO evidence codes
+  - Distinguish a plain up:citation link from a scoped Citation_Statement
+timeRequired: PT30M
+---
+
 # Evidence & citations
 
 Every UniProt annotation can be backed by **evidence**: a statement that says *why* the annotation is trusted - usually a literature citation, sometimes a curator's own judgement, sometimes an automated pipeline. This page shows how that evidence is modeled in RDF, and how to query it.
