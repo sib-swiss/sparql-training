@@ -9,11 +9,14 @@ audience:
   audienceType: bioinformaticians and metabolomics data analysts
 author:
   - "@type": Person
+    "@id": https://orcid.org/0000-0002-9619-1707
     name: Florence Mehl
     affiliation:
       "@type": Organization
+      "@id": https://ror.org/002n09z45
       name: SIB Swiss Institute of Bioinformatics
   - "@type": Organization
+    "@id": https://ror.org/002n09z45
     name: SIB Swiss Institute of Bioinformatics
 competencyRequired: SPARQL
 educationalLevel: Intermediate
