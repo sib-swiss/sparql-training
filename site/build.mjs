@@ -3,6 +3,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import esbuild from 'esbuild';
 import MarkdownIt from 'markdown-it';
+import jsonld from 'jsonld';
+import { Parser as N3Parser, Writer as N3Writer } from 'n3';
 import { parseFenceAttrs, parseFrontmatter } from './lib/blocks.mjs';
 import { exportNotebooks } from './export-notebooks.mjs';
 import { exportQuarto } from './export-quarto.mjs';
@@ -384,15 +386,20 @@ function renderLangSwitch(page) {
 // source of truth for it instead of two that could drift apart.
 const BIOSCHEMAS_TRAININGMATERIAL_PROFILE = 'https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE';
 
-function renderBioschemas(page, data, title) {
-  if (!data) return '';
+// Builds the per-page JSON-LD object itself (still carrying its own
+// `@context`, since this is also embedded standalone as that page's own
+// `<script type="application/ld+json">`) -- kept separate from the HTML
+// wrapper so buildPages() can also collect every page's object as-is for
+// writeBioschemasAggregate()'s single combined file.
+function buildBioschemasJsonLd(page, data, title) {
+  if (!data) return null;
 
   const url = `${SITE_URL}${page.out}`;
   const translations = page.translationKey
     ? PAGES.filter((p) => p.translationKey === page.translationKey && p.out !== page.out)
     : [];
 
-  const jsonld = {
+  return {
     '@context': 'https://schema.org/',
     '@type': 'LearningResource',
     '@id': url,
@@ -403,11 +410,20 @@ function renderBioschemas(page, data, title) {
     ...data,
     ...(translations.length ? { workTranslation: translations.map((p) => ({ '@id': `${SITE_URL}${p.out}` })) } : {}),
   };
+}
 
+function renderBioschemas(jsonld) {
+  if (!jsonld) return '';
   return `<script type="application/ld+json">\n${JSON.stringify(jsonld, null, 2)}\n</script>`;
 }
 
+/**
+ * @returns {Array<object>} every page's Bioschemas JSON-LD object (pages
+ *   with no frontmatter contribute nothing), for writeBioschemasAggregate().
+ */
 function buildPages(md, layout, notebookFor, quartoFor) {
+  const bioschemasDocs = [];
+
   for (const page of PAGES) {
     const srcPath = path.join(ROOT, page.src);
     const { data: bioschemas, content: markdown } = parseFrontmatter(readFileSync(srcPath, 'utf8'));
@@ -415,12 +431,14 @@ function buildPages(md, layout, notebookFor, quartoFor) {
     const env = {};
     const contentHtml = md.render(markdown, env);
     const base = depthPrefix(page.out);
+    const jsonld = buildBioschemasJsonLd(page, bioschemas, title);
+    if (jsonld) bioschemasDocs.push(jsonld);
 
     const html = layout
       .replaceAll('{{TITLE}}', escapeHtml(title))
       .replaceAll('{{BASE}}', base)
       .replace('{{HTMLLANG}}', page.lang)
-      .replace('{{BIOSCHEMAS}}', renderBioschemas(page, bioschemas, title))
+      .replace('{{BIOSCHEMAS}}', renderBioschemas(jsonld))
       .replace('{{NAV}}', renderNav(page.out))
       .replace('{{LANGSWITCH}}', renderLangSwitch(page))
       .replace('{{NOTEBOOK}}', renderDownloadLinks(base, notebookFor.get(page.out), quartoFor.get(page.out)))
@@ -439,9 +457,59 @@ function buildPages(md, layout, notebookFor, quartoFor) {
       cpSync(srcAssets, path.join(path.dirname(outPath), 'assets'), { recursive: true });
     }
   }
+
+  return bioschemasDocs;
 }
 
-function main() {
+// Combines every page's Bioschemas JSON-LD into one file under `data/`, in
+// JSON-LD itself plus two plain-RDF serializations -- for anyone who wants
+// this site's own training-material metadata as data, without scraping
+// every page's embedded <script> individually. Turtle/N-Triples go through
+// jsonld's own N-Quads output (the one RDF serialization it writes
+// directly) reparsed with N3, the same RDF library the rest of this site
+// already uses to parse/write Turtle, rather than pulling in a second one.
+async function writeBioschemasAggregate(docs) {
+  const dataDir = path.join(OUT, 'data');
+  mkdirSync(dataDir, { recursive: true });
+
+  // Each doc's own `@context` only matters when it stands alone (embedded
+  // in its page); here they all share one top-level context instead -- as
+  // an inline `@vocab` map rather than the usual `"https://schema.org/"`
+  // string, so jsonld.toRDF() below never has to fetch that context
+  // document over the network (it resolves every term exactly the same
+  // way either way; schema.org's real context is itself just `@vocab`
+  // pointed at this same namespace for all the plain property names used
+  // here). Confirmed with a logging documentLoader: the string form made
+  // one real HTTP request per call, @vocab makes zero.
+  const graph = docs.map(({ '@context': _dropped, ...rest }) => rest);
+  const combined = { '@context': { '@vocab': 'http://schema.org/' }, '@graph': graph };
+
+  writeFileSync(path.join(dataDir, 'schema-org.jsonld'), JSON.stringify(combined, null, 2));
+  console.log('wrote data/schema-org.jsonld');
+
+  const nquads = await jsonld.toRDF(combined, { format: 'application/n-quads' });
+  const quads = new N3Parser({ format: 'N-Quads' }).parse(nquads);
+
+  function write(writer, filename) {
+    return new Promise((resolve, reject) => {
+      writer.addQuads(quads);
+      writer.end((err, result) => {
+        if (err) return reject(err);
+        writeFileSync(path.join(dataDir, filename), result);
+        console.log('wrote data/' + filename);
+        resolve();
+      });
+    });
+  }
+
+  await write(new N3Writer({ format: 'N-Triples' }), 'schema-org.nt');
+  await write(
+    new N3Writer({ prefixes: { schema: 'http://schema.org/', dct: 'http://purl.org/dc/terms/' } }),
+    'schema-org.ttl'
+  );
+}
+
+async function main() {
   if (existsSync(OUT)) rmSync(OUT, { recursive: true, force: true });
   mkdirSync(OUT, { recursive: true });
 
@@ -452,7 +520,8 @@ function main() {
 
   const md = buildMarkdownRenderer();
   const layout = readFileSync(path.join(__dirname, 'templates/layout.html'), 'utf8');
-  buildPages(md, layout, notebookFor, quartoFor);
+  const bioschemasDocs = buildPages(md, layout, notebookFor, quartoFor);
+  await writeBioschemasAggregate(bioschemasDocs);
 
   console.log(`\nBuilt site into ${path.relative(ROOT, OUT)}/`);
 }
@@ -462,5 +531,5 @@ function main() {
 // imports `PAGES` from it, which must not have the side effect of building
 // the whole site.
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
+  await main();
 }

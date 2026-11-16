@@ -162,8 +162,8 @@ the profile for an individual tutorial like these pages, as opposed to
    etc. - already schema.org-shaped (e.g. `author` as a list of `Person`/
    `Organization` objects), since the build does no reshaping of its own.
 3. Don't set `name`, `url`, `@id`, `inLanguage` or `workTranslation` in the
-   frontmatter - `renderBioschemas()` in `site/build.mjs` computes all five
-   itself (from the page's title, its `out` path, and its `lang`/
+   frontmatter - `buildBioschemasJsonLd()` in `site/build.mjs` computes all
+   five itself (from the page's title, its `out` path, and its `lang`/
    `translationKey`, the same fields the language-switch feature above
    uses), so there's one source of truth for them instead of two that could
    drift apart. A page with a `translationKey` automatically gets a
@@ -173,6 +173,20 @@ the profile for an individual tutorial like these pages, as opposed to
 4. A page with no frontmatter block is completely unaffected - no `<script
    type="application/ld+json">` gets added, same opt-in shape as the
    notebook/Quarto download links above.
+5. Every page's JSON-LD object is also collected into one combined file at
+   build time - `writeBioschemasAggregate()` in `site/build.mjs` writes it
+   as `data/schema-org.jsonld`, plus `data/schema-org.ttl` and
+   `data/schema-org.nt` derived from it via `jsonld.toRDF()` and
+   [n3](https://github.com/rdfjs/N3.js) (the same RDF library this site
+   already uses to parse/write Turtle elsewhere, rather than a second one
+   just for this). The combined document's `@context` is an inline
+   `{"@vocab": "http://schema.org/"}` map, not the usual
+   `"https://schema.org/"` string - both resolve every term the same way,
+   but the string form makes `jsonld.toRDF()` fetch that context over the
+   network on every build; `@vocab` needs nothing fetched at all. Don't
+   change it back to the string form without re-checking that (a logging
+   `jsonld.documentLoader` override will show it immediately if it
+   regresses).
 
 ## Adding a new *kind* of fence block
 
