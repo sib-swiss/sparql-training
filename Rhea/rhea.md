@@ -51,7 +51,7 @@ ORDER BY ?reaction
 
 ## Q2: Retrieve approved reactions using L-glutamate (CHEBI:29985) AND L-glutamine (CHEBI:58359) on opposite sides
 
-Adapted from [sparql-examples Rhea/63](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/63_Select_all_approved_reactions_using_L-glutamine_AND_L-glutamate_in_different_reaction_sides).
+Adapted from [sparql-examples Rhea/63](https://sib-swiss.github.io/sparql-examples/examples/Rhea/63_Select_all_approved_reactions_using_L-glutamine_AND_L-glutamate_in_different_reaction_sides).
 
 A Rhea reaction is split into two `side`s; each side `contains` participants, each participant has a `compound`, and each compound is cross-referenced to ChEBI. `transformableTo` links the side a compound starts on to the side it ends up on.
 
@@ -101,7 +101,7 @@ SELECT ?reaction WHERE {
 
 ## Q3: Select approved reactions with CHEBI:17815 (a 1,2-diacyl-sn-glycerol) or one of its descendants
 
-Adapted from [sparql-examples Rhea/92](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/92_Select_all_approved_reactions_with_participants_being_CHEBI_17815__or_one_of_its_descendant).
+Adapted from [sparql-examples Rhea/92](https://sib-swiss.github.io/sparql-examples/examples/Rhea/92_Select_all_approved_reactions_with_participants_being_CHEBI_17815__or_one_of_its_descendant).
 
 ChEBI is itself a hierarchy, so `rdfs:subClassOf*` (the Kleene-star property path) matches the term itself or any of its descendants, however deep.
 
@@ -195,7 +195,7 @@ ORDER BY ?reaction
 
 ## Q5: Distribution of Rhea reactions by top-level IUBMB enzyme classification
 
-Adapted from [sparql-examples Rhea/109](https://sib-swiss.github.io/sparql-examples/examples/UniProt/Rhea/109_Distribution_of_reactions_according_to_the_first_level_of_enzyme_classification).
+Adapted from [sparql-examples Rhea/109](https://sib-swiss.github.io/sparql-examples/examples/Rhea/109_Distribution_of_reactions_according_to_the_first_level_of_enzyme_classification).
 
 Rhea links reactions to enzyme (EC) numbers; the enzyme classification hierarchy (which EC number rolls up to which top-level class) is UniProt data. On the live endpoints this is one federated query; combined into a single example dataset, the `SERVICE` wrapper simply disappears.
 
@@ -698,7 +698,7 @@ ORDER BY ?upPathway
 
 ## Q12: *H. pylori* enzyme complexes for the tryptophan biosynthesis pathway (MetaNetX)
 
-The `mnx:gpr`/`mnx:cata`/`mnx:cplx` traversal is adapted from [sparql-examples MetaNetX/11](https://sib-swiss.github.io/sparql-examples/examples/UniProt/MetaNetX/11).
+The `mnx:gpr`/`mnx:cata`/`mnx:cplx` traversal is adapted from [sparql-examples MetaNetX/11](https://sib-swiss.github.io/sparql-examples/examples/MetaNetX/11).
 
 This extends Q11 with a `SERVICE` call to [MetaNetX](https://rdf.metanetx.org/) to resolve the enzyme complexes behind a reaction. MetaNetX is a third, specialized resource with its own reconciled-network data model, not something a toy fixture can usefully stand in for - run this one directly against the live endpoint.
 
